@@ -66,17 +66,94 @@
       label: "NICE NG42 · Motor neurone disease",
       href: "https://www.nice.org.uk/guidance/ng42/chapter/Recommendations",
     },
+    rehabilitation: {
+      label: "WHO · Rehabilitation in health systems",
+      href: "https://www.who.int/news-room/fact-sheets/detail/rehabilitation",
+    },
+    "adult-cp": {
+      label: "NICE NG119 · Cerebral palsy in adults",
+      href: "https://www.nice.org.uk/guidance/ng119/chapter/Recommendations",
+    },
+    tbi: {
+      label: "KITE-UHN · Brain injury rehabilitation guidelines",
+      href: "https://kite-uhn.com/brain-injury/en",
+    },
+    mnd: {
+      label: "NICE NG42 · Motor neurone disease",
+      href: "https://www.nice.org.uk/guidance/ng42/chapter/Recommendations",
+    },
+    vestibular: {
+      label: "JNPT 2022 · Vestibular rehabilitation clinical practice guideline",
+      href: "https://pmc.ncbi.nlm.nih.gov/articles/PMC8920012/",
+    },
+    pppd: {
+      label: "Bárány Society · PPPD consensus criteria",
+      href: "https://doi.org/10.3233/VES-170622",
+    },
+    fnd: {
+      label: "JNNP · Functional motor disorder physiotherapy consensus",
+      href: "https://pmc.ncbi.nlm.nih.gov/articles/PMC4602268/",
+    },
+    ataxia: {
+      label: "Friedreich ataxia clinical management guidelines",
+      href: "https://frdaguidelines.org/",
+    },
+    "traumatic-injury": {
+      label: "NICE NG211 · Rehabilitation after traumatic injury",
+      href: "https://www.nice.org.uk/guidance/ng211/chapter/Recommendations",
+    },
+    "limb-loss": {
+      label: "NICE NG211 · Rehabilitation after limb loss",
+      href: "https://www.nice.org.uk/guidance/ng211/chapter/Recommendations",
+    },
+    "nerve-injury": {
+      label: "NICE NG211 · Rehabilitation after nerve injury",
+      href: "https://www.nice.org.uk/guidance/ng211/chapter/Recommendations",
+    },
+    "hip-fracture": {
+      label: "NICE CG124 · Hip fracture management",
+      href: "https://www.nice.org.uk/guidance/cg124/chapter/Recommendations",
+    },
+    "critical-illness": {
+      label: "NICE CG83 · Rehabilitation after critical illness",
+      href: "https://www.nice.org.uk/guidance/cg83/chapter/Recommendations",
+    },
   };
+  Object.assign(REPORT_SOURCES, {
+    stroke: REPORT_SOURCES.Stroke,
+    sci: REPORT_SOURCES["Spinal cord injury"],
+    parkinson: REPORT_SOURCES["Parkinson's disease"],
+    ms: REPORT_SOURCES["Multiple sclerosis"],
+    neuromuscular: REPORT_SOURCES.rehabilitation,
+    huntington: REPORT_SOURCES.rehabilitation,
+    hsp: REPORT_SOURCES.rehabilitation,
+    "peripheral-neuropathy": REPORT_SOURCES["Frailty / falls risk"],
+    "transverse-myelitis": REPORT_SOURCES["Spinal cord injury"],
+    "spina-bifida": REPORT_SOURCES.wheelchair,
+    "cancer-rehab": REPORT_SOURCES.rehabilitation,
+  });
 
   function reportSources(c) {
-    const pathway = /ALS/i.test(c.label) ? REPORT_SOURCES.ALS : REPORT_SOURCES[c.diagnosis];
+    const pathway = c.evidenceKey
+      ? REPORT_SOURCES[c.evidenceKey] || REPORT_SOURCES.rehabilitation
+      : /ALS/i.test(c.label)
+        ? REPORT_SOURCES.ALS
+        : REPORT_SOURCES[c.diagnosis];
     const context = [
-      /Wheelchair/i.test(c.label) ? REPORT_SOURCES.wheelchair : null,
+      /Wheelchair|Spina Bifida|Technology Access/i.test(c.label)
+        ? REPORT_SOURCES.wheelchair
+        : null,
       /TKA|Post-op Hip/i.test(c.label) && c.diagnosis !== "Post-surgical rehabilitation"
         ? REPORT_SOURCES.jointReplacement
         : null,
     ];
-    return [REPORT_SOURCES.icf, pathway, ...context, REPORT_SOURCES.fhir].filter(Boolean);
+    return [
+      ...new Map(
+        [REPORT_SOURCES.icf, pathway, ...context, REPORT_SOURCES.fhir]
+          .filter(Boolean)
+          .map((source) => [source.href, source]),
+      ).values(),
+    ];
   }
 
   function pathwayLens(c) {
@@ -130,6 +207,91 @@
         "Use a person-centred function and participation frame while preserving pathway-specific clinical context.",
         "Review task quality, tolerance, assistance, equipment and carryover as distinct observations.",
         "Treat short-window patterns as prompts for source-record review, not predictions.",
+      ],
+      "Motor neurone disease": [
+        "Treat maintenance, timely adaptation, comfort, communication and supported participation as valid outcomes.",
+        "Review changing assistance, equipment, caregiver sustainability and time-of-day context together.",
+        "Coordinate interpretation with the specialist multidisciplinary record rather than extrapolating a short trend.",
+      ],
+      "Neuromuscular condition": [
+        "Review sustainable function, posture, equipment and participation across the whole day.",
+        "Separate capacity in an early session from later-day access, fatigue and supported performance.",
+        "Keep specialist respiratory, cardiac, seating and skin-management context visible where applicable.",
+      ],
+      "Huntington's disease": [
+        "Review mobility together with cognition, communication, cueing and the predictability of meaningful routines.",
+        "Record support and environmental complexity before interpreting a stable speed as stable participation.",
+        "Use short-window trends as review prompts in the context of a progressive, variable pathway.",
+      ],
+      "Friedreich ataxia": [
+        "Frame progress around safe strategy, maintenance, fatigue, assistance and personally meaningful participation.",
+        "Retain surface, support and equipment context when comparing coordination or transfer performance.",
+        "Coordinate conclusions with the specialist record and relevant multisystem monitoring.",
+      ],
+      "Hereditary spastic paraplegia": [
+        "Review walking purpose, aid or orthotic context, foot clearance, fatigue and recovery together.",
+        "Treat mobility choice and participation as outcomes, not walking speed alone.",
+        "Avoid attributing change without checking task distance, surface and measurement conditions.",
+      ],
+      "Vestibular hypofunction": [
+        "Retain diagnostic scope, head-movement condition, visual complexity, balance and recovery context.",
+        "Interpret exposure dose alongside symptom response and meaningful community participation.",
+        "Do not generalise a peripheral vestibular protocol to a different vestibular or neurological condition.",
+      ],
+      "Persistent postural-perceptual dizziness": [
+        "Review visual and postural exposure, confidence, avoidance, symptom response and recovery in context.",
+        "Keep the specialist formulation and interdisciplinary plan visible when interpreting variability.",
+        "Separate meaningful participation gain from symptom score change alone.",
+      ],
+      "Peripheral neuropathy": [
+        "Retain lighting, surface, footwear, sensation, skin and aid context in every mobility comparison.",
+        "Link balance findings to essential home or community tasks and near-fall history.",
+        "Review compensatory environmental strategies alongside impairment-focused practice.",
+      ],
+      "Functional neurological disorder": [
+        "Use the agreed specialist diagnosis and shared explanatory model consistently across the team.",
+        "Treat variability as clinically informative while avoiding assumptions about effort or intent.",
+        "Review automatic movement, attention, confidence, function and carryover in meaningful tasks.",
+      ],
+      "Transverse myelitis": [
+        "Review mobility together with sensory, autonomic, skin, fatigue and equipment context.",
+        "Keep walking, transfers and wheeled mobility aligned to the person's essential participation goals.",
+        "Interpret recovery cautiously and escalate new or sustained neurological change to the specialist team.",
+      ],
+      "Spina bifida": [
+        "Prioritise self-direction, accessible environments, equipment and participation across life transitions.",
+        "Review task completion together with skin, transfer, wheelchair and support-plan context.",
+        "Distinguish physical independence from effective direction of appropriate assistance.",
+      ],
+      "Complex traumatic injury": [
+        "Preserve current restrictions, multi-region impairments, pain, equipment and environmental context.",
+        "Review the whole meaningful task because progress in one component may increase demand elsewhere.",
+        "Use the multidisciplinary rehabilitation plan and current surgical record as the authoritative boundaries.",
+      ],
+      "Limb loss rehabilitation": [
+        "Review function, comfort, interface response, device configuration, personal preference and participation together.",
+        "Do not treat wear time or device use as a sufficient outcome without task value and tolerance.",
+        "Keep prosthetic-service review and the person's chosen bimanual priorities visible.",
+      ],
+      "Peripheral nerve injury": [
+        "Retain surgical protection, tissue status, sensory safety and task demand when interpreting practice volume.",
+        "Review selective movement and real-task accuracy rather than repetition count alone.",
+        "Coordinate conclusions with the current hand-surgery and therapy protocol.",
+      ],
+      "Hip fracture rehabilitation": [
+        "Review mobility, transfers, pain, cognition, falls risk, equipment and return-to-residence goals together.",
+        "Retain aid, assistance and surface conditions when comparing performance.",
+        "Use coordinated orthogeriatric and community plans to interpret the recovery trajectory.",
+      ],
+      "Post-critical illness rehabilitation": [
+        "Review physical, cognitive, communication and psychosocial function across the rehabilitation pathway.",
+        "Relate gains to activities of daily living, participation, equipment and formal handover needs.",
+        "Do not infer whole-person readiness from one mobility or endurance measure.",
+      ],
+      "Cancer rehabilitation": [
+        "Interpret activity and fatigue within the current oncology and rehabilitation plan.",
+        "Review participation, symptoms, recovery, treatment schedule and support context together.",
+        "Treat dose patterns as documentation signals, never as independent medical clearance.",
       ],
     };
     const domain = {
@@ -239,7 +401,14 @@
     if (!target) return;
     const query = reportQuery.trim().toLowerCase();
     const cases = state.cases.filter((c) => {
-      const matchesQuery = !query || [c.label, c.diagnosis, c.phase, c.domain, c.primaryGoal]
+      const matchesQuery = !query || [
+        c.label,
+        c.diagnosis,
+        c.phase,
+        c.domain,
+        c.primaryGoal,
+        ...Object.values(c.clinicalScenario || {}),
+      ]
         .join(" ")
         .toLowerCase()
         .includes(query);
@@ -333,6 +502,20 @@
       </form>`;
   }
 
+  function renderClinicalScenario(c) {
+    const scenario = c.clinicalScenario;
+    if (!scenario) return "";
+    const fields = [
+      ["Referral profile", scenario.profile],
+      ["Current presentation", scenario.presentation],
+      ["Participation priority", scenario.participation],
+      ["Environment and supports", scenario.environment],
+      ["Clinical complexity", scenario.complexity],
+      ["Multidisciplinary review focus", scenario.reviewFocus],
+    ].filter(([, value]) => value);
+    return `<section class="report-section report-section-wide report-scenario"><div class="report-section-heading"><span>01A</span><div><p>${e(scenario.cohort || "Evidence-informed synthetic cohort")}</p><h3>Clinical scenario &amp; referral context</h3></div><span class="badge info">Synthetic scenario</span></div><p class="report-intro">This structured scenario combines plausible rehabilitation contexts described in authoritative guidance. It is not a real person, diagnosis, prognosis or patient-specific recommendation.</p><dl class="report-definition-list columns">${fields.map(([label, value]) => `<div><dt>${e(label)}</dt><dd>${e(value)}</dd></div>`).join("")}</dl></section>`;
+  }
+
   function renderCaseReport(c) {
     const metrics = caseReportMetrics(c);
     const primary = metrics.signals[0];
@@ -341,7 +524,7 @@
     const expectedRepPace = metrics.expectedReps ? Math.round((metrics.reps / metrics.expectedReps) * 100) : 0;
     return `<article class="case-report-document" data-case-report="${e(c.id)}">
       <header class="case-report-header">
-        <div class="case-report-back"><button type="button" class="text-button" data-report-action="back">← All 36 reports</button><span>Generated ${fmt(today())} · synthetic demonstration record</span></div>
+        <div class="case-report-back"><button type="button" class="text-button" data-report-action="back">← All ${state.cases.length} reports</button><span>Generated ${fmt(today())} · synthetic demonstration record</span></div>
         <div class="case-report-title"><div><p class="ai-kicker">VivantePlexus™ comprehensive clinical report</p><h2>${e(c.label)}</h2><p>${e(c.diagnosis)} · ${e(c.phase)} · ${e(c.domain)}</p></div><div class="case-report-actions"><button type="button" class="secondary compact-button" data-report-action="edit-source">Edit source programme</button><button type="button" class="secondary compact-button" data-report-action="export">Export report</button><button type="button" class="primary compact-button" data-report-action="print">Print</button></div></div>
         <dl class="case-report-identity"><div><dt>Goal status</dt><dd>${e(c.goalStatus)}</dd></div><div><dt>Responsible clinician</dt><dd>${e(c.clinician || "Not specified")}</dd></div><div><dt>Review date</dt><dd>${fmt(c.reviewDate)}</dd></div><div><dt>Report status</dt><dd>${e(reportState(c.id))}</dd></div><div><dt>Data completeness</dt><dd>${metrics.completeness}%</dd></div><div><dt>Plexus method</dt><dd>${e(globalThis.PlexusAI?.METHOD_VERSION || "Local rules")}</dd></div></dl>
       </header>
@@ -350,6 +533,8 @@
 
       <div class="case-report-grid">
         <section class="report-section report-section-wide report-executive"><div class="report-section-heading"><span>01</span><div><p>Professional overview</p><h3>Executive clinical summary</h3></div>${primary ? `<span class="badge ${e(primary.severity)}">${e(primary.severity)} priority</span>` : ""}</div><p class="executive-copy">${e(executiveSummary(c, metrics))}</p><div class="report-metric-strip">${reportMetric("Current-week sessions", metrics.weekly.length, `${metrics.sessions.length} total records`)}${reportMetric("Active dose pace", `${expectedMinutePace}%`, `${metrics.active}/${metrics.expectedMinutes} min expected to date`)}${reportMetric("Repetition pace", `${expectedRepPace}%`, `${metrics.reps.toLocaleString()}/${metrics.expectedReps.toLocaleString()} expected`)}${reportMetric("Movement quality", `${round(metrics.quality)}/5`, `Minimum configured ${c.minimumQuality}/5`)}${reportMetric("Functional carryover", metrics.carryRate == null ? "Not assessed" : `${metrics.carryRate}%`, `${metrics.positive.length}/${metrics.assessed.length} positive or partial`)}</div></section>
+
+        ${renderClinicalScenario(c)}
 
         <section class="report-section"><div class="report-section-heading"><span>02</span><div><p>WHO ICF-aligned context</p><h3>Function, goals &amp; participation</h3></div></div><dl class="report-definition-list"><div><dt>Primary functional goal</dt><dd>${e(c.primaryGoal)}</dd></div><div><dt>Secondary goals</dt><dd>${e(c.secondaryGoals || "Not specified")}</dd></div><div><dt>ICF / participation frame</dt><dd>${e(c.icfFrame || "Not specified")}</dd></div><div><dt>Protocol / dose rationale</dt><dd>${e(c.protocol || "Not specified")}</dd></div><div><dt>Precautions / boundaries</dt><dd>${e(c.precautions || "Not specified")}</dd></div></dl></section>
 
@@ -386,6 +571,18 @@
       "",
       "PROFESSIONAL OVERVIEW",
       executiveSummary(c, metrics),
+      ...(c.clinicalScenario
+        ? [
+            "",
+            "CLINICAL SCENARIO & REFERRAL CONTEXT",
+            `Referral profile: ${c.clinicalScenario.profile || "Not specified"}`,
+            `Current presentation: ${c.clinicalScenario.presentation || "Not specified"}`,
+            `Participation priority: ${c.clinicalScenario.participation || "Not specified"}`,
+            `Environment and supports: ${c.clinicalScenario.environment || "Not specified"}`,
+            `Clinical complexity: ${c.clinicalScenario.complexity || "Not specified"}`,
+            `Multidisciplinary review focus: ${c.clinicalScenario.reviewFocus || "Not specified"}`,
+          ]
+        : []),
       "",
       "PROGRAMME CONTEXT",
       `Pathway: ${c.diagnosis} · ${c.phase} · ${c.domain}`,

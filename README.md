@@ -17,8 +17,9 @@ https://zenkoh.github.io/VivantePlexus.AI/
 ## Core capabilities
 
 - Start from a streamlined single-screen Plexus AI command centre, then open Signals, Dose, Device IQ, Outcomes, Cases or Method as focused on-demand layers.
-- Load 36 synthetic rehabilitation cases spanning stroke, spinal cord injury, traumatic brain injury, cerebral palsy, Parkinson's disease, multiple sclerosis, frailty, vestibular, peripheral neurological, progressive neurological, musculoskeletal, orthopaedic and amputee pathways.
-- Review 108 synthetic therapy sessions and 72 outcome records.
+- Load 72 synthetic rehabilitation cases spanning stroke, spinal cord injury, traumatic and acquired brain injury, cerebral palsy across the lifespan, Parkinson's disease, multiple sclerosis, progressive and rare neurological pathways, vestibular and sensory disorders, complex trauma, limb loss, hip fracture, critical illness and cancer rehabilitation.
+- Explore a second cohort of 36 alternative, evidence-informed cases with structured referral profile, presentation, participation priority, environment, complexity, multidisciplinary review focus and pathway-specific clinical boundaries.
+- Review 216 synthetic therapy sessions and 144 outcome records.
 - Track scheduled time, active practice, valid and attempted repetitions, movement quality, fatigue, pain, assistance, task challenge, specificity, rest breaks, home adherence and functional carryover.
 - Maintain an editable equipment library and link one or more devices to each therapy session.
 - Capture device mode, assistance, active contribution, range of motion, symmetry and calibration/data-quality context.
@@ -28,7 +29,7 @@ https://zenkoh.github.io/VivantePlexus.AI/
 - Generate a ranked top-five review queue with one primary signal per case, grouped secondary signals and visible calculations.
 - Ask structured natural-language-style questions through Plexus Query without sending records to an external service.
 - Review a source-grounded Plexus Brief and accept, dismiss or defer signals with a local audit trail.
-- Open every one of the 36 cases in a dedicated comprehensive report layer covering programme context, ICF-aligned goals, dose, tolerance, equipment response, outcomes, explainable signals, session chronology, provenance and limitations.
+- Open every one of the 72 cases in a dedicated comprehensive report layer covering clinical scenario, programme context, ICF-aligned goals, dose, tolerance, equipment response, outcomes, explainable signals, session chronology, provenance and limitations.
 - Search reports by case, pathway or domain, filter by documentation status, print or export an individual report, and save a clinician-authored addendum separately from read-only computed evidence.
 - Export CSV datasets, progress notes, FHIR-shaped JSON and complete JSON backups.
 - Switch the complete workflow between English, Simplified Chinese, Spanish, French, German and Malay.
@@ -60,7 +61,7 @@ npm run check
 npm test
 ```
 
-The automated suite verifies JavaScript syntax, all six language options, top-level and intelligence-layer navigation, storage migration, the capped and deduplicated AI queue, compact dose prioritisation, structured queries, clinician signal actions, all 36 comprehensive case-report routes, clinician-addendum persistence, device telemetry, equipment-to-session linkage, FHIR-shaped export relationships and data/export actions.
+The automated suite verifies JavaScript syntax, all six language options, top-level and intelligence-layer navigation, additive 36-to-72 case migration, the capped and deduplicated AI queue, compact dose prioritisation, structured queries, clinician signal actions, all 72 comprehensive case-report routes, rich scenario fields for Cases 37–72, clinician-addendum persistence, device telemetry, equipment-to-session linkage, FHIR-shaped export relationships and data/export actions.
 
 ## GitHub Pages
 
@@ -93,11 +94,18 @@ Useful reference points include:
 - [WHO: International perspectives on spinal cord injury](https://www.who.int/publications/i/item/international-perspectives-on-spinal-cord-injury)
 - [WHO: Wheelchair provision guidelines](https://www.who.int/publications/i/item/9789240074521)
 - [NICE NG62: Cerebral palsy in under 25s](https://www.nice.org.uk/guidance/ng62/chapter/Recommendations)
+- [NICE NG119: Cerebral palsy in adults](https://www.nice.org.uk/guidance/ng119/chapter/Recommendations)
 - [NICE NG220: Multiple sclerosis in adults](https://www.nice.org.uk/guidance/ng220/chapter/Recommendations)
 - [NICE NG71: Parkinson's disease in adults](https://www.nice.org.uk/guidance/ng71/chapter/Recommendations)
 - [NICE NG42: Motor neurone disease](https://www.nice.org.uk/guidance/ng42/chapter/Recommendations)
 - [NICE NG249: Falls assessment and prevention](https://www.nice.org.uk/guidance/ng249/chapter/Recommendations)
 - [NICE NG157: Joint replacement](https://www.nice.org.uk/guidance/ng157/chapter/Recommendations)
+- [NICE NG211: Rehabilitation after traumatic injury](https://www.nice.org.uk/guidance/ng211/chapter/Recommendations)
+- [KITE-UHN: Brain injury rehabilitation guidelines](https://kite-uhn.com/brain-injury/en)
+- [NICE CG124: Hip fracture management](https://www.nice.org.uk/guidance/cg124/chapter/Recommendations)
+- [NICE CG83: Rehabilitation after critical illness](https://www.nice.org.uk/guidance/cg83/chapter/Recommendations)
+- [JNPT: Vestibular rehabilitation for peripheral vestibular hypofunction](https://pmc.ncbi.nlm.nih.gov/articles/PMC8920012/)
+- [JNNP: Physiotherapy for functional motor disorders](https://pmc.ncbi.nlm.nih.gov/articles/PMC4602268/)
 - [HL7 FHIR Device](https://hl7.org/fhir/device.html)
 - [HL7 FHIR R4 Composition](https://hl7.org/fhir/R4/composition.html)
 - [HL7 FHIR R4 Procedure](https://hl7.org/fhir/R4/procedure.html)

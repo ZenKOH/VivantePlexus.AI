@@ -26,6 +26,7 @@ function launch(existingState) {
     [
       fs.readFileSync(path.join(root, "app-v4.js"), "utf8"),
       fs.readFileSync(path.join(root, "case-expansion.js"), "utf8"),
+      fs.readFileSync(path.join(root, "diverse-cases.js"), "utf8"),
       fs.readFileSync(path.join(root, "plexus-ai.js"), "utf8"),
       fs.readFileSync(path.join(root, "reports.js"), "utf8"),
     ].join("\n"),
@@ -60,7 +61,7 @@ test("migrates existing version 5 browser data without discarding records", () =
   const saved = JSON.parse(
     dom.window.localStorage.getItem("vivantePlexus.v1"),
   );
-  assert.equal(saved.schemaVersion, 8);
+  assert.equal(saved.schemaVersion, 9);
   assert.equal(saved.equipment.length, 4);
   assert.deepEqual(saved.sessions, []);
   assert.deepEqual(saved.aiActions, {});
@@ -219,13 +220,13 @@ test("renders a grounded top-five Plexus AI queue with case context and calculat
   dom.window.close();
 });
 
-test("opens a comprehensive evidence-linked report for every one of the 36 cases", () => {
+test("opens a comprehensive evidence-linked report for every one of the 72 cases", () => {
   const dom = launch();
   const { document } = dom.window;
   document.querySelector('[data-tab="reports"]').click();
 
   const cards = [...document.querySelectorAll("#reportCaseIndex [data-open-case-report]")];
-  assert.equal(cards.length, 36);
+  assert.equal(cards.length, 72);
   assert.equal(document.getElementById("report-index-layer").hidden, false);
   assert.equal(document.getElementById("report-detail-layer").hidden, true);
 
@@ -252,6 +253,97 @@ test("opens a comprehensive evidence-linked report for every one of the 36 cases
   assert.equal(document.getElementById("report-index-layer").hidden, false);
   assert.equal(document.getElementById("report-detail-layer").hidden, true);
   dom.window.close();
+});
+
+test("adds 36 diverse scenarios with structured clinical context and pathway evidence", () => {
+  const dom = launch();
+  const { document } = dom.window;
+  const saved = JSON.parse(
+    dom.window.localStorage.getItem("vivantePlexus.v1"),
+  );
+  const alternatives = saved.cases.slice(36);
+
+  assert.equal(alternatives.length, 36);
+  assert.equal(new Set(alternatives.map((entry) => entry.label)).size, 36);
+  assert.ok(new Set(alternatives.map((entry) => entry.diagnosis)).size >= 20);
+  assert.ok(
+    alternatives.every(
+      (entry) =>
+        entry.clinicalScenario?.profile &&
+        entry.clinicalScenario?.presentation &&
+        entry.clinicalScenario?.participation &&
+        entry.clinicalScenario?.environment &&
+        entry.clinicalScenario?.complexity &&
+        entry.clinicalScenario?.reviewFocus &&
+        entry.evidenceKey &&
+        entry.protocol &&
+        entry.icfFrame &&
+        entry.precautions,
+    ),
+  );
+
+  document.querySelector('[data-tab="reports"]').click();
+  const cards = [
+    ...document.querySelectorAll("#reportCaseIndex [data-open-case-report]"),
+  ].slice(36);
+  assert.equal(cards.length, 36);
+
+  for (const card of cards) {
+    card.click();
+    const scenario = document.querySelector(".report-scenario");
+    assert.ok(scenario, `${card.dataset.openCaseReport} has a scenario section`);
+    assert.match(scenario.textContent, /Clinical scenario & referral context/);
+    assert.match(scenario.textContent, /Synthetic scenario/);
+    assert.equal(scenario.querySelectorAll("dl > div").length, 6);
+    assert.ok(document.querySelectorAll(".report-source-list a").length >= 3);
+  }
+
+  const quickDash = saved.outcomes.find(
+    (entry) => entry.caseId === "case-69" && /QuickDASH/.test(entry.name),
+  );
+  assert.equal(quickDash.direction, "Lower is better");
+  dom.window.close();
+});
+
+test("upgrades the prior 36-case sample additively without losing edits or addenda", () => {
+  const current = launch();
+  const previous = JSON.parse(
+    current.window.localStorage.getItem("vivantePlexus.v1"),
+  );
+  current.window.close();
+
+  previous.schemaVersion = 8;
+  previous.cases = previous.cases.slice(0, 36);
+  previous.cases[0].primaryGoal = "Preserved clinician-edited goal.";
+  previous.sessions = previous.sessions.filter((entry) =>
+    previous.cases.some((clinicalCase) => clinicalCase.id === entry.caseId),
+  );
+  previous.outcomes = previous.outcomes.filter((entry) =>
+    previous.cases.some((clinicalCase) => clinicalCase.id === entry.caseId),
+  );
+  previous.reportDrafts = {
+    "case-01": {
+      status: "Reviewed",
+      overview: "Preserved clinician addendum.",
+    },
+  };
+
+  const upgraded = launch(previous);
+  const saved = JSON.parse(
+    upgraded.window.localStorage.getItem("vivantePlexus.v1"),
+  );
+  assert.equal(saved.schemaVersion, 9);
+  assert.equal(saved.cases.length, 72);
+  assert.equal(saved.sessions.length, 216);
+  assert.equal(saved.outcomes.length, 144);
+  assert.equal(saved.cases[0].primaryGoal, "Preserved clinician-edited goal.");
+  assert.equal(saved.reportDrafts["case-01"].status, "Reviewed");
+  assert.equal(
+    saved.reportDrafts["case-01"].overview,
+    "Preserved clinician addendum.",
+  );
+  assert.equal(new Set(saved.cases.map((entry) => entry.id)).size, 72);
+  upgraded.window.close();
 });
 
 test("filters the report index and persists an editable clinician addendum separately", () => {
@@ -285,7 +377,7 @@ test("filters the report index and persists an editable clinician addendum separ
   assert.match(document.getElementById("caseReportDetail").textContent, /Clinician-authored overview after source-record review/);
   assert.match(document.getElementById("caseReportDetail").textContent, /Read-only calculations/);
   assert.equal(saved.cases[0].primaryGoal, "Improve reach, grasp and release for meal preparation.");
-  assert.equal(saved.sessions.length, 108);
+  assert.equal(saved.sessions.length, 216);
 
   document.querySelector('[data-report-action="back"]').click();
   document.getElementById("reportSearch").value = "";
@@ -397,7 +489,7 @@ test("FHIR-shaped export contains Device and Procedure references for equipment"
     (entry) => entry.resource.resourceType === "Procedure",
   );
   assert.equal(devices.length, 4);
-  assert.equal(procedures.length, 108);
+  assert.equal(procedures.length, 216);
   assert.ok(
     procedures.some((entry) => entry.resource.usedReference.length > 0),
   );
@@ -442,7 +534,7 @@ test("header command buttons execute their documented actions", () => {
   assert.match(csv[1], /equipmentNames,equipmentIds/);
 
   document.getElementById("loadSampleBtn").click();
-  assert.match(document.getElementById("appStatus").textContent, /Loaded 36/);
+  assert.match(document.getElementById("appStatus").textContent, /Loaded 72/);
 
   let restoreClicks = 0;
   document.getElementById("restoreInput").click = () => restoreClicks++;
@@ -458,6 +550,6 @@ test("header command buttons execute their documented actions", () => {
   const saved = JSON.parse(
     dom.window.localStorage.getItem("vivantePlexus.v1"),
   );
-  assert.equal(saved.cases.length, 36);
+  assert.equal(saved.cases.length, 72);
   dom.window.close();
 });

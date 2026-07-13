@@ -1,5 +1,5 @@
 const APP_KEY = "vivantePlexus.v1";
-const SCHEMA_VERSION = 8;
+const SCHEMA_VERSION = 9;
 const $ = (id) => document.getElementById(id);
 const n = (v, d = 0) => (Number.isFinite(Number(v)) ? Number(v) : d);
 const tr = (v) =>
@@ -428,6 +428,12 @@ const equipmentSeed = (createdAt = new Date().toISOString()) =>
     createdAt,
     updatedAt: createdAt,
   }));
+const rowProtocol = (value) => {
+  const match = String(value || "").match(
+    /(?:Training|Sample) protocol:\s*(.+)$/i,
+  );
+  return match ? match[1].trim() : "";
+};
 function sample() {
   const now = new Date().toISOString();
   const equipment = equipmentSeed(now);
@@ -439,7 +445,10 @@ function sample() {
     domain: x[3],
     goalStatus: x[4],
     primaryGoal: x[5],
-    secondaryGoals: x[6],
+    secondaryGoals: x[13]
+      ? String(x[6]).replace(/\s*(?:Training|Sample) protocol:.*$/i, "").trim()
+      : x[6],
+    protocol: rowProtocol(x[6]),
     weeklyMinutes: x[7],
     weeklyReps: x[8],
     minimumQuality: 3,
@@ -451,16 +460,32 @@ function sample() {
           : "Mon, Tue, Thu, Fri",
     reviewDate: ago(i % 5 === 0 ? -7 : (i % 4) + 3),
     clinician:
-      i % 3 === 0
+      x[13]?.team ||
+      (i % 3 === 0
         ? "Neurorehab therapist"
         : i % 3 === 1
           ? "Community rehabilitation team"
-          : "Home rehabilitation clinician",
-    icfFrame: `Synthetic ICF frame: ${x[3]} limitation tied to home or community participation.`,
+          : "Home rehabilitation clinician"),
+    icfFrame:
+      x[13]?.icfFrame ||
+      `Synthetic ICF frame: ${x[3]} limitation tied to home or community participation.`,
     precautions:
-      i % 4 === 0
+      x[13]?.precautions ||
+      (i % 4 === 0
         ? "Monitor fatigue and pain; grade task if quality falls below 3/5."
-        : "Use therapist judgement; adjust challenge if fatigue, safety or carryover concerns emerge.",
+        : "Use therapist judgement; adjust challenge if fatigue, safety or carryover concerns emerge."),
+    clinicalScenario: x[13]
+      ? {
+          cohort: x[13].cohort,
+          profile: x[13].profile,
+          presentation: x[13].presentation,
+          participation: x[13].participation,
+          environment: x[13].environment,
+          complexity: x[13].complexity,
+          reviewFocus: x[13].reviewFocus,
+        }
+      : null,
+    evidenceKey: x[13]?.evidenceKey || "",
     createdAt: now,
     updatedAt: now,
   }));
@@ -564,7 +589,9 @@ function sample() {
   });
   const outcomes = CASES.flatMap((x, i) => {
     const caseId = `case-${String(i + 1).padStart(2, "0")}`,
-      lower = /TUG|Sit-to-Stand|Dizziness|SARA|sec/i.test(x.join(" "));
+      lower = /TUG|Sit-to-Stand|Dizziness|SARA|QuickDASH|Fatigue Impact|Handicap|sec/i.test(
+        x.join(" "),
+      );
     return [
       {
         id: `outcome-${i + 1}-a`,
@@ -816,7 +843,7 @@ function renderSelectors() {
   if ($("reviewCaseFilter")) {
     const cur = $("reviewCaseFilter").value || "all";
     $("reviewCaseFilter").innerHTML =
-      `<option value="all">All ${state.cases.length || 18} sample cases</option>${opts}`;
+      `<option value="all">All ${state.cases.length || 72} sample cases</option>${opts}`;
     $("reviewCaseFilter").value =
       cur === "all" || state.cases.some((c) => c.id === cur) ? cur : "all";
   }
@@ -888,7 +915,7 @@ function renderPrograms() {
   if (!el) return;
   if (!state.cases.length) {
     el.innerHTML =
-      '<p class="empty">No programmes yet. Click Load sample to restore the 18 synthetic cases.</p>';
+      '<p class="empty">No programmes yet. Click Load sample to restore the 72 synthetic cases.</p>';
     return;
   }
   el.innerHTML = state.cases
@@ -1803,7 +1830,7 @@ function bind() {
     save();
     render();
     status(
-      "Loaded 18 synthetic neurorehabilitation cases, 54 sessions and 36 outcomes.",
+      `Loaded ${state.cases.length} synthetic rehabilitation cases, ${state.sessions.length} sessions and ${state.outcomes.length} outcomes.`,
     );
   });
   $("exportCsvBtn")?.addEventListener("click", csv);
@@ -1839,7 +1866,7 @@ function bind() {
       save();
       render();
       status(
-        "Local data cleared. Click Load sample to restore the 18 synthetic cases.",
+        "Local data cleared. Click Load sample to restore the synthetic cases.",
       );
     }
   });
@@ -1854,8 +1881,8 @@ document.addEventListener("DOMContentLoaded", () => {
   save();
   tab(location.hash.replace("#", "") || "overview");
   render();
-  if (state.cases.length === 18)
+  if (state.cases.length)
     status(
-      "Loaded 18 synthetic neurorehabilitation cases. Use the tabs or exports above.",
+      `Loaded ${state.cases.length} synthetic rehabilitation cases. Use the tabs or exports above.`,
     );
 });

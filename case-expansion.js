@@ -357,6 +357,8 @@
           clinician: $("clinician").value.trim(),
           icfFrame: $("icfFrame").value.trim(),
           precautions: $("precautions").value.trim(),
+          clinicalScenario: old?.clinicalScenario || null,
+          evidenceKey: old?.evidenceKey || "",
           createdAt: old?.createdAt || new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         });
