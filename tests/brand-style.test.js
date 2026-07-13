@@ -8,17 +8,19 @@ const csstree = require("css-tree");
 const root = path.join(__dirname, "..");
 const baseCss = fs.readFileSync(path.join(root, "styles.css"), "utf8");
 const brandCss = fs.readFileSync(path.join(root, "overrides.css"), "utf8");
+const polishCss = fs.readFileSync(path.join(root, "ui-polish.css"), "utf8");
 
 test("brand stylesheets are valid CSS", () => {
   assert.doesNotThrow(() => csstree.parse(baseCss));
   assert.doesNotThrow(() => csstree.parse(brandCss));
+  assert.doesNotThrow(() => csstree.parse(polishCss));
 });
 
 test("final cascade uses the Robotimize light and red brand palette", () => {
   const html = fs
     .readFileSync(path.join(root, "index.html"), "utf8")
     .replace(/<link rel="stylesheet"[^>]+>/g, "")
-    .replace("</head>", `<style>${baseCss}\n${brandCss}</style></head>`);
+    .replace("</head>", `<style>${baseCss}\n${brandCss}\n${polishCss}</style></head>`);
   const dom = new JSDOM(html, { pretendToBeVisual: true });
   const { document } = dom.window;
   const style = dom.window.getComputedStyle.bind(dom.window);
@@ -26,9 +28,17 @@ test("final cascade uses the Robotimize light and red brand palette", () => {
   assert.equal(style(document.documentElement).getPropertyValue("--accent").trim(), "#c21f47");
   assert.equal(style(document.documentElement).getPropertyValue("--panel").trim(), "#ffffff");
   assert.equal(style(document.documentElement).getPropertyValue("--text").trim(), "#403e3e");
+  assert.equal(style(document.body).fontSize, "14px");
+  assert.equal(style(document.querySelector(".tab-button")).minHeight, "44px");
+  assert.equal(style(document.querySelector(".workspace-layer-nav button")).minHeight, "44px");
   assert.match(brandCss, /\.panel,[\s\S]*background:\s*var\(--panel\)/);
   assert.match(brandCss, /\.tab-button\.active\s*{[\s\S]*?background:\s*var\(--accent\)/);
   assert.match(brandCss, /\.primary\s*{[\s\S]*?background:\s*var\(--accent\)/);
   assert.match(brandCss, /radial-gradient\(circle at 88% 4%, rgba\(194, 31, 71, \.09\)/);
+  assert.match(polishCss, /\.app-header-inner\s*{[\s\S]*?width:\s*min\(var\(--ui-max\)/);
+  assert.match(polishCss, /\.tab-nav-inner\s*{[\s\S]*?grid-template-columns:\s*repeat\(6/);
+  assert.match(polishCss, /\.workspace-layer-nav button\s*{[\s\S]*?min-height:\s*44px/);
+  assert.match(polishCss, /@media \(max-width:\s*760px\)[\s\S]*?\.workspace-stage,[\s\S]*?height:\s*auto/);
+  assert.match(polishCss, /@media \(prefers-reduced-motion:\s*reduce\)/);
   dom.window.close();
 });

@@ -96,6 +96,16 @@ test("localises the case and session navigation in every added language", () => 
   }
 });
 
+test("localises the keyboard skip navigation in every added language", () => {
+  for (const language of ["zh-Hans", "es", "fr", "de", "ms"]) {
+    global.i18n.setLanguage(language);
+    assert.notEqual(
+      global.i18n.translateText("Skip to main content"),
+      "Skip to main content",
+    );
+  }
+});
+
 test("persists the selected language and exposes the matching locale", () => {
   global.i18n.setLanguage("de");
   assert.equal(stored.get("vivantePlexus.language"), "de");

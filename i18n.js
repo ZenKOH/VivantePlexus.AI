@@ -67,6 +67,7 @@
 
   const CATALOGUES = { "zh-Hans": ZH, es: ES, fr: FR, de: DE, ms: MS };
   const EXTRA = {
+    "Skip to main content": ["跳到主要内容","Saltar al contenido principal","Aller au contenu principal","Zum Hauptinhalt springen","Langkau ke kandungan utama"],
     "Plexus Reports · clinician-led documentation": ["Plexus 报告 · 临床主导文书","Informes Plexus · documentación dirigida por profesionales","Rapports Plexus · documentation pilotée par le clinicien","Plexus-Berichte · klinisch geführte Dokumentation","Laporan Plexus · dokumentasi dipimpin klinisian"],
     "Case reports": ["病例报告","Informes de casos","Rapports de cas","Fallberichte","Laporan kes"],
     "Find a report": ["查找报告","Buscar un informe","Rechercher un rapport","Bericht suchen","Cari laporan"],

@@ -45,6 +45,11 @@ test("renders the VivantePlexus and Robotimize brand identity", () => {
   assert.equal(document.querySelector("h1").textContent.trim(), "VivantePlexus™");
   assert.equal(document.querySelectorAll('img[src="assets/robotimize-logo.png"]').length, 2);
   assert.equal(document.querySelector(".company-brand").href, "https://www.robotimize.tech/");
+  assert.equal(document.querySelector(".skip-link").getAttribute("href"), "#mainContent");
+  assert.equal(document.querySelector("main").id, "mainContent");
+  assert.ok(document.querySelector(".app-header > .app-header-inner"));
+  assert.equal(document.querySelectorAll(".tab-nav > .tab-nav-inner > .tab-button").length, 6);
+  assert.match(document.querySelector('link[href*="ui-polish.css"]').href, /ui-polish\.css\?v=20260713-8$/);
   assert.ok(dom.window.localStorage.getItem("vivantePlexus.v1"));
   assert.equal(dom.window.localStorage.getItem("neurorehabDoseTracker.v5"), null);
   dom.window.close();
@@ -145,6 +150,23 @@ test("every workflow destination is a real link and opens the matching section",
       destination,
     );
   }
+  dom.window.close();
+});
+
+test("keeps the compact data menu out of the way after navigation or Escape", () => {
+  const dom = launch();
+  const { document } = dom.window;
+  const menu = document.querySelector(".data-menu");
+  const summary = menu.querySelector("summary");
+
+  menu.open = true;
+  document.querySelector('[data-tab="sessions"]').click();
+  assert.equal(menu.open, false);
+
+  menu.open = true;
+  document.dispatchEvent(new dom.window.KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+  assert.equal(menu.open, false);
+  assert.equal(document.activeElement, summary);
   dom.window.close();
 });
 

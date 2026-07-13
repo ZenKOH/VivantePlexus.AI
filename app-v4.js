@@ -1846,6 +1846,22 @@ function restore(ev) {
   r.readAsText(file);
 }
 function bind() {
+  const dataMenu = document.querySelector(".data-menu");
+  const dataMenuSummary = dataMenu?.querySelector("summary");
+  document.addEventListener("click", (event) => {
+    if (dataMenu?.open && !event.target.closest?.(".data-menu"))
+      dataMenu.open = false;
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape" || !dataMenu?.open) return;
+    dataMenu.open = false;
+    dataMenuSummary?.focus();
+  });
+  dataMenu
+    ?.querySelector(".header-actions")
+    ?.addEventListener("click", (event) => {
+      if (event.target.closest?.("button, .file-button")) dataMenu.open = false;
+    });
   document.querySelectorAll("[data-tab]").forEach(
     (link) =>
       (link.onclick = (event) => {

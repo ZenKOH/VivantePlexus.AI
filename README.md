@@ -17,6 +17,7 @@ https://zenkoh.github.io/VivantePlexus.AI/
 ## Core capabilities
 
 - Start from a streamlined single-screen Plexus AI command centre, then open Signals, Dose, Device IQ, Outcomes, Cases or Method as focused on-demand layers.
+- Work in a unified responsive interface with a compact Robotimize header, clear active navigation, readable clinical typography, keyboard skip navigation, touch-friendly controls and table-contained horizontal scrolling.
 - Load 72 synthetic rehabilitation cases spanning stroke, spinal cord injury, traumatic and acquired brain injury, cerebral palsy across the lifespan, Parkinson's disease, multiple sclerosis, progressive and rare neurological pathways, vestibular and sensory disorders, complex trauma, limb loss, hip fracture, critical illness and cancer rehabilitation.
 - Explore a second cohort of 36 alternative, evidence-informed cases with structured referral profile, presentation, participation priority, environment, complexity, multidisciplinary review focus and pathway-specific clinical boundaries.
 - Review 216 synthetic therapy sessions and 144 outcome records.
@@ -65,6 +66,8 @@ npm test
 
 The automated suite verifies JavaScript syntax, all six language options, top-level and intelligence-layer navigation, additive 36-to-72 case migration, the capped and deduplicated AI queue, compact dose prioritisation, structured queries, clinician signal actions, all 72 comprehensive case-report routes, all 216 session-to-report links, all 72 heatmap case workflows, rich scenario fields for Cases 37–72, clinician-addendum persistence, device telemetry, equipment-to-session linkage, FHIR-shaped export relationships and data/export actions.
 
+The UI regression checks also validate the final CSS cascade, responsive reflow rules, 44px primary navigation targets, reduced-motion support, semantic header/navigation wrappers and the multilingual keyboard skip link.
+
 ## GitHub Pages
 
 The application is ready to publish directly from the repository root:
@@ -87,6 +90,8 @@ The design follows the principle that healthcare AI should augment professionals
 ## Evidence-informed design
 
 The prototype deliberately keeps scheduled time, active practice, repetitions, quality, fatigue, pain, equipment and carryover as distinct fields. Therapy volume alone is not treated as a complete representation of dose or effectiveness.
+
+The interface uses progressive disclosure and task-focused metric cards to reduce information competition while preserving drill-down access. Responsive spacing follows a small, repeatable scale; controls maintain clear pointer targets and focus indicators; and only data tables retain two-dimensional scrolling at narrow widths. These decisions are informed by [WCAG 2.2 reflow](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html), [WCAG 2.2 target-size guidance](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html), [WCAG focus appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html), the [NHS responsive spacing scale](https://service-manual.nhs.uk/design-system/styles/spacing), and published healthcare-dashboard work on [adaptable metric-card design](https://arxiv.org/abs/2009.03002) and [task-based dashboard evaluation](https://arxiv.org/abs/2009.04792).
 
 Useful reference points include:
 
