@@ -6,8 +6,8 @@
   <title>VivantePlexus™</title>
   <meta name="description" content="VivantePlexus™ with Plexus AI turns therapy, outcome and rehabilitation-device data into explainable, clinician-led clinical signals." />
   <meta name="theme-color" content="#c21f47" />
-  <link rel="stylesheet" href="styles.css?v=20260713-5" />
-  <link rel="stylesheet" href="overrides.css?v=20260713-5" />
+  <link rel="stylesheet" href="styles.css?v=20260713-6" />
+  <link rel="stylesheet" href="overrides.css?v=20260713-6" />
 </head>
 <body>
   <header class="app-header">
@@ -162,7 +162,7 @@
     <section id="sessions" class="tab-panel" hidden>
       <div class="two-column">
         <section class="panel"><div class="section-heading"><h2>Therapy session</h2><p>Record what was actually done, including device-supported practice.</p></div><form id="sessionForm"><label>Case <select id="sessionCaseId" required></select></label><div class="grid-2"><label>Date <input id="date" type="date" required /></label><label>Setting <select id="setting"><option>Clinic</option><option>Inpatient gym</option><option>Ward</option><option>Home</option><option>Community</option><option>Tele-rehab</option></select></label></div><label>Task practised <input id="task" type="text" placeholder="e.g. sit-to-stand, reaching, walking, grasp-release" required /></label><fieldset class="equipment-section"><legend>Equipment used in this session</legend><p class="small-note">Select one or more active equipment items. Add or edit devices in the Equipment tab.</p><div id="sessionEquipmentPicker" class="equipment-picker"></div><div class="device-fields"><div class="grid-3"><label>Device mode / configuration <input id="deviceMode" type="text" maxlength="80" placeholder="e.g. gait mode B · level 3" /></label><label>Attempted repetitions <input id="attemptedReps" type="number" min="0" step="1" placeholder="Optional" /></label><label>Active contribution <span class="hint">%</span><input id="activeContribution" type="number" min="0" max="100" step="1" placeholder="Optional" /></label></div><div class="grid-3"><label>Device assistance <span class="hint">%</span><input id="deviceAssistance" type="number" min="0" max="100" step="1" placeholder="Optional" /></label><label>Range of motion <input id="rangeOfMotion" type="text" maxlength="40" placeholder="e.g. 42° or full range" /></label><label>Symmetry <span class="hint">%</span><input id="symmetry" type="number" min="0" max="100" step="1" placeholder="Optional" /></label></div><label>Calibration / data quality <select id="calibrationStatus"><option>Not recorded</option><option>Valid</option><option>Calibration required</option><option>Incomplete capture</option></select></label></div></fieldset><div class="grid-3"><label>Scheduled minutes <input id="minutes" type="number" min="0" step="1" value="30" required /></label><label>Active practice minutes <input id="activeMinutes" type="number" min="0" step="1" value="25" required /></label><label>Valid repetitions <input id="reps" type="number" min="0" step="1" value="100" required /></label></div><div class="grid-3"><label>Movement quality <span class="hint">1-5</span><input id="quality" type="number" min="1" max="5" step="1" value="3" required /></label><label>Fatigue <span class="hint">0-10</span><input id="fatigue" type="number" min="0" max="10" step="1" value="4" required /></label><label>Pain / discomfort <span class="hint">0-10</span><input id="pain" type="number" min="0" max="10" step="1" value="0" required /></label></div><div class="grid-2"><label>Assistance level <select id="assistance"><option>Independent</option><option>Verbal cueing</option><option>Manual assist</option><option>Robotic assist</option><option>Caregiver assist</option><option>Mixed assist</option></select></label><label>Challenge level <select id="challenge"><option>Too easy</option><option selected>Appropriate</option><option>Too difficult</option></select></label></div><div class="grid-2"><label>Task specificity <select id="specificity"><option>Directly linked to functional goal</option><option>Partially linked to functional goal</option><option>General conditioning / preparatory</option><option>Unclear link</option></select></label><label>Carryover observed? <select id="carryover"><option>Not assessed</option><option>Yes, in daily activity</option><option>Partial</option><option>No</option></select></label></div><div class="grid-2"><label>Home adherence <select id="homeAdherence"><option>Not applicable</option><option>High</option><option>Moderate</option><option>Low</option><option>Not reported</option></select></label><label>Rest breaks <input id="restBreaks" type="number" min="0" step="1" value="1" /></label></div><label>Clinical notes <textarea id="notes" rows="4" placeholder="Context, barriers, therapist observations, equipment response, home practice notes"></textarea></label><button type="submit" class="primary">Save session</button></form></section>
-        <section class="panel"><div class="section-heading"><h2>Recent sessions</h2><p>Sample data includes 216 synthetic therapy sessions across 72 cases.</p></div><div id="sessionsList" class="sessions-list"></div></section>
+        <section class="panel"><div class="section-heading"><h2>Recent sessions</h2><p>Select a session title to open its comprehensive case report. Sample data includes 216 synthetic therapy sessions across 72 cases.</p></div><div id="sessionsList" class="sessions-list"></div></section>
       </div>
     </section>
 
@@ -228,12 +228,12 @@
     </div>
   </footer>
 
-  <script defer src="i18n.js?v=20260713-5"></script>
-  <script defer src="app-v4.js?v=20260713-5"></script>
-  <script defer src="case-expansion.js?v=20260713-5"></script>
-  <script defer src="diverse-cases.js?v=20260713-5"></script>
-  <script defer src="equipment-upgrade.js?v=20260713-5"></script>
-  <script defer src="plexus-ai.js?v=20260713-5"></script>
-  <script defer src="reports.js?v=20260713-5"></script>
+  <script defer src="i18n.js?v=20260713-6"></script>
+  <script defer src="app-v4.js?v=20260713-6"></script>
+  <script defer src="case-expansion.js?v=20260713-6"></script>
+  <script defer src="diverse-cases.js?v=20260713-6"></script>
+  <script defer src="equipment-upgrade.js?v=20260713-6"></script>
+  <script defer src="plexus-ai.js?v=20260713-6"></script>
+  <script defer src="reports.js?v=20260713-6"></script>
 </body>
 </html>

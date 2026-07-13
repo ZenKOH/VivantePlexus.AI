@@ -76,6 +76,23 @@ test("localises the equipment workflow in every added language", () => {
   }
 });
 
+test("localises the session-to-report navigation in every added language", () => {
+  const expected = {
+    "zh-Hans": "打开病例报告",
+    es: "Abrir informe del caso",
+    fr: "Ouvrir le rapport du cas",
+    de: "Fallbericht öffnen",
+    ms: "Buka laporan kes",
+  };
+  const guidance =
+    "Select a session title to open its comprehensive case report. Sample data includes 216 synthetic therapy sessions across 72 cases.";
+  for (const [language, label] of Object.entries(expected)) {
+    global.i18n.setLanguage(language);
+    assert.equal(global.i18n.translateText("Open case report"), label);
+    assert.notEqual(global.i18n.translateText(guidance), guidance);
+  }
+});
+
 test("persists the selected language and exposes the matching locale", () => {
   global.i18n.setLanguage("de");
   assert.equal(stored.get("vivantePlexus.language"), "de");

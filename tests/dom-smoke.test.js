@@ -255,6 +255,63 @@ test("opens a comprehensive evidence-linked report for every one of the 72 cases
   dom.window.close();
 });
 
+test("links every recent session to its owning comprehensive case report", () => {
+  const dom = launch();
+  const { document } = dom.window;
+  const saved = JSON.parse(
+    dom.window.localStorage.getItem("vivantePlexus.v1"),
+  );
+  document.querySelector('[data-tab="sessions"]').click();
+
+  const links = [
+    ...document.querySelectorAll(
+      "#sessionsList [data-open-session-report]",
+    ),
+  ];
+  const linksByCase = new Map();
+
+  assert.equal(links.length, saved.sessions.length);
+  assert.equal(new Set(links.map((link) => link.dataset.sessionId)).size, 216);
+  for (const link of links) {
+    assert.equal(link.getAttribute("href"), "#reports");
+    assert.match(link.textContent, /Open case report/);
+    assert.ok(
+      saved.sessions.some(
+        (session) =>
+          session.id === link.dataset.sessionId &&
+          session.caseId === link.dataset.openSessionReport,
+      ),
+    );
+    assert.equal(
+      link.closest(".session-item").querySelector(".delete-session").closest(
+        "[data-open-session-report]",
+      ),
+      null,
+    );
+    if (!linksByCase.has(link.dataset.openSessionReport))
+      linksByCase.set(link.dataset.openSessionReport, link);
+  }
+
+  assert.equal(linksByCase.size, 72);
+  assert.match(
+    linksByCase.get("case-01").textContent,
+    /Reach-grasp-release practice · Case 01 · Stroke UL/,
+  );
+
+  for (const [caseId, link] of linksByCase) {
+    link.click();
+    assert.equal(dom.window.location.hash, "#reports");
+    assert.equal(document.querySelector(".tab-panel.active").id, "reports");
+    assert.equal(document.getElementById("report-detail-layer").hidden, false);
+    assert.equal(
+      document.querySelector(".case-report-document").dataset.caseReport,
+      caseId,
+    );
+    assert.equal(document.activeElement.id, "reportDetailTab");
+  }
+  dom.window.close();
+});
+
 test("adds 36 diverse scenarios with structured clinical context and pathway evidence", () => {
   const dom = launch();
   const { document } = dom.window;

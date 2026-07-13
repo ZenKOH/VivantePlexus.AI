@@ -508,6 +508,58 @@ button:focus-visible,
   border-color: var(--line);
 }
 
+.session-top > div {
+  flex: 1;
+  min-width: 0;
+}
+
+.session-title {
+  margin: 0;
+}
+
+.session-report-link {
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 44px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 3px 12px;
+  margin: -6px -8px;
+  padding: 6px 8px;
+  border-radius: 10px;
+  color: #3b3839;
+  text-decoration: none;
+  transition: background .16s ease, color .16s ease;
+}
+
+.session-report-link:hover {
+  background: #fff2f5;
+  color: #971634;
+}
+
+.session-report-link:focus-visible {
+  outline: 3px solid rgba(194, 31, 71, .32);
+  outline-offset: 3px;
+}
+
+.session-report-label {
+  min-width: 0;
+}
+
+.session-report-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: .08em;
+  line-height: 1.25;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
 .equipment-chips .equipment-chip,
 .report-case .equipment-chip {
   border-color: rgba(194, 31, 71, .24);

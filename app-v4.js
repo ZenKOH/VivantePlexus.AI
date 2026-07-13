@@ -1021,6 +1021,8 @@ function renderSessions() {
   $("sessionsList").innerHTML = data.length
     ? data
         .map((s) => {
+          const linkedCase = getCase(s.caseId);
+          const caseLabel = linkedCase?.label || "Unknown case";
           const equipment = equipmentForSession(s);
           const deviceDetails = [
             s.deviceMode ? `mode ${e(s.deviceMode)}` : "",
@@ -1032,7 +1034,11 @@ function renderSessions() {
               ? `data quality ${e(s.calibrationStatus)}`
               : "",
           ].filter(Boolean);
-          return `<article class="session-item"><div class="session-top"><div><div class="session-title">${e(s.task)} · ${e(getCase(s.caseId)?.label || "Unknown case")}</div><div class="session-meta">${fmt(s.date)} · ${e(s.setting)}<br>active ${s.activeMinutes} min / scheduled ${s.minutes} min · ${s.reps} reps · quality ${s.quality}/5 · fatigue ${s.fatigue}/10 · pain ${s.pain}/10<br>${e(s.assistance)} · ${e(s.challenge)} · carryover: ${e(s.carryover)} · home: ${e(s.homeAdherence)}${deviceDetails.length ? `<br>${deviceDetails.join(" · ")}` : ""}</div>${equipment.length ? `<div class="equipment-chips" aria-label="Equipment used">${equipment.map((item) => `<span class="equipment-chip">${e(item.name)}</span>`).join("")}</div>` : ""}</div><button type="button" class="delete-session danger" data-id="${s.id}">Delete</button></div>${s.notes ? `<p class="session-notes">${e(s.notes)}</p>` : ""}</article>`;
+          const sessionTitle = `${e(s.task)} · ${e(caseLabel)}`;
+          const reportLink = linkedCase
+            ? `<h3 class="session-title"><a class="session-report-link" href="#reports" data-open-session-report="${e(linkedCase.id)}" data-session-id="${e(s.id)}"><span class="session-report-label">${sessionTitle}</span><span class="session-report-cta">Open case report <span aria-hidden="true">→</span></span></a></h3>`
+            : `<h3 class="session-title">${sessionTitle}</h3>`;
+          return `<article class="session-item"><div class="session-top"><div>${reportLink}<div class="session-meta">${fmt(s.date)} · ${e(s.setting)}<br>active ${s.activeMinutes} min / scheduled ${s.minutes} min · ${s.reps} reps · quality ${s.quality}/5 · fatigue ${s.fatigue}/10 · pain ${s.pain}/10<br>${e(s.assistance)} · ${e(s.challenge)} · carryover: ${e(s.carryover)} · home: ${e(s.homeAdherence)}${deviceDetails.length ? `<br>${deviceDetails.join(" · ")}` : ""}</div>${equipment.length ? `<div class="equipment-chips" aria-label="Equipment used">${equipment.map((item) => `<span class="equipment-chip">${e(item.name)}</span>`).join("")}</div>` : ""}</div><button type="button" class="delete-session danger" data-id="${s.id}">Delete</button></div>${s.notes ? `<p class="session-notes">${e(s.notes)}</p>` : ""}</article>`;
         })
         .join("")
     : '<p class="empty">No sessions saved yet.</p>';
@@ -1816,6 +1822,16 @@ function bind() {
         tab(link.dataset.tab, "push");
       }),
   );
+  if ($("sessionsList"))
+    $("sessionsList").onclick = (event) => {
+      const link = event.target.closest?.("[data-open-session-report]");
+      if (!link) return;
+      const linkedCase = getCase(link.dataset.openSessionReport);
+      if (!linkedCase || !globalThis.PlexusReports?.openCaseReport) return;
+      event.preventDefault();
+      tab("reports", "push");
+      globalThis.PlexusReports.openCaseReport(linkedCase.id, true);
+    };
   $("caseForm")?.addEventListener("submit", saveProgram);
   $("sessionForm")?.addEventListener("submit", saveSession);
   $("equipmentForm")?.addEventListener("submit", saveEquipment);

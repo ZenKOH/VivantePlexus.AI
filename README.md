@@ -20,6 +20,7 @@ https://zenkoh.github.io/VivantePlexus.AI/
 - Load 72 synthetic rehabilitation cases spanning stroke, spinal cord injury, traumatic and acquired brain injury, cerebral palsy across the lifespan, Parkinson's disease, multiple sclerosis, progressive and rare neurological pathways, vestibular and sensory disorders, complex trauma, limb loss, hip fracture, critical illness and cancer rehabilitation.
 - Explore a second cohort of 36 alternative, evidence-informed cases with structured referral profile, presentation, participation priority, environment, complexity, multidisciplinary review focus and pathway-specific clinical boundaries.
 - Review 216 synthetic therapy sessions and 144 outcome records.
+- Open any recent session directly in its owning comprehensive case report; the session title remains a descriptive keyboard-accessible link and the separate delete action stays isolated.
 - Track scheduled time, active practice, valid and attempted repetitions, movement quality, fatigue, pain, assistance, task challenge, specificity, rest breaks, home adherence and functional carryover.
 - Maintain an editable equipment library and link one or more devices to each therapy session.
 - Capture device mode, assistance, active contribution, range of motion, symmetry and calibration/data-quality context.
@@ -61,7 +62,7 @@ npm run check
 npm test
 ```
 
-The automated suite verifies JavaScript syntax, all six language options, top-level and intelligence-layer navigation, additive 36-to-72 case migration, the capped and deduplicated AI queue, compact dose prioritisation, structured queries, clinician signal actions, all 72 comprehensive case-report routes, rich scenario fields for Cases 37–72, clinician-addendum persistence, device telemetry, equipment-to-session linkage, FHIR-shaped export relationships and data/export actions.
+The automated suite verifies JavaScript syntax, all six language options, top-level and intelligence-layer navigation, additive 36-to-72 case migration, the capped and deduplicated AI queue, compact dose prioritisation, structured queries, clinician signal actions, all 72 comprehensive case-report routes, all 216 session-to-report links, rich scenario fields for Cases 37–72, clinician-addendum persistence, device telemetry, equipment-to-session linkage, FHIR-shaped export relationships and data/export actions.
 
 ## GitHub Pages
 
