@@ -6,8 +6,8 @@
   <title>VivantePlexus™</title>
   <meta name="description" content="VivantePlexus™ with Plexus AI turns therapy, outcome and rehabilitation-device data into explainable, clinician-led clinical signals." />
   <meta name="theme-color" content="#c21f47" />
-  <link rel="stylesheet" href="styles.css?v=20260713-3" />
-  <link rel="stylesheet" href="overrides.css?v=20260713-3" />
+  <link rel="stylesheet" href="styles.css?v=20260713-4" />
+  <link rel="stylesheet" href="overrides.css?v=20260713-4" />
 </head>
 <body>
   <header class="app-header">
@@ -178,7 +178,42 @@
       <div class="two-column"><section class="panel"><div class="section-heading"><h2>Outcome measure</h2><p>Link dose to functional trajectory. Check scoring rights and local policy before using formal scales clinically.</p></div><form id="outcomeForm"><label>Case <select id="outcomeCaseId" required></select></label><label>Outcome name <input id="outcomeName" type="text" placeholder="e.g. 10MWT, 6MWT, TUG, ARAT, GAS, patient-specific goal" required /></label><div class="grid-3"><label>Baseline <input id="baselineValue" type="text" placeholder="e.g. 0.42 m/s" /></label><label>Current <input id="currentValue" type="text" placeholder="e.g. 0.58 m/s" /></label><label>Target <input id="targetValue" type="text" placeholder="e.g. 0.70 m/s" /></label></div><div class="grid-2"><label>Measurement date <input id="outcomeDate" type="date" /></label><label>Direction <select id="outcomeDirection"><option>Higher is better</option><option>Lower is better</option><option>Goal-specific</option></select></label></div><label>Clinician note <textarea id="outcomeNote" rows="2" placeholder="Measurement condition, assistive device, cueing, or caveats"></textarea></label><button type="submit" class="primary">Save outcome</button></form></section><section class="panel"><div class="section-heading"><h2>Functional trajectory</h2><p>Baseline, current and target values shown as visual trajectory markers when numeric values are available.</p></div><div id="outcomeTrajectoryChart" class="outcome-visuals"></div><div id="outcomesList" class="sessions-list"></div></section></div>
     </section>
 
-    <section id="reports" class="tab-panel" hidden><section class="panel report-panel"><div class="section-heading"><h2>Clinical report preview</h2><p>Print-ready summary for review, handover, pilot evaluation and documentation support.</p></div><div id="reportPreview" class="report-preview"></div></section><section class="panel"><div class="section-heading"><h2>Pilot evidence summary</h2><p>Operational indicators for clinical pilot review, including device-supported sessions.</p></div><div id="evidenceSummary" class="evidence-grid"></div><p class="small-note">Exports are intended for review, pilot evaluation and documentation support. They are not regulatory submissions or validated EHR integrations.</p></section></section>
+    <section id="reports" class="tab-panel" hidden>
+      <section class="report-workspace" aria-labelledby="reportsTitle">
+        <header class="report-workspace-head">
+          <div>
+            <p class="ai-kicker">Plexus Reports · clinician-led documentation</p>
+            <h2 id="reportsTitle">Case reports</h2>
+            <p>Open one of 36 synthetic cases for a comprehensive, evidence-linked report. Computed evidence stays read-only; clinician interpretation is saved separately.</p>
+          </div>
+          <div class="report-tools">
+            <label>Find a report<input id="reportSearch" type="search" autocomplete="off" placeholder="Case, pathway or domain" /></label>
+            <label>Report status<select id="reportStatusFilter"><option value="all">All statuses</option><option>Not started</option><option>Draft</option><option>Reviewed</option><option>Final</option></select></label>
+          </div>
+        </header>
+
+        <nav class="report-layer-nav" role="tablist" aria-label="Report layers">
+          <button id="reportIndexTab" type="button" class="active" role="tab" aria-selected="true" aria-controls="report-index-layer" data-report-layer-target="index"><span>01</span>All case reports</button>
+          <button id="reportDetailTab" type="button" role="tab" aria-selected="false" aria-controls="report-detail-layer" data-report-layer-target="detail" disabled tabindex="-1"><span>02</span>Selected report</button>
+        </nav>
+
+        <div class="report-stage">
+          <section id="report-index-layer" class="report-layer active" role="tabpanel" aria-labelledby="reportIndexTab" data-report-layer="index">
+            <div id="reportIndexSummary" class="report-index-summary"></div>
+            <div id="reportCaseIndex" class="report-case-index" aria-live="polite"></div>
+          </section>
+          <section id="report-detail-layer" class="report-layer" role="tabpanel" aria-labelledby="reportDetailTab" data-report-layer="detail" hidden>
+            <div id="caseReportDetail"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="panel report-pilot-panel">
+        <div class="section-heading"><h2>Pilot evidence summary</h2><p>Operational indicators for clinical pilot review, including device-supported sessions.</p></div>
+        <div id="evidenceSummary" class="evidence-grid"></div>
+        <p class="small-note">Exports are intended for review, pilot evaluation and documentation support. They are not regulatory submissions or validated EHR integrations.</p>
+      </section>
+    </section>
   </main>
 
   <footer>
@@ -193,10 +228,11 @@
     </div>
   </footer>
 
-  <script defer src="i18n.js?v=20260713-3"></script>
-  <script defer src="app-v4.js?v=20260713-3"></script>
-  <script defer src="case-expansion.js?v=20260713-3"></script>
-  <script defer src="equipment-upgrade.js?v=20260713-3"></script>
-  <script defer src="plexus-ai.js?v=20260713-3"></script>
+  <script defer src="i18n.js?v=20260713-4"></script>
+  <script defer src="app-v4.js?v=20260713-4"></script>
+  <script defer src="case-expansion.js?v=20260713-4"></script>
+  <script defer src="equipment-upgrade.js?v=20260713-4"></script>
+  <script defer src="plexus-ai.js?v=20260713-4"></script>
+  <script defer src="reports.js?v=20260713-4"></script>
 </body>
 </html>

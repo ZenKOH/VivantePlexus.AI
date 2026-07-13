@@ -27,6 +27,7 @@ function launch(existingState) {
       fs.readFileSync(path.join(root, "app-v4.js"), "utf8"),
       fs.readFileSync(path.join(root, "case-expansion.js"), "utf8"),
       fs.readFileSync(path.join(root, "plexus-ai.js"), "utf8"),
+      fs.readFileSync(path.join(root, "reports.js"), "utf8"),
     ].join("\n"),
   );
   dom.window.document.dispatchEvent(
@@ -59,10 +60,11 @@ test("migrates existing version 5 browser data without discarding records", () =
   const saved = JSON.parse(
     dom.window.localStorage.getItem("vivantePlexus.v1"),
   );
-  assert.equal(saved.schemaVersion, 7);
+  assert.equal(saved.schemaVersion, 8);
   assert.equal(saved.equipment.length, 4);
   assert.deepEqual(saved.sessions, []);
   assert.deepEqual(saved.aiActions, {});
+  assert.deepEqual(saved.reportDrafts, {});
   dom.window.close();
 });
 
@@ -214,6 +216,84 @@ test("renders a grounded top-five Plexus AI queue with case context and calculat
   assert.match(document.getElementById("aiClinicalBrief").textContent, /Data completeness/);
   assert.match(document.getElementById("aiMethodVersion").textContent, /ruleset 1\.0/);
   assert.equal(document.getElementById("casesNeedingReview").textContent, String(cards.length));
+  dom.window.close();
+});
+
+test("opens a comprehensive evidence-linked report for every one of the 36 cases", () => {
+  const dom = launch();
+  const { document } = dom.window;
+  document.querySelector('[data-tab="reports"]').click();
+
+  const cards = [...document.querySelectorAll("#reportCaseIndex [data-open-case-report]")];
+  assert.equal(cards.length, 36);
+  assert.equal(document.getElementById("report-index-layer").hidden, false);
+  assert.equal(document.getElementById("report-detail-layer").hidden, true);
+
+  for (const card of cards) {
+    const label = card.querySelector(".report-card-copy strong").textContent;
+    card.click();
+    const report = document.querySelector("[data-case-report]");
+    assert.ok(report, `${label} has a dedicated report document`);
+    assert.match(report.querySelector(".case-report-title h2").textContent, new RegExp(label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+    assert.ok(report.querySelectorAll(".report-section").length >= 12);
+    assert.match(report.textContent, /Executive clinical summary/);
+    assert.match(report.textContent, /Function, goals & participation/);
+    assert.match(report.textContent, /Dose, delivery & task exposure/);
+    assert.match(report.textContent, /Equipment & device response/);
+    assert.match(report.textContent, /Outcome trajectory/);
+    assert.match(report.textContent, /Review signals & calculations/);
+    assert.match(report.textContent, /Data provenance & limitations/);
+    assert.match(report.textContent, /Clinical interpretation & sign-off/);
+    assert.equal(document.getElementById("report-index-layer").hidden, true);
+    assert.equal(document.getElementById("report-detail-layer").hidden, false);
+  }
+
+  document.querySelector('[data-report-action="back"]').click();
+  assert.equal(document.getElementById("report-index-layer").hidden, false);
+  assert.equal(document.getElementById("report-detail-layer").hidden, true);
+  dom.window.close();
+});
+
+test("filters the report index and persists an editable clinician addendum separately", () => {
+  const dom = launch();
+  const { document, Event } = dom.window;
+  document.querySelector('[data-tab="reports"]').click();
+
+  const search = document.getElementById("reportSearch");
+  search.value = "Stroke UL";
+  search.dispatchEvent(new Event("input", { bubbles: true }));
+  assert.equal(document.querySelectorAll("#reportCaseIndex [data-open-case-report]").length, 1);
+
+  document.querySelector("#reportCaseIndex [data-open-case-report]").click();
+  document.querySelector('[data-report-action="edit-addendum"]').click();
+  assert.equal(document.getElementById("reportAddendumForm").hidden, false);
+  document.getElementById("reportAddendumStatus").value = "Reviewed";
+  document.getElementById("reportAddendumAuthor").value = "A. Clinician";
+  document.getElementById("reportAddendumRole").value = "Rehabilitation therapist";
+  document.getElementById("reportAddendumOverview").value = "Clinician-authored overview after source-record review.";
+  document.getElementById("reportAddendumInterpretation").value = "The recorded dose and outcome context were reviewed together.";
+  document.getElementById("reportAddendumPriorities").value = "Confirm carryover context at the next review.";
+  document.getElementById("reportAddendumPlan").value = "Continue clinician-led review under the recorded programme.";
+  document.getElementById("reportAddendumCommunication").value = "Share the reviewed summary with the rehabilitation team.";
+  document.getElementById("reportAddendumForm").dispatchEvent(
+    new Event("submit", { bubbles: true, cancelable: true }),
+  );
+
+  const saved = JSON.parse(dom.window.localStorage.getItem("vivantePlexus.v1"));
+  assert.equal(saved.reportDrafts["case-01"].status, "Reviewed");
+  assert.equal(saved.reportDrafts["case-01"].author, "A. Clinician");
+  assert.match(document.getElementById("caseReportDetail").textContent, /Clinician-authored overview after source-record review/);
+  assert.match(document.getElementById("caseReportDetail").textContent, /Read-only calculations/);
+  assert.equal(saved.cases[0].primaryGoal, "Improve reach, grasp and release for meal preparation.");
+  assert.equal(saved.sessions.length, 108);
+
+  document.querySelector('[data-report-action="back"]').click();
+  document.getElementById("reportSearch").value = "";
+  document.getElementById("reportSearch").dispatchEvent(new Event("input", { bubbles: true }));
+  document.getElementById("reportStatusFilter").value = "Reviewed";
+  document.getElementById("reportStatusFilter").dispatchEvent(new Event("change", { bubbles: true }));
+  assert.equal(document.querySelectorAll("#reportCaseIndex [data-open-case-report]").length, 1);
+  assert.match(document.getElementById("reportCaseIndex").textContent, /Case 01/);
   dom.window.close();
 });
 

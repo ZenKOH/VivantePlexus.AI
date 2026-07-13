@@ -28,6 +28,8 @@ https://zenkoh.github.io/VivantePlexus.AI/
 - Generate a ranked top-five review queue with one primary signal per case, grouped secondary signals and visible calculations.
 - Ask structured natural-language-style questions through Plexus Query without sending records to an external service.
 - Review a source-grounded Plexus Brief and accept, dismiss or defer signals with a local audit trail.
+- Open every one of the 36 cases in a dedicated comprehensive report layer covering programme context, ICF-aligned goals, dose, tolerance, equipment response, outcomes, explainable signals, session chronology, provenance and limitations.
+- Search reports by case, pathway or domain, filter by documentation status, print or export an individual report, and save a clinician-authored addendum separately from read-only computed evidence.
 - Export CSV datasets, progress notes, FHIR-shaped JSON and complete JSON backups.
 - Switch the complete workflow between English, Simplified Chinese, Spanish, French, German and Malay.
 - Store data locally in the browser for an offline-first workflow.
@@ -58,7 +60,7 @@ npm run check
 npm test
 ```
 
-The automated suite verifies JavaScript syntax, all six language options, top-level and intelligence-layer navigation, storage migration, the capped and deduplicated AI queue, compact dose prioritisation, structured queries, clinician signal actions, device telemetry, equipment-to-session linkage, FHIR-shaped export relationships and data/export actions.
+The automated suite verifies JavaScript syntax, all six language options, top-level and intelligence-layer navigation, storage migration, the capped and deduplicated AI queue, compact dose prioritisation, structured queries, clinician signal actions, all 36 comprehensive case-report routes, clinician-addendum persistence, device telemetry, equipment-to-session linkage, FHIR-shaped export relationships and data/export actions.
 
 ## GitHub Pages
 
@@ -86,11 +88,18 @@ The prototype deliberately keeps scheduled time, active practice, repetitions, q
 Useful reference points include:
 
 - [WHO rehabilitation fact sheet](https://www.who.int/news-room/fact-sheets/detail/rehabilitation)
+- [WHO International Classification of Functioning, Disability and Health](https://www.who.int/standards/classifications/international-classification-of-functioning-disability-and-health)
 - [NICE NG236: Stroke rehabilitation in adults](https://www.nice.org.uk/guidance/ng236/chapter/Recommendations)
+- [WHO: International perspectives on spinal cord injury](https://www.who.int/publications/i/item/international-perspectives-on-spinal-cord-injury)
+- [WHO: Wheelchair provision guidelines](https://www.who.int/publications/i/item/9789240074521)
 - [NICE NG62: Cerebral palsy in under 25s](https://www.nice.org.uk/guidance/ng62/chapter/Recommendations)
 - [NICE NG220: Multiple sclerosis in adults](https://www.nice.org.uk/guidance/ng220/chapter/Recommendations)
 - [NICE NG71: Parkinson's disease in adults](https://www.nice.org.uk/guidance/ng71/chapter/Recommendations)
+- [NICE NG42: Motor neurone disease](https://www.nice.org.uk/guidance/ng42/chapter/Recommendations)
+- [NICE NG249: Falls assessment and prevention](https://www.nice.org.uk/guidance/ng249/chapter/Recommendations)
+- [NICE NG157: Joint replacement](https://www.nice.org.uk/guidance/ng157/chapter/Recommendations)
 - [HL7 FHIR Device](https://hl7.org/fhir/device.html)
+- [HL7 FHIR R4 Composition](https://hl7.org/fhir/R4/composition.html)
 - [HL7 FHIR R4 Procedure](https://hl7.org/fhir/R4/procedure.html)
 - [Singapore HSA digital health and AI guidance](https://www.hsa.gov.sg/medical-devices/digital-health/)
 - [FDA Clinical Decision Support Software guidance (January 2026)](https://www.fda.gov/regulatory-information/search-fda-guidance-documents/clinical-decision-support-software)

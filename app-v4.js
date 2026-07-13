@@ -1,5 +1,5 @@
 const APP_KEY = "vivantePlexus.v1";
-const SCHEMA_VERSION = 7;
+const SCHEMA_VERSION = 8;
 const $ = (id) => document.getElementById(id);
 const n = (v, d = 0) => (Number.isFinite(Number(v)) ? Number(v) : d);
 const tr = (v) =>
@@ -600,6 +600,7 @@ function sample() {
     equipment,
     exports: [],
     aiActions: {},
+    reportDrafts: {},
   };
 }
 function normal(v) {
@@ -619,6 +620,12 @@ function normal(v) {
     aiActions:
       v.aiActions && typeof v.aiActions === "object" && !Array.isArray(v.aiActions)
         ? v.aiActions
+        : {},
+    reportDrafts:
+      v.reportDrafts &&
+      typeof v.reportDrafts === "object" &&
+      !Array.isArray(v.reportDrafts)
+        ? v.reportDrafts
         : {},
   };
 }
@@ -1827,6 +1834,7 @@ function bind() {
         equipment: [],
         exports: [],
         aiActions: {},
+        reportDrafts: {},
       };
       save();
       render();
