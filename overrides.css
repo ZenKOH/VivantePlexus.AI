@@ -1202,25 +1202,6 @@ footer {
   grid-template-columns: repeat(2, minmax(170px, 1fr)) !important;
 }
 
-.header-trust {
-  grid-column: 1 / -1;
-  display: flex;
-  justify-content: flex-end;
-  gap: 13px;
-  margin: 0;
-  color: #827b7d;
-  font-size: 9px;
-  font-weight: 850;
-  letter-spacing: .04em;
-  text-transform: uppercase;
-}
-
-.header-trust span + span::before {
-  content: "·";
-  margin-right: 13px;
-  color: var(--accent);
-}
-
 .tab-nav {
   gap: 7px !important;
   padding: 7px clamp(18px, 4vw, 64px);
@@ -2128,7 +2109,6 @@ footer {
   .company-brand { width: 105px; }
   .brand-copy .subtitle { display: none; }
   .product-title h1 { font-size: 26px; }
-  .header-trust { display: none; }
   .header-controls { grid-template-columns: 126px 126px; }
   .data-menu { width: 126px; }
   .tab-nav {

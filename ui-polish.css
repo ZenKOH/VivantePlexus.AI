@@ -184,6 +184,41 @@ button:hover,
   white-space: normal;
 }
 
+.header-assurance {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 7px 18px;
+  max-width: 690px;
+  margin: 9px 0 0;
+  padding: 8px 0 0;
+  border-top: 1px solid #ebe7e8;
+  color: #5d5759;
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1.35;
+  letter-spacing: .01em;
+  list-style: none;
+  text-transform: none;
+}
+
+.header-assurance li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  white-space: normal;
+}
+
+.header-assurance li::before {
+  width: 12px;
+  height: 2px;
+  flex: 0 0 12px;
+  border-radius: 999px;
+  background: var(--accent);
+  content: "";
+}
+
 .header-controls {
   grid-template-columns: 150px 150px;
   gap: 7px 8px;
@@ -232,17 +267,6 @@ button:hover,
   padding: 10px 12px !important;
   border-radius: 9px;
   font-size: 12px;
-}
-
-.header-trust {
-  gap: 9px;
-  color: var(--ui-muted);
-  font-size: 10px;
-  letter-spacing: .03em;
-}
-
-.header-trust span + span::before {
-  margin-right: 9px;
 }
 
 /* Primary application navigation: one quiet rail, one unmistakable active tab. */
@@ -1291,9 +1315,16 @@ footer {
     width: 108px;
   }
 
-  .brand-copy .subtitle,
-  .header-trust {
+  .brand-copy .subtitle {
     display: none;
+  }
+
+  .header-assurance {
+    max-width: 500px;
+    margin-top: 7px;
+    padding-top: 7px;
+    gap: 6px 14px;
+    font-size: 10.5px;
   }
 
   .header-controls {
@@ -1369,6 +1400,10 @@ footer {
 
   .product-title h1 {
     font-size: 25px;
+  }
+
+  .header-assurance {
+    max-width: none;
   }
 
   .header-controls {
@@ -1550,6 +1585,20 @@ footer {
 
   .product-title > span {
     font-size: 9px;
+  }
+
+  .header-assurance {
+    gap: 5px 11px;
+    font-size: 10px;
+  }
+
+  .header-assurance li {
+    gap: 6px;
+  }
+
+  .header-assurance li::before {
+    width: 10px;
+    flex-basis: 10px;
   }
 
   .tab-button {

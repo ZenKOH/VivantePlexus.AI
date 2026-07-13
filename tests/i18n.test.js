@@ -106,6 +106,23 @@ test("localises the keyboard skip navigation in every added language", () => {
   }
 });
 
+test("localises the platform-principles label in every added language", () => {
+  const expected = {
+    "zh-Hans": "平台原则",
+    es: "Principios de la plataforma",
+    fr: "Principes de la plateforme",
+    de: "Plattformprinzipien",
+    ms: "Prinsip platform",
+  };
+  for (const [language, label] of Object.entries(expected)) {
+    global.i18n.setLanguage(language);
+    assert.equal(global.i18n.translateText("Platform principles"), label);
+    assert.notEqual(global.i18n.translateText("Clinician-led"), "Clinician-led");
+    assert.notEqual(global.i18n.translateText("Evidence-linked"), "Evidence-linked");
+    assert.notEqual(global.i18n.translateText("Local processing"), "Local processing");
+  }
+});
+
 test("persists the selected language and exposes the matching locale", () => {
   global.i18n.setLanguage("de");
   assert.equal(stored.get("vivantePlexus.language"), "de");

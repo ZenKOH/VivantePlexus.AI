@@ -48,8 +48,17 @@ test("renders the VivantePlexus and Robotimize brand identity", () => {
   assert.equal(document.querySelector(".skip-link").getAttribute("href"), "#mainContent");
   assert.equal(document.querySelector("main").id, "mainContent");
   assert.ok(document.querySelector(".app-header > .app-header-inner"));
+  const assurance = document.querySelector(".brand-copy > .header-assurance");
+  assert.ok(assurance, "platform principles sit with the product identity");
+  assert.equal(assurance.getAttribute("aria-label"), "Platform principles");
+  assert.deepEqual(
+    [...assurance.querySelectorAll("li")].map((item) => item.textContent.trim()),
+    ["Clinician-led", "Evidence-linked", "Local processing"],
+  );
+  assert.equal(document.querySelector(".header-controls .header-assurance"), null);
+  assert.equal(document.querySelector(".header-trust"), null);
   assert.equal(document.querySelectorAll(".tab-nav > .tab-nav-inner > .tab-button").length, 6);
-  assert.match(document.querySelector('link[href*="ui-polish.css"]').href, /ui-polish\.css\?v=20260713-8$/);
+  assert.match(document.querySelector('link[href*="ui-polish.css"]').href, /ui-polish\.css\?v=20260713-9$/);
   assert.ok(dom.window.localStorage.getItem("vivantePlexus.v1"));
   assert.equal(dom.window.localStorage.getItem("neurorehabDoseTracker.v5"), null);
   dom.window.close();
@@ -90,6 +99,14 @@ test("language menu switches the rendered dashboard without changing clinical op
   assert.equal(
     document.querySelector(".tab-button").textContent.trim(),
     "Plexus AI",
+  );
+  assert.equal(
+    document.querySelector(".header-assurance").getAttribute("aria-label"),
+    "Principios de la plataforma",
+  );
+  assert.deepEqual(
+    [...document.querySelectorAll(".header-assurance li")].map((item) => item.textContent.trim()),
+    ["Dirigido por profesionales clínicos", "Vinculado a evidencia", "Procesamiento local"],
   );
 
   const stroke = [...document.querySelectorAll("#diagnosis option")].find(

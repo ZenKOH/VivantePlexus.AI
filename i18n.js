@@ -116,6 +116,7 @@
     "Handover / communication": ["交接／沟通","Traspaso/comunicación","Transmission/communication","Übergabe/Kommunikation","Serah tugas / komunikasi"],
     "Robotimize rehabilitation intelligence": ["Robotimize 康复智能","Inteligencia de rehabilitación de Robotimize","Intelligence de réadaptation Robotimize","Robotimize Rehabilitationsintelligenz","Kecerdasan rehabilitasi Robotimize"],
     "Explainable therapy, outcome and rehabilitation-device intelligence for clinician-led review.": ["用于临床主导复核的可解释治疗、结局与康复设备智能。","Inteligencia explicable de terapia, resultados y dispositivos para una revisión dirigida por profesionales clínicos.","Intelligence explicable des thérapies, résultats et dispositifs pour une revue pilotée par le clinicien.","Erklärbare Therapie-, Ergebnis- und Rehageräteintelligenz für die klinisch geführte Prüfung.","Kecerdasan terapi, hasil dan peranti rehabilitasi yang boleh dijelaskan untuk semakan dipimpin klinisian."],
+    "Platform principles": ["平台原则","Principios de la plataforma","Principes de la plateforme","Plattformprinzipien","Prinsip platform"],
     "Clinician-led": ["临床主导","Dirigido por profesionales clínicos","Piloté par le clinicien","Klinisch geführt","Dipimpin klinisian"],
     "Local processing": ["本地处理","Procesamiento local","Traitement local","Lokale Verarbeitung","Pemprosesan setempat"],
     "Plexus AI workspace": ["Plexus AI 工作区","Espacio de trabajo Plexus AI","Espace de travail Plexus AI","Plexus-AI-Arbeitsbereich","Ruang kerja Plexus AI"],

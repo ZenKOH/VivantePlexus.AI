@@ -31,6 +31,11 @@ test("final cascade uses the Robotimize light and red brand palette", () => {
   assert.equal(style(document.body).fontSize, "14px");
   assert.equal(style(document.querySelector(".tab-button")).minHeight, "44px");
   assert.equal(style(document.querySelector(".workspace-layer-nav button")).minHeight, "44px");
+  const assurance = document.querySelector(".header-assurance");
+  assert.equal(style(assurance).display, "flex");
+  assert.equal(style(assurance).flexWrap, "wrap");
+  assert.equal(style(assurance).textTransform, "none");
+  assert.equal(style(assurance).textAlign, "");
   assert.match(brandCss, /\.panel,[\s\S]*background:\s*var\(--panel\)/);
   assert.match(brandCss, /\.tab-button\.active\s*{[\s\S]*?background:\s*var\(--accent\)/);
   assert.match(brandCss, /\.primary\s*{[\s\S]*?background:\s*var\(--accent\)/);
@@ -38,6 +43,8 @@ test("final cascade uses the Robotimize light and red brand palette", () => {
   assert.match(polishCss, /\.app-header-inner\s*{[\s\S]*?width:\s*min\(var\(--ui-max\)/);
   assert.match(polishCss, /\.tab-nav-inner\s*{[\s\S]*?grid-template-columns:\s*repeat\(6/);
   assert.match(polishCss, /\.workspace-layer-nav button\s*{[\s\S]*?min-height:\s*44px/);
+  assert.match(polishCss, /\.header-assurance\s*{[\s\S]*?flex-wrap:\s*wrap/);
+  assert.match(polishCss, /\.header-assurance li::before\s*{[\s\S]*?background:\s*var\(--accent\)/);
   assert.match(polishCss, /@media \(max-width:\s*760px\)[\s\S]*?\.workspace-stage,[\s\S]*?height:\s*auto/);
   assert.match(polishCss, /@media \(prefers-reduced-motion:\s*reduce\)/);
   dom.window.close();
