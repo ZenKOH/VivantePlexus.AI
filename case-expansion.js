@@ -353,6 +353,7 @@
           weeklyReps: n($("weeklyReps").value),
           minimumQuality: n($("minimumQuality").value),
           reviewDate: $("reviewDate").value,
+          plannedDays: $("plannedDays")?.value.trim() || old?.plannedDays || "Mon, Wed, Fri",
           clinician: $("clinician").value.trim(),
           icfFrame: $("icfFrame").value.trim(),
           precautions: $("precautions").value.trim(),

@@ -1,5 +1,5 @@
 const APP_KEY = "vivantePlexus.v1";
-const SCHEMA_VERSION = 6;
+const SCHEMA_VERSION = 7;
 const $ = (id) => document.getElementById(id);
 const n = (v, d = 0) => (Number.isFinite(Number(v)) ? Number(v) : d);
 const tr = (v) =>
@@ -443,6 +443,12 @@ function sample() {
     weeklyMinutes: x[7],
     weeklyReps: x[8],
     minimumQuality: 3,
+    plannedDays:
+      i % 3 === 0
+        ? "Mon, Wed, Fri"
+        : i % 3 === 1
+          ? "Tue, Thu, Sat"
+          : "Mon, Tue, Thu, Fri",
     reviewDate: ago(i % 5 === 0 ? -7 : (i % 4) + 3),
     clinician:
       i % 3 === 0
@@ -519,6 +525,35 @@ function sample() {
                 : i % 4 === 0
                   ? ["equipment-revitavivante"]
                   : [],
+        deviceMode:
+          c.domain === "Gait"
+            ? `Gait pattern ${String.fromCharCode(65 + (i % 3))}`
+            : c.domain === "Upper limb"
+              ? `Reach-grasp level ${(i % 4) + 1}`
+              : i % 4 === 0
+                ? "Therapist-configured mode"
+                : "",
+        attemptedReps: Math.max(
+          40,
+          Math.round(c.weeklyReps / 6 + j * 20 + 12),
+        ),
+        activeContribution:
+          c.domain === "Gait" || c.domain === "Upper limb"
+            ? 44 + ((i * 5 + j * 7) % 43)
+            : null,
+        deviceAssistance:
+          c.domain === "Gait" || c.domain === "Upper limb"
+            ? 56 - ((i * 4 + j * 5) % 32)
+            : null,
+        rangeOfMotion:
+          c.domain === "Upper limb" ? `${38 + ((i + j) % 18)}°` : "",
+        symmetry: c.domain === "Gait" ? 61 + ((i * 3 + j * 6) % 31) : null,
+        calibrationStatus:
+          c.domain === "Gait" || c.domain === "Upper limb"
+            ? (i + j) % 11 === 0
+              ? "Incomplete capture"
+              : "Valid"
+            : "Not recorded",
         notes:
           stress === 4
             ? "Therapist should review grading and tolerance before increasing dose."
@@ -564,6 +599,7 @@ function sample() {
     outcomes,
     equipment,
     exports: [],
+    aiActions: {},
   };
 }
 function normal(v) {
@@ -580,6 +616,10 @@ function normal(v) {
     outcomes: Array.isArray(v.outcomes) ? v.outcomes : [],
     equipment: Array.isArray(v.equipment) ? v.equipment : equipmentSeed(),
     exports: Array.isArray(v.exports) ? v.exports : [],
+    aiActions:
+      v.aiActions && typeof v.aiActions === "object" && !Array.isArray(v.aiActions)
+        ? v.aiActions
+        : {},
   };
 }
 function load() {
@@ -636,6 +676,8 @@ function stats(c) {
   };
 }
 function review(c) {
+  if (globalThis.PlexusAI?.legacyReviewFor)
+    return globalThis.PlexusAI.legacyReviewFor(c);
   const s = stats(c),
     r = [];
   if (!s.w.length)
@@ -797,16 +839,42 @@ function renderStats() {
     active = w.reduce((a, s) => a + n(s.activeMinutes), 0),
     reps = w.reduce((a, s) => a + n(s.reps), 0),
     tm = ps.reduce((a, c) => a + n(c.weeklyMinutes), 0),
-    tr = ps.reduce((a, c) => a + n(c.weeklyReps), 0);
+    targetReps = ps.reduce((a, c) => a + n(c.weeklyReps), 0);
   $("minutesThisWeek").textContent = active;
   $("repsThisWeek").textContent = reps;
-  $("avgQuality").textContent = avg(w.map((s) => s.quality)).toFixed(1);
-  $("casesNeedingReview").textContent = ps.filter((c) =>
-    review(c).some((i) => i.severity === "warning" || i.severity === "risk"),
-  ).length;
+  const qualities = w
+    .map((s) => n(s.quality, NaN))
+    .filter(Number.isFinite)
+    .sort((a, b) => a - b);
+  const medianQuality = qualities.length
+    ? qualities.length % 2
+      ? qualities[(qualities.length - 1) / 2]
+      : (qualities[qualities.length / 2 - 1] + qualities[qualities.length / 2]) / 2
+    : 0;
+  $("avgQuality").textContent = medianQuality.toFixed(1);
+  $("casesNeedingReview").textContent = globalThis.PlexusAI?.activeSignals
+    ? globalThis.PlexusAI.activeSignals().length
+    : ps.filter((c) =>
+        review(c).some((i) => i.severity === "warning" || i.severity === "risk"),
+      ).length;
+  const expectedMinutes = Math.round(
+    ps.reduce(
+      (sum, c) =>
+        sum + n(c.weeklyMinutes) * (globalThis.PlexusAI?.weekProgressFor?.(c) ?? 1),
+      0,
+    ),
+  );
+  const expectedReps = Math.round(
+    ps.reduce(
+      (sum, c) =>
+        sum + n(c.weeklyReps) * (globalThis.PlexusAI?.weekProgressFor?.(c) ?? 1),
+      0,
+    ),
+  );
   $("minutesTargetLabel").textContent =
-    `Target: ${tm} min · ${pct(active, tm)}%`;
-  $("repsTargetLabel").textContent = `Target: ${tr} reps · ${pct(reps, tr)}%`;
+    `${tr("Expected to date")}: ${expectedMinutes} min · ${pct(active, expectedMinutes)}%`;
+  $("repsTargetLabel").textContent =
+    `${tr("Expected to date")}: ${expectedReps} reps · ${pct(reps, expectedReps)}%`;
 }
 function renderPrograms() {
   const el = $("programmeList");
@@ -901,6 +969,10 @@ function renderTable() {
     .join("");
 }
 function renderInsights() {
+  if (globalThis.PlexusAI?.renderQueue) {
+    globalThis.PlexusAI.renderQueue();
+    return;
+  }
   $("insights").innerHTML = allReviews()
     .map(
       (i) =>
@@ -916,7 +988,17 @@ function renderSessions() {
     ? data
         .map((s) => {
           const equipment = equipmentForSession(s);
-          return `<article class="session-item"><div class="session-top"><div><div class="session-title">${e(s.task)} · ${e(getCase(s.caseId)?.label || "Unknown case")}</div><div class="session-meta">${fmt(s.date)} · ${e(s.setting)}<br>active ${s.activeMinutes} min / scheduled ${s.minutes} min · ${s.reps} reps · quality ${s.quality}/5 · fatigue ${s.fatigue}/10 · pain ${s.pain}/10<br>${e(s.assistance)} · ${e(s.challenge)} · carryover: ${e(s.carryover)} · home: ${e(s.homeAdherence)}</div>${equipment.length ? `<div class="equipment-chips" aria-label="Equipment used">${equipment.map((item) => `<span class="equipment-chip">${e(item.name)}</span>`).join("")}</div>` : ""}</div><button type="button" class="delete-session danger" data-id="${s.id}">Delete</button></div>${s.notes ? `<p class="session-notes">${e(s.notes)}</p>` : ""}</article>`;
+          const deviceDetails = [
+            s.deviceMode ? `mode ${e(s.deviceMode)}` : "",
+            s.attemptedReps != null ? `${s.reps}/${s.attemptedReps} valid reps` : "",
+            s.activeContribution != null ? `active contribution ${s.activeContribution}%` : "",
+            s.deviceAssistance != null ? `device assistance ${s.deviceAssistance}%` : "",
+            s.symmetry != null ? `symmetry ${s.symmetry}%` : "",
+            s.calibrationStatus && s.calibrationStatus !== "Not recorded"
+              ? `data quality ${e(s.calibrationStatus)}`
+              : "",
+          ].filter(Boolean);
+          return `<article class="session-item"><div class="session-top"><div><div class="session-title">${e(s.task)} · ${e(getCase(s.caseId)?.label || "Unknown case")}</div><div class="session-meta">${fmt(s.date)} · ${e(s.setting)}<br>active ${s.activeMinutes} min / scheduled ${s.minutes} min · ${s.reps} reps · quality ${s.quality}/5 · fatigue ${s.fatigue}/10 · pain ${s.pain}/10<br>${e(s.assistance)} · ${e(s.challenge)} · carryover: ${e(s.carryover)} · home: ${e(s.homeAdherence)}${deviceDetails.length ? `<br>${deviceDetails.join(" · ")}` : ""}</div>${equipment.length ? `<div class="equipment-chips" aria-label="Equipment used">${equipment.map((item) => `<span class="equipment-chip">${e(item.name)}</span>`).join("")}</div>` : ""}</div><button type="button" class="delete-session danger" data-id="${s.id}">Delete</button></div>${s.notes ? `<p class="session-notes">${e(s.notes)}</p>` : ""}</article>`;
         })
         .join("")
     : '<p class="empty">No sessions saved yet.</p>';
@@ -934,7 +1016,14 @@ function outcomeProgress(o) {
   const b = num(o.baseline),
     c = num(o.current),
     t = num(o.target);
-  if (b === null || c === null || t === null || b === t) return 0;
+  if (
+    o.direction === "Goal-specific" ||
+    b === null ||
+    c === null ||
+    t === null ||
+    b === t
+  )
+    return null;
   return o.direction === "Lower is better"
     ? pct(b - c, b - t)
     : pct(c - b, t - b);
@@ -947,7 +1036,7 @@ function renderOutcomes() {
     ? data
         .map(
           (o) =>
-            `<article class="outcome-card"><div class="outcome-top"><strong>${e(o.name)}</strong><span>${e(getCase(o.caseId)?.label || "Case")}</span></div><div class="trajectory"><span>Baseline<br><b>${e(o.baseline || "—")}</b></span><span>Current<br><b>${e(o.current || "—")}</b></span><span>Target<br><b>${e(o.target || "—")}</b></span></div><div class="progress"><div class="bar" style="width:${outcomeProgress(o)}%"></div></div><small>${outcomeProgress(o)}% of target trajectory · ${e(o.direction)}</small></article>`,
+            `<article class="outcome-card"><div class="outcome-top"><strong>${e(o.name)}</strong><span>${e(getCase(o.caseId)?.label || "Case")}</span></div><div class="trajectory"><span>Baseline<br><b>${e(o.baseline || "—")}</b></span><span>Current<br><b>${e(o.current || "—")}</b></span><span>Target<br><b>${e(o.target || "—")}</b></span></div>${outcomeProgress(o) === null ? `<p class="small-note">Goal-specific direction · clinician interpretation required</p>` : `<div class="progress"><div class="bar" style="width:${outcomeProgress(o)}%"></div></div><small>${outcomeProgress(o)}% of target trajectory · ${e(o.direction)}</small>`}</article>`,
         )
         .join("")
     : '<p class="empty">Outcome trajectory charts appear after sample data or recorded measures are available.</p>';
@@ -986,7 +1075,7 @@ function charts() {
   $("doseChartSummary").textContent =
     `${act} active minutes logged this week across ${ps.length} programme(s).`;
   $("activeScheduledChart").innerHTML =
-    `<div class="stacked-bar"><span class="active" style="width:${ap}%"></span><span class="inactive" style="width:${100 - ap}%"></span></div><div class="legend"><span><i class="dot active-dot"></i>Active ${act} min</span><span><i class="dot inactive-dot"></i>Setup/rest ${Math.max(0, sch - act)} min</span></div>`;
+    `<div class="stacked-bar"><span class="active" style="width:${ap}%"></span><span class="inactive" style="width:${100 - ap}%"></span></div><div class="legend"><span><i class="dot active-dot"></i>Active ${act} min</span><span><i class="dot inactive-dot"></i>Other scheduled time ${Math.max(0, sch - act)} min</span></div>`;
   $("activeScheduledSummary").textContent = sch
     ? `${ap}% of scheduled time became active practice this week.`
     : "No scheduled time recorded this week.";
@@ -1178,6 +1267,7 @@ function render() {
     charts();
     evidence();
     report();
+    globalThis.PlexusAI?.render?.();
     globalThis.i18n?.translatePage();
   } catch (err) {
     console.error(err);
@@ -1185,7 +1275,10 @@ function render() {
   }
 }
 function tab(name, historyMode = "replace") {
-  const target = $(name) ? name : "overview";
+  const requested = $(name) ? name : "overview";
+  const target = $(requested)?.classList.contains("tab-panel")
+    ? requested
+    : "overview";
   document.querySelectorAll(".tab-button").forEach((b) => {
     const on = b.dataset.tab === target;
     b.classList.toggle("active", on);
@@ -1197,12 +1290,15 @@ function tab(name, historyMode = "replace") {
     p.classList.toggle("active", on);
     p.hidden = !on;
   });
-  if (historyMode === "push" && location.hash !== `#${target}`)
-    history.pushState?.(null, "", `#${target}`);
+  const hashTarget = requested !== target && $(requested) ? requested : target;
+  if (historyMode === "push" && location.hash !== `#${hashTarget}`)
+    history.pushState?.(null, "", `#${hashTarget}`);
   else if (historyMode === "replace")
-    history.replaceState?.(null, "", `#${target}`);
+    history.replaceState?.(null, "", `#${hashTarget}`);
   scrollTo({ top: 0, behavior: "smooth" });
-  status(`Showing ${target}.`);
+  if (hashTarget !== target)
+    $(hashTarget)?.scrollIntoView?.({ behavior: "smooth", block: "start" });
+  status(`Showing ${hashTarget}.`);
 }
 function resetEquipmentForm() {
   $("equipmentForm")?.reset();
@@ -1289,6 +1385,7 @@ function editProgram(id) {
     weeklyReps: c.weeklyReps,
     minimumQuality: c.minimumQuality,
     reviewDate: c.reviewDate,
+    plannedDays: c.plannedDays,
     clinician: c.clinician,
     icfFrame: c.icfFrame,
     precautions: c.precautions,
@@ -1317,6 +1414,7 @@ function saveProgram(ev) {
       weeklyReps: n($("weeklyReps").value),
       minimumQuality: n($("minimumQuality").value),
       reviewDate: $("reviewDate").value,
+      plannedDays: $("plannedDays")?.value.trim() || old?.plannedDays || "Mon, Wed, Fri",
       clinician: $("clinician").value.trim(),
       icfFrame: $("icfFrame").value.trim(),
       precautions: $("precautions").value.trim(),
@@ -1351,6 +1449,19 @@ function saveSession(ev) {
     carryover: $("carryover").value,
     homeAdherence: $("homeAdherence").value,
     restBreaks: n($("restBreaks").value),
+    deviceMode: $("deviceMode")?.value.trim() || "",
+    attemptedReps: $("attemptedReps")?.value
+      ? n($("attemptedReps").value)
+      : null,
+    activeContribution: $("activeContribution")?.value
+      ? n($("activeContribution").value)
+      : null,
+    deviceAssistance: $("deviceAssistance")?.value
+      ? n($("deviceAssistance").value)
+      : null,
+    rangeOfMotion: $("rangeOfMotion")?.value.trim() || "",
+    symmetry: $("symmetry")?.value ? n($("symmetry").value) : null,
+    calibrationStatus: $("calibrationStatus")?.value || "Not recorded",
     equipmentIds: [
       ...document.querySelectorAll(
         '#sessionEquipmentPicker input[name="sessionEquipment"]:checked',
@@ -1444,6 +1555,13 @@ function csv() {
       "carryover",
       "homeAdherence",
       "restBreaks",
+      "deviceMode",
+      "attemptedReps",
+      "activeContributionPercent",
+      "deviceAssistancePercent",
+      "rangeOfMotion",
+      "symmetryPercent",
+      "calibrationStatus",
       "equipmentNames",
       "equipmentIds",
       "notes",
@@ -1471,6 +1589,13 @@ function csv() {
         s.carryover,
         s.homeAdherence,
         s.restBreaks,
+        s.deviceMode,
+        s.attemptedReps,
+        s.activeContribution,
+        s.deviceAssistance,
+        s.rangeOfMotion,
+        s.symmetry,
+        s.calibrationStatus,
         equipmentForSession(s)
           .map((item) => item.name)
           .join("; "),
@@ -1689,6 +1814,7 @@ function bind() {
         outcomes: [],
         equipment: [],
         exports: [],
+        aiActions: {},
       };
       save();
       render();
