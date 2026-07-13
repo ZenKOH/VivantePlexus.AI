@@ -6,8 +6,8 @@
   <title>VivantePlexus™</title>
   <meta name="description" content="VivantePlexus™ with Plexus AI turns therapy, outcome and rehabilitation-device data into explainable, clinician-led clinical signals." />
   <meta name="theme-color" content="#c21f47" />
-  <link rel="stylesheet" href="styles.css?v=20260713-2" />
-  <link rel="stylesheet" href="overrides.css?v=20260713-2" />
+  <link rel="stylesheet" href="styles.css?v=20260713-3" />
+  <link rel="stylesheet" href="overrides.css?v=20260713-3" />
 </head>
 <body>
   <header class="app-header">
@@ -15,17 +15,11 @@
       <a class="company-brand" href="https://www.robotimize.tech" target="_blank" rel="noopener noreferrer" aria-label="Visit the Robotimize website">
         <img src="assets/robotimize-logo.png" alt="Robotimize — Tech for Care" width="512" height="170" />
       </a>
-      <p class="eyebrow">Robotimize AI rehabilitation intelligence</p>
-      <h1>VivantePlexus™</h1>
-      <p class="subtitle">Turn therapy, outcome and rehabilitation-device data into explainable clinical signals—so teams can see what changed, what needs review and why.</p>
-      <div class="trust-markers" aria-label="Product trust markers">
-        <span>Clinician-in-the-loop</span><span>Evidence-linked</span><span>Device-aware</span><span>Multilingual</span>
+      <div class="brand-copy">
+        <p class="eyebrow">Robotimize rehabilitation intelligence</p>
+        <div class="product-title"><h1>VivantePlexus™</h1><span>Plexus AI</span></div>
+        <p class="subtitle">Explainable therapy, outcome and rehabilitation-device intelligence for clinician-led review.</p>
       </div>
-      <div class="hero-actions">
-        <a class="primary hero-button" href="#ai-review">Open AI Review</a>
-        <a class="secondary hero-button" href="#ai-transparency">See how the intelligence works</a>
-      </div>
-      <p class="prototype-chip"><strong>Current prototype:</strong> deterministic rules · structured summaries · synthetic data · no autonomous recommendations</p>
     </div>
     <div class="header-controls">
       <div class="language-switcher">
@@ -51,6 +45,7 @@
           <button id="clearBtn" type="button" class="danger">Clear data</button>
         </div>
       </details>
+      <p class="header-trust"><span>Clinician-led</span><span>Evidence-linked</span><span>Local processing</span></p>
     </div>
   </header>
 
@@ -67,35 +62,94 @@
 
   <main class="app-shell">
     <section id="overview" class="tab-panel active">
-      <section class="panel ai-command-panel" aria-labelledby="aiCommandTitle">
-        <div class="section-heading inline"><div><p class="ai-kicker">Plexus Query · structured analytics preview</p><h2 id="aiCommandTitle">Ask the rehabilitation dataset</h2><p>Queries are calculated locally from structured records. No data leaves this browser.</p></div><label class="focus-label">Review focus<select id="reviewCaseFilter"></select></label></div>
-        <form id="aiQueryForm" class="ai-query-form"><label class="sr-only" for="aiQueryInput">Ask a question about the rehabilitation dataset</label><input id="aiQueryInput" type="search" autocomplete="off" placeholder="Which gait cases are falling behind expected dose pace?" /><button type="submit" class="primary">Analyse records</button></form>
-        <div class="query-suggestions" aria-label="Example questions"><button type="button" data-ai-query="Which gait cases are behind expected dose pace?">Gait dose pace</button><button type="button" data-ai-query="Where did fatigue increase while quality declined?">Fatigue + quality</button><button type="button" data-ai-query="Which devices have the highest active-practice conversion?">Device conversion</button><button type="button" data-ai-query="Which outcome reviews are overdue?">Overdue reviews</button></div>
-        <div id="aiQueryResult" class="ai-query-result" aria-live="polite"></div>
-      </section>
+      <section class="workspace-shell" aria-labelledby="workspaceTitle">
+        <header class="workspace-topbar">
+          <div>
+            <p class="ai-kicker">Plexus AI workspace</p>
+            <h2 id="workspaceTitle">Clinical command centre</h2>
+            <p>Start with the brief. Open one focused intelligence layer when you need the supporting detail.</p>
+          </div>
+          <label class="workspace-focus">Review focus<select id="reviewCaseFilter"></select></label>
+        </header>
 
-      <section id="ai-review" class="ai-review-grid">
-        <article class="panel ai-brief-panel"><div class="section-heading"><p class="ai-kicker">Plexus Brief · structured summary</p><h2>AI Clinical Brief</h2><p>One grounded briefing from the highest-ranked active signal.</p></div><div id="aiClinicalBrief"></div></article>
-        <article class="panel ai-queue-panel"><div class="section-heading"><p class="ai-kicker">Plexus Signals · explainable review</p><h2>Prioritised case queue</h2><p>One primary signal per case, ranked by persistence, tolerance, dose pace and review timing.</p></div><div id="insights" class="insights"></div></article>
-      </section>
+        <nav class="workspace-layer-nav" role="tablist" aria-label="Intelligence layers">
+          <button id="layerTabCommand" type="button" class="active" role="tab" aria-selected="true" aria-controls="workspace-command" data-workspace-layer-target="command"><span>01</span>Command</button>
+          <button id="layerTabSignals" type="button" role="tab" aria-selected="false" aria-controls="ai-review" data-workspace-layer-target="signals" tabindex="-1"><span>02</span>Signals</button>
+          <button id="layerTabDose" type="button" role="tab" aria-selected="false" aria-controls="workspace-dose" data-workspace-layer-target="dose" tabindex="-1"><span>03</span>Dose</button>
+          <button id="layerTabDevice" type="button" role="tab" aria-selected="false" aria-controls="workspace-device" data-workspace-layer-target="device" tabindex="-1"><span>04</span>Device IQ</button>
+          <button id="layerTabOutcomes" type="button" role="tab" aria-selected="false" aria-controls="workspace-outcomes" data-workspace-layer-target="outcomes" tabindex="-1"><span>05</span>Outcomes</button>
+          <button id="layerTabCases" type="button" role="tab" aria-selected="false" aria-controls="workspace-cases" data-workspace-layer-target="cases" tabindex="-1"><span>06</span>Cases</button>
+          <button id="layerTabMethod" type="button" role="tab" aria-selected="false" aria-controls="ai-transparency" data-workspace-layer-target="transparency" tabindex="-1"><span>07</span>Method</button>
+        </nav>
 
-      <section id="aiSignalSummary" class="ai-signal-grid" aria-label="Plexus AI signal families"></section>
+        <div class="workspace-stage">
+          <section id="workspace-command" class="workspace-layer command-layer active" role="tabpanel" aria-labelledby="layerTabCommand" data-workspace-layer="command">
+            <section id="aiSignalSummary" class="ai-signal-grid command-metrics" aria-label="Plexus AI signal families"></section>
+            <div class="command-grid">
+              <article class="workspace-card brief-card">
+                <div class="workspace-card-heading"><div><p class="ai-kicker">Plexus Brief · structured summary</p><h3>Clinical brief</h3></div><button type="button" class="text-button" data-workspace-layer-target="signals">Open signal evidence <span aria-hidden="true">→</span></button></div>
+                <div id="aiClinicalBrief"></div>
+              </article>
+              <article class="workspace-card priority-card">
+                <div class="workspace-card-heading"><div><p class="ai-kicker">Priority now</p><h3>Cases to review</h3></div><button type="button" class="text-button" data-workspace-layer-target="signals">View full queue <span aria-hidden="true">→</span></button></div>
+                <div id="priorityPreview" class="priority-preview"></div>
+              </article>
+            </div>
+            <article class="workspace-card query-card" aria-labelledby="aiCommandTitle">
+              <div class="query-heading"><div><p class="ai-kicker">Plexus Query · local structured analytics</p><h3 id="aiCommandTitle">Ask the rehabilitation dataset</h3></div><p>No data leaves this browser.</p></div>
+              <form id="aiQueryForm" class="ai-query-form"><label class="sr-only" for="aiQueryInput">Ask a question about the rehabilitation dataset</label><input id="aiQueryInput" type="search" autocomplete="off" placeholder="Which gait cases are behind expected dose pace?" /><button type="submit" class="primary">Analyse</button></form>
+              <div class="query-suggestions" aria-label="Example questions"><button type="button" data-ai-query="Which gait cases are behind expected dose pace?">Gait dose pace</button><button type="button" data-ai-query="Where did fatigue increase while quality declined?">Fatigue + quality</button><button type="button" data-ai-query="Which devices have the highest active-practice conversion?">Device conversion</button></div>
+              <div id="aiQueryResult" class="ai-query-result" aria-live="polite"><p class="query-empty">Choose an example or ask a focused question to calculate an answer from the current records.</p></div>
+            </article>
+          </section>
 
-      <section class="stats-grid" aria-label="Key clinical indicators">
-        <article class="stat-card"><span>Active minutes this week</span><strong id="minutesThisWeek">0</strong><small id="minutesTargetLabel">Expected: 0</small></article>
-        <article class="stat-card"><span>Repetitions this week</span><strong id="repsThisWeek">0</strong><small id="repsTargetLabel">Expected: 0</small></article>
-        <article class="stat-card"><span>Median movement quality</span><strong id="avgQuality">0.0</strong><small>Ordinal 1–5 therapist rating</small></article>
-        <article class="stat-card"><span>Active review queue</span><strong id="casesNeedingReview">0</strong><small>Prioritised, unacknowledged cases</small></article>
+          <section id="ai-review" class="workspace-layer" role="tabpanel" aria-labelledby="layerTabSignals" data-workspace-layer="signals" hidden>
+            <div class="layer-heading"><div><p class="ai-kicker">Plexus Signals · explainable review</p><h2>Prioritised case queue</h2><p>Five cases at most, one primary signal per case, with grouped evidence and clinician actions.</p></div><button type="button" class="secondary compact-button" data-workspace-layer-target="command">Back to command</button></div>
+            <div id="insights" class="insights"></div>
+          </section>
+
+          <section id="workspace-dose" class="workspace-layer" role="tabpanel" aria-labelledby="layerTabDose" data-workspace-layer="dose" hidden>
+            <div class="layer-heading"><div><p class="ai-kicker">Dose intelligence</p><h2>Exposure, pace and tolerance</h2><p>Weekly pace and supporting evidence, contained in one focused analytical view.</p></div><button type="button" class="secondary compact-button" data-open-tab="sessions">Log therapy</button></div>
+            <section class="stats-grid layer-stats" aria-label="Key clinical indicators">
+              <article class="stat-card"><span>Active minutes this week</span><strong id="minutesThisWeek">0</strong><small id="minutesTargetLabel">Expected: 0</small></article>
+              <article class="stat-card"><span>Repetitions this week</span><strong id="repsThisWeek">0</strong><small id="repsTargetLabel">Expected: 0</small></article>
+              <article class="stat-card"><span>Median movement quality</span><strong id="avgQuality">0.0</strong><small>Ordinal 1–5 therapist rating</small></article>
+              <article class="stat-card"><span>Active review queue</span><strong id="casesNeedingReview">0</strong><small>Prioritised cases shown</small></article>
+            </section>
+            <section class="layer-chart-grid">
+              <article class="workspace-card dose-primary"><div class="section-heading"><h3>Weekly dose pace</h3><p>Lowest attainment first; select a case above for full detail.</p></div><div id="doseChart" class="chart-box"></div><p id="doseChartSummary" class="chart-summary"></p></article>
+              <article class="workspace-card"><div class="section-heading"><h3>Active-practice conversion</h3><p>Recorded active time as a share of scheduled time.</p></div><div id="activeScheduledChart" class="chart-box compact"></div><p id="activeScheduledSummary" class="chart-summary"></p></article>
+              <article class="workspace-card"><div class="section-heading"><h3>Carryover</h3><p>Observed transfer into daily activity.</p></div><div id="carryoverChart" class="donut-wrap"></div><p id="carryoverSummary" class="chart-summary"></p></article>
+              <article class="workspace-card dose-primary"><div class="section-heading"><h3>Tolerance trend</h3><p>Recent quality, fatigue and discomfort records.</p></div><div id="toleranceChart" class="chart-box"></div><p id="toleranceSummary" class="chart-summary"></p></article>
+            </section>
+          </section>
+
+          <section id="workspace-device" class="workspace-layer" role="tabpanel" aria-labelledby="layerTabDevice" data-workspace-layer="device" hidden>
+            <div class="layer-heading"><div><p class="ai-kicker">Plexus Device IQ · session-derived preview</p><h2>Device intelligence</h2><p>Conversion, valid repetitions, active contribution, tolerance and recorded data-quality checks.</p></div><button type="button" class="secondary compact-button" data-open-tab="equipment">Manage equipment</button></div>
+            <div id="deviceIntelligence" class="device-intelligence"></div>
+          </section>
+
+          <section id="workspace-outcomes" class="workspace-layer" role="tabpanel" aria-labelledby="layerTabOutcomes" data-workspace-layer="outcomes" hidden>
+            <div class="layer-heading"><div><p class="ai-kicker">Outcome intelligence</p><h2>Functional trajectory</h2><p>Recent progress toward recorded targets, with scoring direction preserved.</p></div><button type="button" class="secondary compact-button" data-open-tab="outcomes">Manage outcomes</button></div>
+            <div id="outcomeIntelligence" class="outcome-intelligence"></div>
+          </section>
+
+          <section id="workspace-cases" class="workspace-layer" role="tabpanel" aria-labelledby="layerTabCases" data-workspace-layer="cases" hidden>
+            <div class="layer-heading"><div><p class="ai-kicker">Case overview</p><h2>Clinical review heatmap</h2><p>Scan dose, tolerance, carryover and the current primary signal across the selected scope.</p></div><button type="button" class="secondary compact-button" data-open-tab="programmes">Manage programmes</button></div>
+            <div class="table-wrap layer-table"><table><thead><tr><th>Case</th><th>Goal</th><th>Dose</th><th>Quality</th><th>Fatigue</th><th>Pain</th><th>Carryover</th><th>Review</th></tr></thead><tbody id="caseTable"></tbody></table></div>
+          </section>
+
+          <section id="ai-transparency" class="workspace-layer" role="tabpanel" aria-labelledby="layerTabMethod" data-workspace-layer="transparency" hidden>
+            <div class="layer-heading"><div><p class="ai-kicker">AI transparency</p><h2>How the intelligence works</h2><p>Method, provenance, limitations and clinician decisions in one reviewable layer.</p></div><button type="button" class="secondary compact-button" data-workspace-layer-target="command">Back to command</button></div>
+            <div class="transparency-grid"><article><h3>Current methods</h3><p><strong>Rule:</strong> pace-aware dose, tolerance, carryover and review-date logic.</p><p><strong>Trend:</strong> recent-session change compared with the preceding sessions.</p><p><strong>Structured summary:</strong> templated synthesis of the highest-ranked signal and its source records.</p></article><article><h3>Inputs and provenance</h3><p>Programme targets, session dose and tolerance, clinician-recorded outcomes and linked equipment. Calculations remain inside the browser.</p><p id="aiMethodVersion" class="method-version"></p></article><article><h3>Limitations</h3><p>No trained prediction model, diagnosis, treatment recommendation or autonomous action. Sample records are synthetic and this public prototype must not contain directly identifying patient data.</p></article><article><h3>Clinician audit</h3><div id="aiAuditLog"><p class="empty">No signal decisions recorded.</p></div></article></div>
+          </section>
+        </div>
+
+        <footer class="workspace-footer">
+          <p class="prototype-chip"><strong>Prototype:</strong> deterministic rules · structured summaries · synthetic data · no autonomous recommendations</p>
+          <div class="workflow-shortcuts" aria-label="Workflow shortcuts"><button type="button" data-open-tab="programmes">Programmes</button><button type="button" data-open-tab="sessions">Log session</button><button type="button" data-open-tab="outcomes">Record outcome</button><button type="button" data-open-tab="reports">Reports</button></div>
+        </footer>
       </section>
-      <section class="chart-grid">
-        <article class="panel chart-card wide"><div class="section-heading"><h2>Weekly dose attainment</h2><p>Active minutes and repetitions compared with programme targets.</p></div><div id="doseChart" class="chart-box"></div><p id="doseChartSummary" class="chart-summary"></p></article>
-        <article class="panel chart-card"><div class="section-heading"><h2>Active-practice conversion</h2><p>The measured share of scheduled time recorded as active practice; the remainder is not classified.</p></div><div id="activeScheduledChart" class="chart-box compact"></div><p id="activeScheduledSummary" class="chart-summary"></p></article>
-        <article class="panel chart-card"><div class="section-heading"><h2>Carryover distribution</h2><p>Whether practice transfers into daily function.</p></div><div id="carryoverChart" class="donut-wrap"></div><p id="carryoverSummary" class="chart-summary"></p></article>
-        <article class="panel chart-card wide"><div class="section-heading"><h2>Tolerance trend</h2><p>Movement quality, fatigue and pain across recent sessions.</p></div><div id="toleranceChart" class="chart-box"></div><p id="toleranceSummary" class="chart-summary"></p></article>
-      </section>
-      <section class="panel device-iq-panel"><div class="section-heading inline"><div><p class="ai-kicker">Plexus Device IQ · session-derived preview</p><h2>Device intelligence</h2><p>Active-practice conversion, valid repetitions, active contribution and tolerance by linked equipment.</p></div><a class="secondary mini-link" href="#equipment" data-open-tab="equipment">Manage equipment</a></div><div id="deviceIntelligence" class="device-intelligence"></div></section>
-      <section class="panel"><div class="section-heading"><h2>Case risk heatmap</h2><p>Rapid triage across dose, quality, fatigue, pain, carryover and review status.</p></div><div class="table-wrap"><table><thead><tr><th>Case</th><th>Goal</th><th>Dose</th><th>Quality</th><th>Fatigue</th><th>Pain</th><th>Carryover</th><th>Review</th></tr></thead><tbody id="caseTable"></tbody></table></div></section>
-      <section id="ai-transparency" class="panel transparency-panel"><div class="section-heading"><p class="ai-kicker">AI transparency</p><h2>How the intelligence works</h2><p>Designed for independent clinician review of every output.</p></div><div class="transparency-grid"><article><h3>Current methods</h3><p><strong>Rule:</strong> pace-aware dose, tolerance, carryover and review-date logic.</p><p><strong>Trend:</strong> recent-session change compared with the preceding sessions.</p><p><strong>Structured summary:</strong> templated synthesis of the highest-ranked signal and its source records.</p></article><article><h3>Inputs and provenance</h3><p>Programme targets, session dose and tolerance, clinician-recorded outcomes and linked equipment. Calculations remain inside the browser.</p><p id="aiMethodVersion" class="method-version"></p></article><article><h3>Limitations</h3><p>No trained prediction model, diagnosis, treatment recommendation or autonomous action. Sample records are synthetic and this public prototype must not contain directly identifying patient data.</p></article><article><h3>Clinician audit</h3><div id="aiAuditLog"><p class="empty">No signal decisions recorded.</p></div></article></div></section>
     </section>
 
     <section id="programmes" class="tab-panel" hidden>
@@ -139,10 +193,10 @@
     </div>
   </footer>
 
-  <script defer src="i18n.js?v=20260713-2"></script>
-  <script defer src="app-v4.js?v=20260713-2"></script>
-  <script defer src="case-expansion.js?v=20260713-2"></script>
-  <script defer src="equipment-upgrade.js?v=20260713-2"></script>
-  <script defer src="plexus-ai.js?v=20260713-2"></script>
+  <script defer src="i18n.js?v=20260713-3"></script>
+  <script defer src="app-v4.js?v=20260713-3"></script>
+  <script defer src="case-expansion.js?v=20260713-3"></script>
+  <script defer src="equipment-upgrade.js?v=20260713-3"></script>
+  <script defer src="plexus-ai.js?v=20260713-3"></script>
 </body>
 </html>

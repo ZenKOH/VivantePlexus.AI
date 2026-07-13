@@ -101,7 +101,7 @@ test("dynamic clinical content and the page title localise in Chinese", () => {
   assert.equal(document.title, "VivantePlexus™");
   assert.equal(
     document.querySelector("#overview h2").textContent.trim(),
-    "询问康复数据集",
+    "临床指挥中心",
   );
   assert.match(
     document.getElementById("minutesTargetLabel").textContent,
@@ -154,6 +154,46 @@ test("AI deep links retain the overview instead of hiding the application", () =
   assert.equal(document.getElementById("overview").hidden, false);
   assert.equal(document.querySelector(".tab-panel.active").id, "overview");
   assert.equal(dom.window.location.hash, "#ai-review");
+  assert.equal(document.getElementById("ai-review").hidden, false);
+  assert.equal(document.querySelector('[data-workspace-layer].active').dataset.workspaceLayer, "signals");
+  dom.window.close();
+});
+
+test("progressively discloses one professional intelligence layer at a time", () => {
+  const dom = launch();
+  const { document } = dom.window;
+  const tabs = [...document.querySelectorAll('.workspace-layer-nav [role="tab"]')];
+  const layers = [...document.querySelectorAll("[data-workspace-layer]")];
+
+  assert.equal(tabs.length, 7);
+  assert.equal(layers.length, 7);
+  assert.equal(layers.filter((layer) => !layer.hidden).length, 1);
+  assert.equal(layers.find((layer) => !layer.hidden).dataset.workspaceLayer, "command");
+  assert.equal(document.querySelectorAll("#doseChart .chart-row").length, 8);
+  assert.ok(document.querySelectorAll("#outcomeIntelligence .outcome-intelligence-card").length > 0);
+  assert.ok(document.querySelectorAll("#outcomeIntelligence .outcome-intelligence-card").length <= 6);
+  assert.equal(document.querySelector("#aiQueryResult .query-interpretation"), null);
+
+  for (const tabButton of tabs) {
+    tabButton.click();
+    assert.equal(layers.filter((layer) => !layer.hidden).length, 1);
+    assert.equal(
+      layers.find((layer) => !layer.hidden).dataset.workspaceLayer,
+      tabButton.dataset.workspaceLayerTarget,
+    );
+    assert.equal(document.querySelectorAll('.workspace-layer-nav [aria-selected="true"]').length, 1);
+  }
+
+  document.getElementById("layerTabCommand").click();
+  const priority = document.querySelector("#priorityPreview [data-priority-case]");
+  assert.ok(priority);
+  priority.click();
+  assert.notEqual(document.getElementById("reviewCaseFilter").value, "all");
+  assert.equal(document.querySelector('[data-workspace-layer].active').dataset.workspaceLayer, "signals");
+  assert.ok(document.querySelectorAll("#insights .ai-signal-card").length <= 1);
+
+  const ids = [...document.querySelectorAll("[id]")].map((element) => element.id);
+  assert.equal(new Set(ids).size, ids.length, "the document contains no duplicate IDs");
   dom.window.close();
 });
 

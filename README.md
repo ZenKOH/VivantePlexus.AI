@@ -16,6 +16,7 @@ https://zenkoh.github.io/VivantePlexus.AI/
 
 ## Core capabilities
 
+- Start from a streamlined single-screen Plexus AI command centre, then open Signals, Dose, Device IQ, Outcomes, Cases or Method as focused on-demand layers.
 - Load 36 synthetic rehabilitation cases spanning stroke, spinal cord injury, traumatic brain injury, cerebral palsy, Parkinson's disease, multiple sclerosis, frailty, vestibular, peripheral neurological, progressive neurological, musculoskeletal, orthopaedic and amputee pathways.
 - Review 108 synthetic therapy sessions and 72 outcome records.
 - Track scheduled time, active practice, valid and attempted repetitions, movement quality, fatigue, pain, assistance, task challenge, specificity, rest breaks, home adherence and functional carryover.
@@ -57,7 +58,7 @@ npm run check
 npm test
 ```
 
-The automated suite verifies JavaScript syntax, all six language options, navigation, storage migration, the capped and deduplicated AI queue, structured queries, clinician signal actions, device telemetry, equipment-to-session linkage, FHIR-shaped export relationships and data/export actions.
+The automated suite verifies JavaScript syntax, all six language options, top-level and intelligence-layer navigation, storage migration, the capped and deduplicated AI queue, compact dose prioritisation, structured queries, clinician signal actions, device telemetry, equipment-to-session linkage, FHIR-shaped export relationships and data/export actions.
 
 ## GitHub Pages
 

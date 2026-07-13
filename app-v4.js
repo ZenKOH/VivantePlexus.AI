@@ -1060,8 +1060,17 @@ function renderOutcomes() {
 }
 function charts() {
   const ps = scope();
-  $("doseChart").innerHTML = ps.length
+  const doseCases = ps.length > 8
     ? ps
+        .slice()
+        .sort((a, b) => {
+          const aStats = stats(a), bStats = stats(b);
+          return Math.min(aStats.minutePct, aStats.repPct) - Math.min(bStats.minutePct, bStats.repPct) || a.label.localeCompare(b.label);
+        })
+        .slice(0, 8)
+    : ps;
+  $("doseChart").innerHTML = doseCases.length
+    ? doseCases
         .map((c) => {
           const s = stats(c);
           return `<div class="chart-row"><span>${e(c.label)}</span><div class="dual-bars"><i class="bar-minutes" style="width:${s.minutePct}%"></i><i class="bar-reps" style="width:${s.repPct}%"></i></div><b>${s.minutePct}% min · ${s.repPct}% reps</b></div>`;
@@ -1073,7 +1082,7 @@ function charts() {
     sch = w.reduce((a, s) => a + n(s.minutes), 0),
     ap = pct(act, sch);
   $("doseChartSummary").textContent =
-    `${act} active minutes logged this week across ${ps.length} programme(s).`;
+    `${act} active minutes logged this week across ${ps.length} programme(s).${ps.length > doseCases.length ? ` Showing the ${doseCases.length} lowest-attainment cases.` : ""}`;
   $("activeScheduledChart").innerHTML =
     `<div class="stacked-bar"><span class="active" style="width:${ap}%"></span><span class="inactive" style="width:${100 - ap}%"></span></div><div class="legend"><span><i class="dot active-dot"></i>Active ${act} min</span><span><i class="dot inactive-dot"></i>Other scheduled time ${Math.max(0, sch - act)} min</span></div>`;
   $("activeScheduledSummary").textContent = sch
@@ -1291,6 +1300,9 @@ function tab(name, historyMode = "replace") {
     p.hidden = !on;
   });
   const hashTarget = requested !== target && $(requested) ? requested : target;
+  if (hashTarget === "ai-review") globalThis.PlexusAI?.showLayer?.("signals");
+  else if (hashTarget === "ai-transparency") globalThis.PlexusAI?.showLayer?.("transparency");
+  else if (target === "overview") globalThis.PlexusAI?.showLayer?.("command");
   if (historyMode === "push" && location.hash !== `#${hashTarget}`)
     history.pushState?.(null, "", `#${hashTarget}`);
   else if (historyMode === "replace")

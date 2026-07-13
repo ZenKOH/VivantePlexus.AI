@@ -348,11 +348,25 @@
     }
     target.innerHTML = `<div class="brief-priority"><span class="badge ${e(signal.severity)}">${e(signal.severity)} priority</span><span>${e(signal.type)} · updated ${fmt(today())}</span></div>
       <h3>${e(signal.case.label)}</h3><p class="brief-context">${e(signal.case.diagnosis)} · ${e(signal.case.phase)} · ${e(signal.case.domain)}</p>
-      <div class="brief-block"><span>What changed</span><p>${e(signal.summary)}</p></div>
-      <div class="brief-block"><span>Why it may matter</span><p>${e(signal.why)}</p></div>
-      <div class="brief-block"><span>Evidence</span><ul>${signal.evidence.map((item) => `<li>${e(item)}</li>`).join("")}</ul></div>
+      <div class="brief-block brief-change"><span>What changed</span><p>${e(signal.summary)}</p></div>
+      <div class="brief-block brief-why"><span>Why it may matter</span><p>${e(signal.why)}</p></div>
+      <div class="brief-block brief-evidence"><span>Evidence</span><ul>${signal.evidence.map((item) => `<li>${e(item)}</li>`).join("")}</ul></div>
       <div class="brief-uncertainty"><strong>Uncertainty</strong><span>Data completeness ${signal.completeness}%</span><span>${signal.type === "Trend" ? "Short within-case trend window" : "Configured deterministic rule"}</span></div>
       <p class="brief-boundary">Clinician interpretation required. This structured summary does not diagnose, predict recovery or recommend treatment.</p>`;
+  }
+
+  function renderPriorityPreview() {
+    const target = $("priorityPreview");
+    if (!target) return;
+    const signals = activeSignals(3);
+    target.innerHTML = signals.length
+      ? signals.map((signal, index) => `<button type="button" class="priority-row" data-priority-case="${e(signal.caseId)}">
+          <span class="priority-rank">${index + 1}</span>
+          <span class="priority-copy"><strong>${e(signal.case.label)}</strong><small>${e(signal.title)}</small></span>
+          <span class="priority-level ${signal.severity}">${e(signal.severity)} · ${signal.score}</span>
+          <span class="priority-arrow" aria-hidden="true">→</span>
+        </button>`).join("")
+      : `<div class="empty-state compact"><strong>No active cases in this view</strong><p>Change the review focus or inspect the clinician audit.</p></div>`;
   }
 
   function deviceMetrics() {
@@ -394,6 +408,27 @@
     target.innerHTML = metrics.length
       ? metrics.map((metric) => `<article class="device-iq-card"><div class="device-iq-head"><div><span class="device-category">${e(metric.item.category)}</span><h3>${e(metric.item.name)}</h3></div><span class="badge ${metric.calibrationIssues ? "warning" : "good"}">${metric.calibrationIssues ? `${metric.calibrationIssues} data check${metric.calibrationIssues === 1 ? "" : "s"}` : "No recorded data flags"}</span></div><div class="device-metrics"><div><strong>${metric.sessions.length}</strong><span>linked sessions</span></div><div><strong>${metric.conversion}%</strong><span>active conversion</span></div><div><strong>${metric.validRate}%</strong><span>valid / attempted reps</span></div><div><strong>${metric.contribution == null ? "—" : `${metric.contribution}%`}</strong><span>active contribution</span></div></div><p>${metric.valid.toLocaleString()} valid repetitions · mean fatigue ${round(metric.fatigue, 1)}/10</p></article>`).join("")
       : `<p class="empty">No equipment records available.</p>`;
+  }
+
+  function renderOutcomeIntelligence() {
+    const target = $("outcomeIntelligence");
+    if (!target) return;
+    const caseIds = new Set((typeof scope === "function" ? scope() : state.cases).map((c) => c.id));
+    const outcomes = state.outcomes
+      .filter((outcome) => caseIds.has(outcome.caseId))
+      .sort((a, b) => String(b.date).localeCompare(String(a.date)))
+      .slice(0, 6);
+    target.innerHTML = outcomes.length
+      ? outcomes.map((outcome) => {
+          const progress = typeof outcomeProgress === "function" ? outcomeProgress(outcome) : null;
+          const caseRecord = getCase(outcome.caseId);
+          return `<article class="outcome-intelligence-card">
+            <div class="outcome-intelligence-head"><div><span>${e(caseRecord?.label || "Case")}</span><h3>${e(outcome.name)}</h3></div><time datetime="${e(outcome.date)}">${fmt(outcome.date)}</time></div>
+            <div class="outcome-values"><span>Baseline<strong>${e(outcome.baseline || "—")}</strong></span><span>Current<strong>${e(outcome.current || "—")}</strong></span><span>Target<strong>${e(outcome.target || "—")}</strong></span></div>
+            ${progress == null ? `<p class="outcome-direction">${e(outcome.direction)} · clinician interpretation required</p>` : `<div class="outcome-progress"><span style="width:${progress}%"></span></div><p class="outcome-direction"><strong>${progress}%</strong> of recorded target trajectory · ${e(outcome.direction)}</p>`}
+          </article>`;
+        }).join("")
+      : `<div class="empty-state"><strong>No outcome records in this view</strong><p>Record an outcome measure to add a functional trajectory.</p></div>`;
   }
 
   function renderSignalSummary() {
@@ -483,6 +518,32 @@
     target.innerHTML = `<div class="query-interpretation"><span>Interpreted as</span><strong>${e(result.intent)}</strong></div>${result.items.length ? `<ol>${result.items.map((item) => `<li>${item}</li>`).join("")}</ol>` : `<p>No matching active signals were found in the selected scope.</p>`}<p class="query-method"><strong>Method shown:</strong> ${e(result.method)} <span>No external request was made.</span></p>`;
   }
 
+  function showLayer(name, focusHeading = false) {
+    const allowed = new Set(["command", "signals", "dose", "device", "outcomes", "cases", "transparency"]);
+    const layerName = allowed.has(name) ? name : "command";
+    document.querySelectorAll("[data-workspace-layer]").forEach((layer) => {
+      const active = layer.dataset.workspaceLayer === layerName;
+      layer.hidden = !active;
+      layer.classList.toggle("active", active);
+    });
+    document.querySelectorAll('.workspace-layer-nav [role="tab"]').forEach((button) => {
+      const active = button.dataset.workspaceLayerTarget === layerName;
+      button.classList.toggle("active", active);
+      button.setAttribute("aria-selected", String(active));
+      button.tabIndex = active ? 0 : -1;
+    });
+    const stage = document.querySelector(".workspace-stage");
+    if (stage) stage.scrollTop = 0;
+    if (focusHeading) {
+      const heading = document.querySelector(`[data-workspace-layer="${layerName}"] h2, [data-workspace-layer="${layerName}"] h3`);
+      if (heading) {
+        heading.tabIndex = -1;
+        heading.focus?.({ preventScroll: true });
+      }
+    }
+    return layerName;
+  }
+
   function bindEvents() {
     $("aiQueryForm")?.addEventListener("submit", (event) => {
       event.preventDefault();
@@ -496,6 +557,31 @@
       event.preventDefault();
       tab(link.dataset.openTab, "push");
     }));
+    document.querySelectorAll("[data-workspace-layer-target]").forEach((button) => button.addEventListener("click", () => {
+      showLayer(button.dataset.workspaceLayerTarget, button.getAttribute("role") !== "tab");
+    }));
+    document.querySelector(".workspace-layer-nav")?.addEventListener("keydown", (event) => {
+      if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+      const tabs = [...document.querySelectorAll('.workspace-layer-nav [role="tab"]')];
+      const current = tabs.indexOf(document.activeElement);
+      if (current < 0) return;
+      event.preventDefault();
+      const next = event.key === "Home"
+        ? 0
+        : event.key === "End"
+          ? tabs.length - 1
+          : (current + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length;
+      tabs[next].focus();
+      showLayer(tabs[next].dataset.workspaceLayerTarget);
+    });
+    $("priorityPreview")?.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-priority-case]");
+      if (!button) return;
+      if ($("reviewCaseFilter")) $("reviewCaseFilter").value = button.dataset.priorityCase;
+      render();
+      showLayer("signals", true);
+      status(`Showing signal evidence for ${getCase(button.dataset.priorityCase)?.label || "selected case"}.`);
+    });
     $("insights")?.addEventListener("click", (event) => {
       const button = event.target.closest("[data-ai-action]");
       if (!button) return;
@@ -505,7 +591,7 @@
       if (button.dataset.aiAction === "review") {
         $("reviewCaseFilter").value = signal.caseId;
         render();
-        $("aiClinicalBrief")?.scrollIntoView?.({ behavior: "smooth", block: "start" });
+        showLayer("command", true);
         status(`Reviewing ${signal.case.label}.`);
         return;
       }
@@ -531,8 +617,10 @@
   function renderAll() {
     renderQueue();
     renderBrief();
+    renderPriorityPreview();
     renderSignalSummary();
     renderDeviceIQ();
+    renderOutcomeIntelligence();
     renderAudit();
     if ($("aiMethodVersion")) $("aiMethodVersion").textContent = `${METHOD_VERSION} · Local browser execution · No external model endpoint`;
   }
@@ -548,6 +636,7 @@
     render: renderAll,
     renderQueue,
     runQuery,
+    showLayer,
     weekProgress,
     weekProgressFor,
   };
@@ -556,7 +645,8 @@
     ensureProgrammePaceField();
     bindEvents();
     renderAll();
-    runQuery("Which cases need review first?");
+    const deepLink = location.hash.replace("#", "");
+    showLayer(deepLink === "ai-review" ? "signals" : deepLink === "ai-transparency" ? "transparency" : "command");
     globalThis.i18n?.translatePage();
   });
 })();
