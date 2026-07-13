@@ -21,6 +21,7 @@ https://zenkoh.github.io/VivantePlexus.AI/
 - Explore a second cohort of 36 alternative, evidence-informed cases with structured referral profile, presentation, participation priority, environment, complexity, multidisciplinary review focus and pathway-specific clinical boundaries.
 - Review 216 synthetic therapy sessions and 144 outcome records.
 - Open any recent session directly in its owning comprehensive case report; the session title remains a descriptive keyboard-accessible link and the separate delete action stays isolated.
+- Navigate from every case in the clinical-review heatmap directly to its comprehensive report, populated programme record or case-filtered therapy sessions.
 - Track scheduled time, active practice, valid and attempted repetitions, movement quality, fatigue, pain, assistance, task challenge, specificity, rest breaks, home adherence and functional carryover.
 - Maintain an editable equipment library and link one or more devices to each therapy session.
 - Capture device mode, assistance, active contribution, range of motion, symmetry and calibration/data-quality context.
@@ -62,7 +63,7 @@ npm run check
 npm test
 ```
 
-The automated suite verifies JavaScript syntax, all six language options, top-level and intelligence-layer navigation, additive 36-to-72 case migration, the capped and deduplicated AI queue, compact dose prioritisation, structured queries, clinician signal actions, all 72 comprehensive case-report routes, all 216 session-to-report links, rich scenario fields for Cases 37–72, clinician-addendum persistence, device telemetry, equipment-to-session linkage, FHIR-shaped export relationships and data/export actions.
+The automated suite verifies JavaScript syntax, all six language options, top-level and intelligence-layer navigation, additive 36-to-72 case migration, the capped and deduplicated AI queue, compact dose prioritisation, structured queries, clinician signal actions, all 72 comprehensive case-report routes, all 216 session-to-report links, all 72 heatmap case workflows, rich scenario fields for Cases 37–72, clinician-addendum persistence, device telemetry, equipment-to-session linkage, FHIR-shaped export relationships and data/export actions.
 
 ## GitHub Pages
 

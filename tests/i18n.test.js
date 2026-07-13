@@ -76,19 +76,22 @@ test("localises the equipment workflow in every added language", () => {
   }
 });
 
-test("localises the session-to-report navigation in every added language", () => {
+test("localises the case and session navigation in every added language", () => {
   const expected = {
-    "zh-Hans": "打开病例报告",
-    es: "Abrir informe del caso",
-    fr: "Ouvrir le rapport du cas",
-    de: "Fallbericht öffnen",
-    ms: "Buka laporan kes",
+    "zh-Hans": ["打开病例报告", "病例记录", "报告"],
+    es: ["Abrir informe del caso", "Registro del caso", "Informe"],
+    fr: ["Ouvrir le rapport du cas", "Dossier du cas", "Rapport"],
+    de: ["Fallbericht öffnen", "Fallakte", "Bericht"],
+    ms: ["Buka laporan kes", "Rekod kes", "Laporan"],
   };
   const guidance =
     "Select a session title to open its comprehensive case report. Sample data includes 216 synthetic therapy sessions across 72 cases.";
-  for (const [language, label] of Object.entries(expected)) {
+  for (const [language, labels] of Object.entries(expected)) {
     global.i18n.setLanguage(language);
-    assert.equal(global.i18n.translateText("Open case report"), label);
+    assert.equal(global.i18n.translateText("Open case report"), labels[0]);
+    assert.equal(global.i18n.translateText("Case record"), labels[1]);
+    assert.equal(global.i18n.translateText("Report"), labels[2]);
+    assert.notEqual(global.i18n.translateText("Sessions"), "Sessions");
     assert.notEqual(global.i18n.translateText(guidance), guidance);
   }
 });

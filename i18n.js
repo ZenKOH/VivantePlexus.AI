@@ -85,6 +85,8 @@
     "All 72 reports": ["全部 72 份报告","Los 72 informes","Les 72 rapports","Alle 72 Berichte","Semua 72 laporan"],
     "Select a session title to open its comprehensive case report. Sample data includes 216 synthetic therapy sessions across 72 cases.": ["选择任一治疗记录标题以打开其完整病例报告。示例数据包含 72 个病例的 216 次合成治疗记录。","Seleccione el título de una sesión para abrir su informe clínico completo. Los datos de muestra incluyen 216 sesiones terapéuticas sintéticas de 72 casos.","Sélectionnez le titre d’une séance pour ouvrir son rapport de cas complet. Les données d’exemple comprennent 216 séances thérapeutiques synthétiques pour 72 cas.","Wählen Sie einen Sitzungstitel, um den zugehörigen umfassenden Fallbericht zu öffnen. Die Beispieldaten umfassen 216 synthetische Therapiesitzungen für 72 Fälle.","Pilih tajuk sesi untuk membuka laporan kes komprehensifnya. Data sampel merangkumi 216 sesi terapi sintetik bagi 72 kes."],
     "Open case report": ["打开病例报告","Abrir informe del caso","Ouvrir le rapport du cas","Fallbericht öffnen","Buka laporan kes"],
+    "Case record": ["病例记录","Registro del caso","Dossier du cas","Fallakte","Rekod kes"],
+    "Report": ["报告","Informe","Rapport","Bericht","Laporan"],
     "Clinical scenario & referral context": ["临床情境与转诊背景","Escenario clínico y contexto de derivación","Scénario clinique et contexte d’orientation","Klinisches Szenario und Überweisungskontext","Senario klinikal & konteks rujukan"],
     "Synthetic scenario": ["合成情境","Escenario sintético","Scénario synthétique","Synthetisches Szenario","Senario sintetik"],
     "Edit source programme": ["编辑源方案","Editar programa fuente","Modifier le programme source","Quellprogramm bearbeiten","Edit program sumber"],

@@ -998,9 +998,40 @@ function renderTable() {
           review(c).find((i) => i.severity === "risk") ||
           review(c).find((i) => i.severity === "warning") ||
           review(c)[0];
-      return `<tr><td><strong>${e(c.label)}</strong><br><span>${e(c.diagnosis)} · ${e(c.phase)}</span></td><td>${e(c.primaryGoal)}</td><td>${s.active}/${c.weeklyMinutes} min<br>${s.reps}/${c.weeklyReps} reps</td><td>${s.quality ? s.quality.toFixed(1) : "0.0"}/5</td><td>${s.fatigue ? s.fatigue.toFixed(1) : "0.0"}/10</td><td>${s.pain ? s.pain.toFixed(1) : "0.0"}/10</td><td>${s.carryAssessed ? `${s.carryRate}%` : "Not assessed"}</td><td><span class="badge ${flag.severity}">${e(flag.title)}</span></td></tr>`;
+      return `<tr data-case-row="${e(c.id)}"><td class="case-link-cell"><a class="case-primary-link" href="#reports" data-case-workflow="report" data-case-id="${e(c.id)}"><strong>${e(c.label)}</strong><span class="case-link-destination">Report <span aria-hidden="true">→</span></span></a><div class="case-cell-meta"><span class="case-pathway">${e(c.diagnosis)} · ${e(c.phase)}</span><nav class="case-row-links" aria-label="${e(c.label)}"><a href="#programmes" data-case-workflow="programme" data-case-id="${e(c.id)}">Case record</a><a href="#sessions" data-case-workflow="sessions" data-case-id="${e(c.id)}">Sessions</a></nav></div></td><td>${e(c.primaryGoal)}</td><td>${s.active}/${c.weeklyMinutes} min<br>${s.reps}/${c.weeklyReps} reps</td><td>${s.quality ? s.quality.toFixed(1) : "0.0"}/5</td><td>${s.fatigue ? s.fatigue.toFixed(1) : "0.0"}/10</td><td>${s.pain ? s.pain.toFixed(1) : "0.0"}/10</td><td>${s.carryAssessed ? `${s.carryRate}%` : "Not assessed"}</td><td><span class="badge ${flag.severity}">${e(flag.title)}</span></td></tr>`;
     })
     .join("");
+}
+
+function openCaseWorkflow(caseId, destination) {
+  const linkedCase = getCase(caseId);
+  if (!linkedCase) return false;
+  if (destination === "report") {
+    if (!globalThis.PlexusReports?.openCaseReport) return false;
+    tab("reports", "push");
+    globalThis.PlexusReports.openCaseReport(linkedCase.id, true);
+    return true;
+  }
+  if (destination === "sessions") {
+    if ($("reviewCaseFilter")) $("reviewCaseFilter").value = linkedCase.id;
+    render();
+    if ($("sessionCaseId")) $("sessionCaseId").value = linkedCase.id;
+    tab("sessions", "push");
+    const firstSession = [
+      ...document.querySelectorAll(
+        "#sessionsList [data-open-session-report]",
+      ),
+    ].find((link) => link.dataset.openSessionReport === linkedCase.id);
+    (firstSession || $("sessionCaseId"))?.focus();
+    status(`Showing therapy sessions for ${linkedCase.label}.`);
+    return true;
+  }
+  if (destination === "programme") {
+    editProgram(linkedCase.id, "push");
+    status(`Opened case record for ${linkedCase.label}.`);
+    return true;
+  }
+  return false;
 }
 function renderInsights() {
   if (globalThis.PlexusAI?.renderQueue) {
@@ -1421,7 +1452,7 @@ function removeEquipment(id) {
   render();
   status("Equipment removed.");
 }
-function editProgram(id) {
+function editProgram(id, historyMode = "replace") {
   const c = getCase(id);
   if (!c) return;
   Object.entries({
@@ -1444,7 +1475,7 @@ function editProgram(id) {
   }).forEach(([k, v]) => {
     if ($(k)) $(k).value = v ?? "";
   });
-  tab("programmes");
+  tab("programmes", historyMode);
   $("caseLabel")?.focus();
 }
 function saveProgram(ev) {
@@ -1831,6 +1862,13 @@ function bind() {
       event.preventDefault();
       tab("reports", "push");
       globalThis.PlexusReports.openCaseReport(linkedCase.id, true);
+    };
+  if ($("caseTable"))
+    $("caseTable").onclick = (event) => {
+      const link = event.target.closest?.("[data-case-workflow]");
+      if (!link) return;
+      if (openCaseWorkflow(link.dataset.caseId, link.dataset.caseWorkflow))
+        event.preventDefault();
     };
   $("caseForm")?.addEventListener("submit", saveProgram);
   $("sessionForm")?.addEventListener("submit", saveSession);

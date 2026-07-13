@@ -312,6 +312,98 @@ test("links every recent session to its owning comprehensive case report", () =>
   dom.window.close();
 });
 
+test("links every heatmap case to its report, case record and filtered sessions", () => {
+  const dom = launch();
+  const { document } = dom.window;
+  const saved = JSON.parse(
+    dom.window.localStorage.getItem("vivantePlexus.v1"),
+  );
+  document.getElementById("layerTabCases").click();
+
+  const workflowLinks = [
+    ...document.querySelectorAll("#caseTable [data-case-workflow]"),
+  ];
+  const expectedHref = {
+    report: "#reports",
+    programme: "#programmes",
+    sessions: "#sessions",
+  };
+
+  assert.equal(document.querySelectorAll("#caseTable [data-case-row]").length, 72);
+  assert.equal(workflowLinks.length, 216);
+  for (const clinicalCase of saved.cases) {
+    const caseLinks = workflowLinks.filter(
+      (link) => link.dataset.caseId === clinicalCase.id,
+    );
+    assert.equal(caseLinks.length, 3);
+    assert.deepEqual(
+      new Set(caseLinks.map((link) => link.dataset.caseWorkflow)),
+      new Set(["report", "programme", "sessions"]),
+    );
+    for (const link of caseLinks)
+      assert.equal(
+        link.getAttribute("href"),
+        expectedHref[link.dataset.caseWorkflow],
+      );
+  }
+
+  const reportLinks = workflowLinks.filter(
+    (link) => link.dataset.caseWorkflow === "report",
+  );
+  for (const link of reportLinks) {
+    link.click();
+    assert.equal(document.querySelector(".tab-panel.active").id, "reports");
+    assert.equal(
+      document.querySelector(".case-report-document").dataset.caseReport,
+      link.dataset.caseId,
+    );
+  }
+
+  const case05Report = reportLinks.find(
+    (link) => link.dataset.caseId === "case-05",
+  );
+  assert.match(case05Report.textContent, /Case 05 · SCI Hand/);
+
+  document.querySelector('[data-tab="overview"]').click();
+  document.getElementById("layerTabCases").click();
+  document
+    .querySelector(
+      '#caseTable [data-case-id="case-05"][data-case-workflow="sessions"]',
+    )
+    .click();
+  const case05Sessions = saved.sessions.filter(
+    (session) => session.caseId === "case-05",
+  );
+  const visibleSessionLinks = [
+    ...document.querySelectorAll("#sessionsList [data-open-session-report]"),
+  ];
+  assert.equal(dom.window.location.hash, "#sessions");
+  assert.equal(document.querySelector(".tab-panel.active").id, "sessions");
+  assert.equal(document.getElementById("reviewCaseFilter").value, "case-05");
+  assert.equal(document.getElementById("sessionCaseId").value, "case-05");
+  assert.equal(visibleSessionLinks.length, case05Sessions.length);
+  assert.ok(
+    visibleSessionLinks.every(
+      (link) => link.dataset.openSessionReport === "case-05",
+    ),
+  );
+  assert.equal(document.activeElement.dataset.openSessionReport, "case-05");
+
+  document.querySelector('[data-tab="overview"]').click();
+  document.getElementById("layerTabCases").click();
+  document
+    .querySelector(
+      '#caseTable [data-case-id="case-05"][data-case-workflow="programme"]',
+    )
+    .click();
+  assert.equal(dom.window.location.hash, "#programmes");
+  assert.equal(document.querySelector(".tab-panel.active").id, "programmes");
+  assert.equal(document.getElementById("caseId").value, "case-05");
+  assert.equal(document.getElementById("caseLabel").value, "Case 05 · SCI Hand");
+  assert.equal(document.activeElement.id, "caseLabel");
+  dom.window.close();
+});
+
 test("adds 36 diverse scenarios with structured clinical context and pathway evidence", () => {
   const dom = launch();
   const { document } = dom.window;
