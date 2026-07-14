@@ -58,7 +58,7 @@ test("renders the VivantePlexus and Robotimize brand identity", () => {
   assert.equal(document.querySelector(".header-controls .header-assurance"), null);
   assert.equal(document.querySelector(".header-trust"), null);
   assert.equal(document.querySelectorAll(".tab-nav > .tab-nav-inner > .tab-button").length, 6);
-  assert.match(document.querySelector('link[href*="ui-polish.css"]').href, /ui-polish\.css\?v=20260713-9$/);
+  assert.match(document.querySelector('link[href*="ui-polish.css"]').href, /ui-polish\.css\?v=20260714-2$/);
   assert.ok(dom.window.localStorage.getItem("vivantePlexus.v1"));
   assert.equal(dom.window.localStorage.getItem("neurorehabDoseTracker.v5"), null);
   dom.window.close();
