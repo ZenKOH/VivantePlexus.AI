@@ -1,13 +1,12 @@
-/* VivantePlexus welcome layer — inspired by the HandVivante entry state, adapted for clinical intelligence. */
+/* VivantePlexus welcome layer — streamlined responsive presentation. */
 html.plexus-welcome-pending body { visibility: hidden; }
 
 body.plexus-welcome-active {
   min-height: 100vh;
   overflow-x: hidden;
   background:
-    radial-gradient(circle at 7% 0%, rgba(194, 31, 71, .09), transparent 30%),
-    radial-gradient(circle at 93% 4%, rgba(194, 31, 71, .055), transparent 27%),
-    linear-gradient(180deg, #fff 0%, #fff 60%, #fff8fa 100%);
+    radial-gradient(circle at 8% -8%, rgba(194, 31, 71, .07), transparent 28rem),
+    linear-gradient(180deg, #ffffff 0%, #fbfafb 100%);
 }
 
 body.plexus-welcome-active::before {
@@ -15,13 +14,11 @@ body.plexus-welcome-active::before {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background-image:
-    linear-gradient(rgba(194, 31, 71, .028) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(194, 31, 71, .028) 1px, transparent 1px);
-  background-size: 54px 54px;
-  mask-image: linear-gradient(to bottom, #000, transparent 82%);
+  background-image: radial-gradient(rgba(194, 31, 71, .09) .7px, transparent .7px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, .34), transparent 48rem);
   content: "";
-  opacity: 1;
+  opacity: .42;
 }
 
 body.plexus-welcome-active > .tab-nav,
@@ -36,103 +33,200 @@ body.plexus-welcome-active .app-header {
   inset: 0 0 auto;
   z-index: 50;
   min-height: 0;
-  border-top: 0;
-  border-bottom: 0;
+  border: 0;
   background: transparent;
   box-shadow: none;
 }
 
 body.plexus-welcome-active .app-header-inner {
-  width: min(1600px, calc(100% - clamp(36px, 10vw, 144px)));
-  min-height: 112px;
-  padding: 24px 0;
+  width: min(1280px, calc(100% - 48px));
+  min-height: 92px;
+  padding: 18px 0;
 }
 
 body.plexus-welcome-active .brand-block { display: block; }
-body.plexus-welcome-active .company-brand { width: min(285px, 58vw); }
+body.plexus-welcome-active .company-brand { width: min(210px, 48vw); margin: 0; }
 body.plexus-welcome-active .brand-copy,
 body.plexus-welcome-active .data-menu { display: none !important; }
 body.plexus-welcome-active .header-controls { display: block; width: auto; }
-body.plexus-welcome-active .language-switcher { width: auto; }
+body.plexus-welcome-active .language-switcher { width: auto; margin: 0; }
 body.plexus-welcome-active .language-button {
-  min-width: 190px;
-  border-color: rgba(194, 31, 71, .22);
-  background: rgba(255, 255, 255, .9);
-  box-shadow: 0 10px 30px rgba(100, 22, 46, .07);
+  min-width: 152px;
+  min-height: 42px;
+  padding: 9px 12px;
+  border: 1px solid #e6d9dd;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .94);
+  box-shadow: 0 8px 24px rgba(70, 45, 53, .06);
+  color: #4e474a;
 }
 
 .plexus-welcome[hidden] { display: none !important; }
 .plexus-welcome {
   position: relative;
   z-index: 1;
+  width: min(1280px, 100%);
   min-height: 100svh;
-  width: min(1600px, 100%);
   margin: 0 auto;
-  padding: clamp(132px, 12vw, 172px) clamp(28px, 5vw, 72px) clamp(36px, 5vw, 72px);
+  padding: clamp(108px, 10vw, 132px) 24px 36px;
   color: #403e3e;
 }
 .plexus-welcome:focus { outline: none; }
+
 .plexus-welcome-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.18fr) minmax(360px, .72fr);
-  gap: clamp(34px, 4.5vw, 74px);
+  grid-template-columns: minmax(0, 1fr) minmax(330px, 390px);
+  gap: clamp(34px, 4vw, 56px);
   align-items: center;
 }
-.plexus-welcome-showcase { min-width: 0; }
+
+.plexus-welcome-showcase {
+  display: grid;
+  min-width: 0;
+}
+.plexus-welcome-copy { order: 1; }
+.plexus-map-wrap { order: 2; }
+
+.plexus-welcome-copy .eyebrow,
+.plexus-access-card .eyebrow {
+  margin: 0 0 9px;
+  color: #a51638;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.plexus-welcome-copy h1 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .18em;
+  margin: 0 0 18px;
+  color: #302d2e;
+  font-size: clamp(46px, 5.4vw, 72px);
+  line-height: .98;
+  letter-spacing: -.055em;
+}
+.plexus-welcome-copy h1 span { color: #302d2e; }
+.plexus-welcome-copy h1 em {
+  margin: 0;
+  color: #b31b41;
+  font-size: .56em;
+  font-style: normal;
+  letter-spacing: -.025em;
+}
+
+.plexus-hero-copy {
+  max-width: 720px;
+  margin: 0;
+  color: #5b5558;
+  font-size: clamp(17px, 1.5vw, 21px);
+  line-height: 1.5;
+}
+
+.plexus-mechanism-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 26px 0 18px;
+  border-top: 1px solid #e8dfe2;
+  border-bottom: 1px solid #e8dfe2;
+}
+
+.plexus-mechanism-strip article {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 10px;
+  min-width: 0;
+  padding: 16px 17px;
+  background: transparent;
+}
+.plexus-mechanism-strip article + article { border-left: 1px solid #e8dfe2; }
+.plexus-mechanism-strip article > strong {
+  color: #b31b41;
+  font-size: 10px;
+  line-height: 1.45;
+}
+.plexus-mechanism-strip article div { display: grid; gap: 4px; }
+.plexus-mechanism-strip b {
+  color: #403b3d;
+  font-size: 12px;
+  line-height: 1.35;
+}
+.plexus-mechanism-strip span {
+  color: #6d6769;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.plexus-clinical-note {
+  max-width: 760px;
+  margin: 0;
+  padding: 11px 13px;
+  border: 1px solid #eadfe2;
+  border-radius: 10px;
+  background: rgba(255, 249, 250, .86);
+  color: #6c6568;
+  font-size: 11px;
+  line-height: 1.5;
+}
 
 .plexus-map-wrap {
   position: relative;
-  min-height: 360px;
-  margin: 0 0 28px;
+  min-height: 252px;
+  margin: 22px 0 0;
   overflow: hidden;
-  border: 1px solid rgba(194, 31, 71, .16);
-  border-radius: 28px;
+  border: 1px solid #e7dde0;
+  border-radius: 18px;
   background:
-    radial-gradient(circle at 50% 48%, rgba(194, 31, 71, .09), transparent 31%),
-    linear-gradient(145deg, #fff 0%, #fff9fb 58%, #fff 100%);
-  box-shadow: 0 26px 70px rgba(100, 22, 46, .10);
+    radial-gradient(circle at 50% 50%, rgba(194, 31, 71, .07), transparent 31%),
+    rgba(255, 255, 255, .82);
+  box-shadow: 0 12px 34px rgba(70, 45, 53, .055);
 }
 .plexus-map-wrap::before {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(rgba(194, 31, 71, .13) .8px, transparent .8px);
-  background-size: 22px 22px;
-  mask-image: linear-gradient(135deg, #000, transparent 78%);
+  background-image: radial-gradient(rgba(194, 31, 71, .12) .65px, transparent .65px);
+  background-size: 21px 21px;
+  mask-image: linear-gradient(135deg, #000, transparent 82%);
   content: "";
-  opacity: .45;
+  opacity: .32;
 }
 .plexus-live-chip {
   position: absolute;
-  top: 20px;
-  left: 22px;
+  top: 14px;
+  left: 15px;
   z-index: 4;
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  padding: 8px 12px;
-  border: 1px solid rgba(194, 31, 71, .16);
+  gap: 8px;
+  padding: 6px 9px;
+  border: 1px solid #e6dcdf;
   border-radius: 999px;
-  background: rgba(255, 255, 255, .92);
-  color: #5e5558;
-  font-size: 11px;
-  letter-spacing: .03em;
-  box-shadow: 0 8px 22px rgba(100, 22, 46, .06);
+  background: rgba(255, 255, 255, .95);
+  color: #635c5f;
+  font-size: 9px;
+  letter-spacing: .02em;
 }
 .plexus-live-chip span {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: #2f7d5a;
-  box-shadow: 0 0 0 5px rgba(47, 125, 90, .1);
+  box-shadow: 0 0 0 4px rgba(47, 125, 90, .09);
 }
 .plexus-map {
   position: relative;
-  width: min(760px, 100%);
-  height: 360px;
+  width: min(720px, 100%);
+  height: 252px;
   margin: 0 auto;
 }
 .plexus-connectors { position: absolute; inset: 0; width: 100%; height: 100%; }
-.plexus-connectors path { stroke-dasharray: 9 9; animation: plexus-flow 16s linear infinite; }
+.plexus-connectors path {
+  stroke-dasharray: 8 10;
+  stroke-width: 1.5;
+  animation: plexus-flow 18s linear infinite;
+}
 .plexus-core {
   position: absolute;
   top: 50%;
@@ -140,177 +234,150 @@ body.plexus-welcome-active .language-button {
   z-index: 3;
   display: grid;
   place-items: center;
-  width: 122px;
-  height: 122px;
-  padding: 18px;
+  width: 88px;
+  height: 88px;
+  padding: 12px;
   border-radius: 50%;
-  background: linear-gradient(145deg, #d92e57, #9f1738 74%);
+  background: linear-gradient(145deg, #cf2851, #9e1737 78%);
   color: #fff;
   text-align: center;
-  box-shadow: 0 20px 45px rgba(194, 31, 71, .25), 0 0 0 14px rgba(194, 31, 71, .07);
+  box-shadow: 0 14px 32px rgba(194, 31, 71, .19), 0 0 0 10px rgba(194, 31, 71, .055);
   transform: translate(-50%, -50%);
 }
-.plexus-core strong { color: #fff; font-size: 20px; line-height: 1; letter-spacing: -.03em; }
+.plexus-core strong {
+  color: #fff;
+  font-size: 16px;
+  line-height: 1;
+  letter-spacing: -.025em;
+}
 .plexus-core span {
   color: rgba(255, 255, 255, .78);
-  font-size: 10px;
+  font-size: 8px;
   font-weight: 800;
-  letter-spacing: .08em;
-  text-transform: uppercase;
+  letter-spacing: .05em;
+  text-transform: none;
 }
 .plexus-node {
   position: absolute;
   z-index: 2;
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 2px 9px;
-  width: 150px;
-  min-height: 68px;
-  padding: 12px 14px;
-  border: 1px solid rgba(194, 31, 71, .18);
-  border-radius: 16px;
-  background: rgba(255, 255, 255, .94);
-  box-shadow: 0 13px 32px rgba(100, 22, 46, .08);
+  gap: 1px 7px;
+  width: 126px;
+  min-height: 46px;
+  padding: 9px 10px;
+  border: 1px solid #e6dce0;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, .96);
+  box-shadow: 0 7px 18px rgba(70, 45, 53, .055);
 }
-.plexus-node > span { grid-row: 1 / 3; align-self: center; color: #c21f47; font-size: 10px; font-weight: 950; }
-.plexus-node b { color: #3d383a; font-size: 13px; }
-.plexus-node small { color: #777073; font-size: 10px; font-weight: 700; }
-.node-dose { top: 45px; left: 25px; }
-.node-devices { top: 36px; right: 28px; }
-.node-outcomes { top: 220px; left: 8px; }
-.node-cases { top: 226px; right: 4px; }
-.node-reports { bottom: 18px; left: 195px; }
-.node-signals { right: 190px; bottom: 17px; }
-
-.plexus-welcome-copy .eyebrow,
-.plexus-access-card .eyebrow {
-  margin-bottom: 10px;
-  color: #c21f47;
+.plexus-node > span {
+  grid-row: 1 / 3;
+  align-self: center;
+  color: #b31b41;
+  font-size: 9px;
+  font-weight: 950;
+}
+.plexus-node b {
+  color: #413c3e;
   font-size: 11px;
-  font-weight: 900;
-  letter-spacing: .15em;
-  text-transform: uppercase;
+  line-height: 1.2;
 }
-.plexus-welcome-copy h1 {
-  display: grid;
-  margin: 0 0 24px;
-  color: #353132;
-  font-size: clamp(50px, 6.7vw, 94px);
-  line-height: .88;
-  letter-spacing: -.06em;
+.plexus-node small {
+  color: #7b7477;
+  font-size: 8px;
+  font-weight: 650;
 }
-.plexus-welcome-copy h1 span { color: #353132; }
-.plexus-welcome-copy h1 em {
-  margin-top: 10px;
-  background: linear-gradient(135deg, #c21f47, #df476b 55%, #8f1736);
-  background-clip: text;
-  color: transparent;
-  font-style: normal;
-}
-.plexus-hero-copy {
-  max-width: 900px;
-  margin-bottom: 0;
-  color: #555052;
-  font-size: clamp(18px, 1.8vw, 24px);
-  line-height: 1.48;
-}
-.plexus-mechanism-strip {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 13px;
-  margin: 28px 0;
-}
-.plexus-mechanism-strip article {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 11px;
-  min-width: 0;
-  padding: 16px;
-  border: 1px solid rgba(194, 31, 71, .16);
-  border-radius: 18px;
-  background: #fff;
-  box-shadow: 0 12px 30px rgba(100, 22, 46, .055);
-}
-.plexus-mechanism-strip article > strong { color: #c21f47; font-size: 11px; }
-.plexus-mechanism-strip article div { display: grid; gap: 5px; }
-.plexus-mechanism-strip b { color: #403b3d; font-size: 13px; }
-.plexus-mechanism-strip span { color: #6d6769; font-size: 11px; line-height: 1.45; }
-.plexus-clinical-note {
-  max-width: 920px;
-  margin: 0;
-  padding-left: 15px;
-  border-left: 3px solid #c21f47;
-  color: #6d686a;
-  font-size: 12px;
-  line-height: 1.55;
-}
+.node-dose { top: 31px; left: 22px; }
+.node-devices { top: 27px; right: 25px; }
+.node-outcomes { top: 157px; left: 10px; }
+.node-cases { top: 160px; right: 10px; }
+.node-reports { bottom: 13px; left: 174px; }
+.node-signals { right: 170px; bottom: 12px; }
+
 .plexus-access-card {
   position: sticky;
-  top: 32px;
+  top: 24px;
   align-self: center;
   overflow: hidden;
-  padding: clamp(24px, 3vw, 36px);
-  border: 1px solid rgba(194, 31, 71, .18);
-  border-top: 5px solid #c21f47;
-  border-radius: 24px;
-  background: rgba(255, 255, 255, .97);
-  box-shadow: 0 24px 65px rgba(100, 22, 46, .12);
+  padding: clamp(23px, 2.6vw, 30px);
+  border: 1px solid #e4d8dc;
+  border-top: 3px solid #b31b41;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, .98);
+  box-shadow: 0 18px 48px rgba(70, 45, 53, .10);
 }
 .plexus-access-card::after {
   position: absolute;
-  right: -80px;
-  bottom: -100px;
-  width: 230px;
-  height: 230px;
+  right: -70px;
+  bottom: -90px;
+  width: 190px;
+  height: 190px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(194, 31, 71, .09), transparent 67%);
+  background: radial-gradient(circle, rgba(194, 31, 71, .065), transparent 69%);
   content: "";
   pointer-events: none;
 }
 .plexus-access-heading { position: relative; z-index: 1; }
 .plexus-access-heading h2 {
-  margin-bottom: 12px;
-  color: #373233;
-  font-size: clamp(29px, 3vw, 42px);
-  line-height: 1.02;
-  letter-spacing: -.045em;
+  margin: 0 0 10px;
+  color: #342f31;
+  font-size: clamp(28px, 2.7vw, 37px);
+  line-height: 1.04;
+  letter-spacing: -.04em;
 }
-.plexus-access-heading p:last-child { color: #696265; font-size: 14px; line-height: 1.58; }
+.plexus-access-heading p:last-child {
+  margin: 0;
+  color: #696265;
+  font-size: 13px;
+  line-height: 1.55;
+}
 .plexus-access-stats {
   position: relative;
   z-index: 1;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 9px;
-  margin: 23px 0;
+  margin: 20px 0;
+  overflow: hidden;
+  border: 1px solid #e7dde0;
+  border-radius: 12px;
+  background: #fbf8f9;
 }
 .plexus-access-stats article {
   min-width: 0;
-  padding: 13px 10px;
-  border: 1px solid #eadfe2;
-  border-radius: 14px;
-  background: #fff8fa;
+  padding: 12px 9px;
   text-align: center;
 }
-.plexus-access-stats strong { display: block; margin-bottom: 4px; color: #a51638; font-size: 21px; line-height: 1; }
+.plexus-access-stats article + article { border-left: 1px solid #e7dde0; }
+.plexus-access-stats strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #a51638;
+  font-size: 19px;
+  line-height: 1;
+}
 .plexus-access-stats span {
   display: block;
-  color: #6f676a;
+  color: #6e6769;
   font-size: 9px;
-  font-weight: 850;
+  font-weight: 750;
   line-height: 1.3;
-  text-transform: uppercase;
+  text-transform: none;
 }
 .plexus-consent {
   position: relative;
   z-index: 1;
   display: flex;
-  gap: 11px;
+  gap: 10px;
   align-items: flex-start;
-  margin: 0 0 19px;
+  margin: 0 0 17px;
+  padding: 12px;
+  border: 1px solid #eadfe2;
+  border-radius: 11px;
+  background: #fff8fa;
   color: #514c4e;
-  font-size: 12px;
-  font-weight: 750;
+  font-size: 11px;
+  font-weight: 700;
   line-height: 1.45;
 }
 .plexus-consent input {
@@ -318,29 +385,42 @@ body.plexus-welcome-active .language-button {
   height: 18px;
   flex: 0 0 auto;
   margin: 1px 0 0;
-  accent-color: #c21f47;
+  accent-color: #b31b41;
 }
-.plexus-access-actions { position: relative; z-index: 1; display: grid; gap: 10px; }
+.plexus-access-actions {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 9px;
+}
 .plexus-access-actions .primary,
-.plexus-access-actions .secondary { width: 100%; min-height: 48px; border-radius: 999px; }
-.plexus-access-actions button:disabled { opacity: .45; cursor: not-allowed; }
+.plexus-access-actions .secondary {
+  width: 100%;
+  min-height: 48px;
+  border-radius: 10px;
+}
+.plexus-access-actions .secondary {
+  border-color: #dfd2d6;
+  background: #fff;
+}
+.plexus-access-actions button:disabled { opacity: .44; cursor: not-allowed; }
 .plexus-text-action {
   min-height: 40px;
-  padding: 7px 3px;
+  padding: 7px 4px;
   border: 0;
   background: transparent;
-  color: #a51638;
+  color: #9f1738;
   box-shadow: none;
-  font-size: 12px;
+  font-size: 11px;
 }
-.plexus-text-action:hover { background: #fff5f7; }
+.plexus-text-action:hover { background: #fff4f7; }
 .plexus-text-action i { font-style: normal; }
 .plexus-privacy {
   position: relative;
   z-index: 1;
-  margin: 18px 0 0;
+  margin: 15px 0 0;
   color: #777073;
-  font-size: 11px;
+  font-size: 10px;
   line-height: 1.5;
 }
 .plexus-access-footer {
@@ -349,59 +429,146 @@ body.plexus-welcome-active .language-button {
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  margin-top: 22px;
-  padding-top: 16px;
+  margin-top: 18px;
+  padding-top: 14px;
   border-top: 1px solid #eee7e9;
   color: #777073;
-  font-size: 10px;
+  font-size: 9px;
 }
 .plexus-access-footer span { color: #a51638; font-weight: 900; }
+
 .data-menu-panel #welcomeBtn,
 .data-menu .header-actions #welcomeBtn { width: 100%; }
 
+:where(.plexus-welcome a, .plexus-welcome button, .plexus-welcome input):focus-visible {
+  outline: 3px solid #74102a;
+  outline-offset: 3px;
+}
+
 @keyframes plexus-flow { to { stroke-dashoffset: -180; } }
+
 @media (prefers-reduced-motion: reduce) {
   .plexus-connectors path { animation: none; }
   html { scroll-behavior: auto; }
 }
-@media (max-width: 1180px) {
-  .plexus-welcome-grid { grid-template-columns: 1fr; }
-  .plexus-access-card { position: static; width: min(720px, 100%); margin: 0 auto; }
-  .plexus-map-wrap { min-height: 340px; }
+
+@media (min-width: 1181px) and (max-height: 790px) {
+  .plexus-welcome { padding-top: 96px; padding-bottom: 24px; }
+  .plexus-map-wrap { min-height: 216px; }
+  .plexus-map { height: 216px; }
+  .plexus-mechanism-strip { margin-block: 20px 14px; }
 }
-@media (max-width: 760px) {
-  body.plexus-welcome-active .app-header-inner { width: calc(100% - 32px); min-height: 96px; }
-  body.plexus-welcome-active .company-brand { width: min(220px, 54vw); }
-  body.plexus-welcome-active .language-button { min-width: 0; width: 150px; }
-  .plexus-welcome { padding: 112px 16px 28px; }
-  .plexus-map-wrap { min-height: 500px; }
-  .plexus-map { height: 500px; }
-  .plexus-connectors { display: none; }
-  .plexus-core { top: 112px; }
-  .plexus-node { width: calc(50% - 24px); }
-  .node-dose { top: 215px; left: 14px; }
-  .node-devices { top: 215px; right: 14px; }
-  .node-outcomes { top: 300px; left: 14px; }
-  .node-cases { top: 300px; right: 14px; }
-  .node-reports { top: 385px; bottom: auto; left: 14px; }
-  .node-signals { top: 385px; right: 14px; bottom: auto; }
-  .plexus-welcome-copy h1 { font-size: clamp(46px, 15vw, 68px); }
-  .plexus-mechanism-strip { grid-template-columns: 1fr; }
-  .plexus-access-stats { grid-template-columns: 1fr; }
-  .plexus-access-stats article { display: grid; grid-template-columns: 56px 1fr; align-items: center; text-align: left; }
-  .plexus-access-stats strong { margin: 0; }
-  .plexus-access-stats span { font-size: 10px; }
-  .plexus-access-footer { display: grid; }
+
+@media (max-width: 1080px) {
+  .plexus-welcome-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(310px, 350px);
+    gap: 30px;
+  }
+  .plexus-map-wrap { min-height: 230px; }
+  .plexus-map { height: 230px; }
+  .plexus-node { width: 116px; }
+  .node-reports { left: 135px; }
+  .node-signals { right: 132px; }
 }
-@media (max-width: 460px) {
-  body.plexus-welcome-active .language-button { width: 132px; padding-inline: 10px; }
-  .plexus-map-wrap { min-height: 552px; border-radius: 22px; }
-  .plexus-map { height: 552px; }
-  .plexus-node { width: calc(100% - 28px); }
-  .node-dose { top: 205px; left: 14px; }
-  .node-devices { top: 275px; right: 14px; }
-  .node-outcomes { top: 345px; left: 14px; }
-  .node-cases { top: 415px; right: 14px; }
-  .node-reports { top: 485px; left: 14px; }
-  .node-signals { display: none; }
+
+@media (max-width: 880px) {
+  body.plexus-welcome-active .app-header-inner { width: calc(100% - 32px); min-height: 82px; }
+  body.plexus-welcome-active .company-brand { width: min(178px, 48vw); }
+  body.plexus-welcome-active .language-button { min-width: 0; width: 138px; }
+
+  .plexus-welcome {
+    width: min(720px, 100%);
+    padding: 94px 18px 28px;
+  }
+  .plexus-welcome-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .plexus-access-card {
+    position: static;
+    width: 100%;
+    padding: 24px;
+  }
+  .plexus-map-wrap { min-height: 220px; }
+  .plexus-map { height: 220px; }
+  .plexus-welcome-copy h1 { font-size: clamp(44px, 9vw, 62px); }
+}
+
+@media (max-width: 640px) {
+  body.plexus-welcome-active .app-header-inner { min-height: 72px; padding: 13px 0; }
+  body.plexus-welcome-active .company-brand { width: min(158px, 46vw); }
+  body.plexus-welcome-active .language-button {
+    width: 124px;
+    min-height: 40px;
+    padding-inline: 9px;
+    font-size: 11px;
+  }
+
+  .plexus-welcome { padding: 82px 15px 22px; }
+  .plexus-welcome-copy h1 {
+    display: grid;
+    gap: 3px;
+    margin-bottom: 14px;
+    font-size: clamp(39px, 12.5vw, 52px);
+    line-height: .98;
+  }
+  .plexus-welcome-copy h1 em { font-size: .58em; }
+  .plexus-hero-copy { font-size: 16px; line-height: 1.48; }
+
+  .plexus-map-wrap { display: none; }
+
+  .plexus-mechanism-strip {
+    grid-template-columns: 1fr;
+    margin: 20px 0 14px;
+  }
+  .plexus-mechanism-strip article {
+    padding: 13px 4px;
+  }
+  .plexus-mechanism-strip article + article {
+    border-top: 1px solid #e8dfe2;
+    border-left: 0;
+  }
+  .plexus-mechanism-strip span { display: none; }
+
+  .plexus-clinical-note {
+    padding: 10px 11px;
+    font-size: 10px;
+  }
+
+  .plexus-access-card {
+    padding: 21px 18px;
+    border-radius: 15px;
+  }
+  .plexus-access-heading h2 {
+    font-size: clamp(27px, 8vw, 34px);
+  }
+  .plexus-access-heading p:last-child { font-size: 12px; }
+
+  .plexus-access-stats { margin: 17px 0; }
+  .plexus-access-stats article { padding: 11px 6px; }
+  .plexus-access-stats strong { font-size: 18px; }
+  .plexus-access-stats span { font-size: 8px; }
+
+  .plexus-consent { margin-bottom: 15px; }
+  .plexus-access-footer { display: grid; gap: 5px; }
+}
+
+@media (max-width: 390px) {
+  body.plexus-welcome-active .company-brand { width: 140px; }
+  body.plexus-welcome-active .language-button { width: 112px; }
+  .plexus-welcome { padding-inline: 12px; }
+  .plexus-access-card { padding-inline: 15px; }
+  .plexus-access-stats strong { font-size: 16px; }
+  .plexus-access-stats span { font-size: 7.5px; }
+}
+
+@media (forced-colors: active) {
+  .plexus-access-card,
+  .plexus-map-wrap,
+  .plexus-mechanism-strip,
+  .plexus-consent,
+  .plexus-access-stats {
+    border: 1px solid CanvasText;
+  }
+  .plexus-core { border: 2px solid CanvasText; }
 }
