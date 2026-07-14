@@ -1,0 +1,70 @@
+
+> vivanteplexus-ai@1.0.0 test
+> node --test tests/*.test.js
+
+✔ brand stylesheets are valid CSS (50.355865ms)
+✔ final cascade uses the Robotimize light and red brand palette (898.895192ms)
+✖ renders the VivantePlexus and Robotimize brand identity (2960.173875ms)
+✔ migrates existing version 5 browser data without discarding records (117.89813ms)
+✔ language menu switches the rendered dashboard without changing clinical option values (1852.016276ms)
+✔ dynamic clinical content and the page title localise in Chinese (1770.455444ms)
+✔ every workflow destination is a real link and opens the matching section (1227.575038ms)
+✔ keeps the compact data menu out of the way after navigation or Escape (1123.412602ms)
+✔ AI deep links retain the overview instead of hiding the application (1057.034312ms)
+✔ progressively discloses one professional intelligence layer at a time (1642.426222ms)
+✔ renders a grounded top-five Plexus AI queue with case context and calculations (931.625134ms)
+✔ opens a comprehensive evidence-linked report for every one of the 72 cases (8331.143674ms)
+✔ links every recent session to its owning comprehensive case report (9140.007744ms)
+✔ links every heatmap case to its report, case record and filtered sessions (9677.459903ms)
+✔ adds 36 diverse scenarios with structured clinical context and pathway evidence (4053.539236ms)
+✔ upgrades the prior 36-case sample additively without losing edits or addenda (1736.93875ms)
+✔ filters the report index and persists an editable clinician addendum separately (1226.366125ms)
+✔ Plexus Query calculates structured answers locally (918.439769ms)
+✔ clinician signal decisions persist with an audit record (2200.711238ms)
+✔ adds custom equipment and links it to a newly recorded therapy session (2437.535323ms)
+✔ FHIR-shaped export contains Device and Procedure references for equipment (934.3623ms)
+✔ header command buttons execute their documented actions (1611.45798ms)
+✔ exposes all six supported languages (10.189554ms)
+✔ translates representative clinical interface content (2.421971ms)
+✔ localises dynamic dose and clinical-review messages (0.739133ms)
+✔ localises the equipment workflow in every added language (0.439793ms)
+✔ localises the case and session navigation in every added language (0.43291ms)
+✔ localises the keyboard skip navigation in every added language (0.204573ms)
+✔ localises the platform-principles label in every added language (0.401722ms)
+✔ persists the selected language and exposes the matching locale (0.204893ms)
+✔ falls back safely for unsupported languages and user text (0.642021ms)
+✔ welcome layer exposes the required safe entry controls (1.352891ms)
+✔ welcome layer supports all interface languages (0.463608ms)
+✔ loader references the current versioned welcome assets and has a visibility failsafe (0.220913ms)
+✔ welcome styling uses a restrained desktop rail and compact access panel (0.380151ms)
+✔ mobile presentation removes decorative density and preserves touch targets (1.919622ms)
+✔ welcome styling keeps reduced-motion, high-contrast and keyboard focus support (0.21376ms)
+ℹ tests 37
+ℹ suites 0
+ℹ pass 36
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 55754.469078
+
+✖ failing tests:
+
+test at tests/dom-smoke.test.js:40:1
+✖ renders the VivantePlexus and Robotimize brand identity (2960.173875ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /ui-polish\.css\?v=20260713-9$/. Input:
+  
+  'https://example.test/VivantePlexus.AI/ui-polish.css?v=20260714-2'
+  
+      at TestContext.<anonymous> (/home/runner/work/VivantePlexus.AI/VivantePlexus.AI/tests/dom-smoke.test.js:61:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1325:25)
+      at Test.start (node:internal/test_runner/test:1191:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'https://example.test/VivantePlexus.AI/ui-polish.css?v=20260714-2',
+    expected: /ui-polish\.css\?v=20260713-9$/,
+    operator: 'match',
+    diff: 'simple'
+  }
