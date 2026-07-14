@@ -4,11 +4,31 @@ The welcome layer gives the public GitHub Pages build a deliberate entry state b
 
 ## Behaviour
 
-- The landing is shown on a new browser session at `#overview`.
-- Entering the workspace records a session-only dismissal so normal tab navigation remains efficient.
+- A fresh load of `#overview` opens the landing page consistently.
+- Entering the workspace keeps the landing closed during normal in-page navigation.
 - `Data & exports → Welcome page` reopens the landing at any time.
 - Direct links to `#programmes`, `#sessions`, `#equipment`, `#outcomes` and `#reports` bypass the welcome layer.
 - Existing clinical data modules and local storage are not altered.
+
+## Responsive presentation
+
+The landing uses one content hierarchy rather than shrinking the desktop composition proportionally:
+
+- Desktop uses a restrained 1280-pixel content rail, a primary product narrative, one secondary intelligence visual and one clear access panel.
+- Laptop-height screens reduce vertical spacing and illustration height so the primary action remains visible.
+- Tablet layouts collapse to a single reading column while retaining the intelligence visual.
+- Phone layouts remove the decorative network diagram, shorten the three workflow explanations and preserve a three-column dataset summary.
+- Primary controls remain at least 48 pixels high, with visible keyboard focus, reduced-motion handling and forced-colour support.
+
+The approach follows the NHS responsive spacing principle, WCAG 2.2 reflow, target-size and focus guidance, and the U.S. Web Design System principles of earning trust, supporting scanning and providing equivalent access across devices.
+
+Reference guidance:
+
+- https://service-manual.nhs.uk/design-system/styles/spacing
+- https://www.w3.org/WAI/WCAG22/Understanding/reflow.html
+- https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html
+- https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html
+- https://designsystem.digital.gov/design-principles/
 
 ## Accessibility and interaction
 
@@ -16,7 +36,7 @@ The welcome layer gives the public GitHub Pages build a deliberate entry state b
 - The consent control prevents accidental entry into the synthetic demonstration.
 - Workspace regions become inert and are removed from the accessibility tree while the welcome layer is open.
 - Focus moves into the landing on entry and back to the workspace after dismissal.
-- Controls maintain a minimum 44-pixel interactive height and the animated connector map honours reduced-motion preferences.
+- The animated connector map honours reduced-motion preferences and is omitted entirely on small phones where it would compete with the core task.
 
 ## Safety boundary
 
