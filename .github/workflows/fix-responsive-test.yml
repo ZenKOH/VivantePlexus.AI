@@ -1,0 +1,43 @@
+name: Fix responsive landing test and clean diagnostics
+
+on:
+  push:
+    branches: [agent/streamline-responsive-landing]
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/streamline-responsive-landing
+      - name: Update stale asset assertion and remove diagnostics
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('tests/dom-smoke.test.js')
+          text = path.read_text(encoding='utf-8')
+          old = r'/ui-polish\.css\?v=20260713-9$/'
+          new = r'/ui-polish\.css\?v=20260714-2$/'
+          if old not in text:
+              raise SystemExit('Expected stale asset assertion was not found')
+          path.write_text(text.replace(old, new), encoding='utf-8')
+          for item in [
+              Path('ci-test-output.txt'),
+              Path('.github/workflows/diagnose-responsive-tests.yml'),
+              Path('.github/workflows/fix-responsive-test.yml'),
+          ]:
+              if item.exists():
+                  item.unlink()
+          PY
+      - name: Commit cleanup
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Align responsive asset test and remove diagnostics [skip ci]'
+          git push origin HEAD:agent/streamline-responsive-landing
