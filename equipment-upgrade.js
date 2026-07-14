@@ -236,12 +236,9 @@
 /* Load the dedicated welcome layer without coupling it to the clinical data modules. */
 (function loadPlexusWelcomeLayer() {
   "use strict";
-  const version = "20260714-1";
+  const version = "20260714-2";
   const hash = location.hash || "#overview";
-  let dismissed = false;
-  try { dismissed = sessionStorage.getItem("vivantePlexus.welcomeDismissed.v1") === "1"; } catch { /* no-op */ }
-
-  if (hash === "#overview" && !dismissed) {
+  if (hash === "#overview") {
     document.documentElement.classList.add("plexus-welcome-pending");
     const critical = document.createElement("style");
     critical.id = "plexusWelcomeCritical";
