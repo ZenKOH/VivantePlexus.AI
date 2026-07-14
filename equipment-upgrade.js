@@ -232,3 +232,42 @@
     window.addEventListener("languagechange", () => queueMicrotask(renderEquipmentDropdown));
   });
 })();
+
+/* Load the dedicated welcome layer without coupling it to the clinical data modules. */
+(function loadPlexusWelcomeLayer() {
+  "use strict";
+  const version = "20260714-1";
+  const hash = location.hash || "#overview";
+  let dismissed = false;
+  try { dismissed = sessionStorage.getItem("vivantePlexus.welcomeDismissed.v1") === "1"; } catch { /* no-op */ }
+
+  if (hash === "#overview" && !dismissed) {
+    document.documentElement.classList.add("plexus-welcome-pending");
+    const critical = document.createElement("style");
+    critical.id = "plexusWelcomeCritical";
+    critical.textContent = "html.plexus-welcome-pending body{visibility:hidden}";
+    document.head.appendChild(critical);
+    setTimeout(() => document.documentElement.classList.remove("plexus-welcome-pending"), 5000);
+  }
+
+  const loadScript = () => {
+    if (document.querySelector('script[data-plexus-welcome]')) return;
+    const script = document.createElement("script");
+    script.src = `welcome-landing.js?v=${version}`;
+    script.dataset.plexusWelcome = "true";
+    script.addEventListener("error", () => document.documentElement.classList.remove("plexus-welcome-pending"));
+    document.head.appendChild(script);
+  };
+
+  if (!document.querySelector('link[data-plexus-welcome]')) {
+    const stylesheet = document.createElement("link");
+    stylesheet.rel = "stylesheet";
+    stylesheet.href = `welcome-landing.css?v=${version}`;
+    stylesheet.dataset.plexusWelcome = "true";
+    stylesheet.addEventListener("load", loadScript, { once: true });
+    stylesheet.addEventListener("error", loadScript, { once: true });
+    document.head.appendChild(stylesheet);
+  } else {
+    loadScript();
+  }
+})();
