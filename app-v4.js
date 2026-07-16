@@ -1372,6 +1372,7 @@ function tab(name, historyMode = "replace") {
   });
   const hashTarget = requested !== target && $(requested) ? requested : target;
   if (hashTarget === "ai-review") globalThis.PlexusAI?.showLayer?.("signals");
+  else if (hashTarget === "ai-studio") globalThis.PlexusAI?.showLayer?.("studio");
   else if (hashTarget === "ai-transparency") globalThis.PlexusAI?.showLayer?.("transparency");
   else if (target === "overview") globalThis.PlexusAI?.showLayer?.("command");
   if (historyMode === "push" && location.hash !== `#${hashTarget}`)

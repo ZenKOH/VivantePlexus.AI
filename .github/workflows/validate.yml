@@ -25,4 +25,4 @@ jobs:
       - name: Check application JavaScript
         run: npm run check
       - name: Check dynamically loaded workspaces
-        run: node --check welcome-landing.js && node --check rcm.js
+        run: node --check welcome-landing.js && node --check plexus-ai-lab.js && node --check rcm.js

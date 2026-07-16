@@ -22,6 +22,7 @@ function launch() {
     "case-expansion.js",
     "diverse-cases.js",
     "plexus-ai.js",
+    "plexus-ai-lab.js",
     "reports.js",
     "rcm.js",
   ];

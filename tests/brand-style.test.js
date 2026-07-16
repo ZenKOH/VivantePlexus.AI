@@ -9,12 +9,14 @@ const root = path.join(__dirname, "..");
 const baseCss = fs.readFileSync(path.join(root, "styles.css"), "utf8");
 const brandCss = fs.readFileSync(path.join(root, "overrides.css"), "utf8");
 const polishCss = fs.readFileSync(path.join(root, "ui-polish.css"), "utf8");
+const aiLabCss = fs.readFileSync(path.join(root, "plexus-ai-lab.css"), "utf8");
 const rcmCss = fs.readFileSync(path.join(root, "rcm.css"), "utf8");
 
 test("brand stylesheets are valid CSS", () => {
   assert.doesNotThrow(() => csstree.parse(baseCss));
   assert.doesNotThrow(() => csstree.parse(brandCss));
   assert.doesNotThrow(() => csstree.parse(polishCss));
+  assert.doesNotThrow(() => csstree.parse(aiLabCss));
   assert.doesNotThrow(() => csstree.parse(rcmCss));
 });
 
@@ -22,7 +24,7 @@ test("final cascade uses the Robotimize light and red brand palette", () => {
   const html = fs
     .readFileSync(path.join(root, "index.html"), "utf8")
     .replace(/<link rel="stylesheet"[^>]+>/g, "")
-    .replace("</head>", `<style>${baseCss}\n${brandCss}\n${polishCss}\n${rcmCss}</style></head>`);
+    .replace("</head>", `<style>${baseCss}\n${brandCss}\n${polishCss}\n${aiLabCss}\n${rcmCss}</style></head>`);
   const dom = new JSDOM(html, { pretendToBeVisual: true });
   const { document } = dom.window;
   const style = dom.window.getComputedStyle.bind(dom.window);
@@ -48,6 +50,11 @@ test("final cascade uses the Robotimize light and red brand palette", () => {
   assert.match(rcmCss, /\.rcm-stage\s*{[\s\S]*?height:\s*clamp/);
   assert.match(rcmCss, /@media \(max-width:\s*760px\)[\s\S]*?\.rcm-stage\s*{[\s\S]*?height:\s*auto/);
   assert.match(polishCss, /\.workspace-layer-nav button\s*{[\s\S]*?min-height:\s*44px/);
+  assert.match(polishCss, /\.workspace-layer-nav\s*{[\s\S]*?grid-template-columns:\s*repeat\(8/);
+  assert.match(aiLabCss, /\.ai-lab-mode-nav\s*{[\s\S]*?grid-template-columns:\s*repeat\(5/);
+  assert.match(aiLabCss, /\.ai-lab-stage\s*{[\s\S]*?min-height:\s*420px/);
+  assert.match(aiLabCss, /@media \(max-width:\s*520px\)/);
+  assert.match(aiLabCss, /@media \(forced-colors:\s*active\)/);
   assert.match(polishCss, /\.header-assurance\s*{[\s\S]*?flex-wrap:\s*wrap/);
   assert.match(polishCss, /\.header-assurance li::before\s*{[\s\S]*?background:\s*var\(--accent\)/);
   assert.match(polishCss, /@media \(max-width:\s*760px\)[\s\S]*?\.workspace-stage,[\s\S]*?height:\s*auto/);

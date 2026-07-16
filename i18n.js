@@ -126,6 +126,7 @@
     "Signals": ["信号","Señales","Signaux","Signale","Isyarat"],
     "Device IQ": ["设备智能","IQ del dispositivo","Intelligence des dispositifs","Geräte-IQ","IQ Peranti"],
     "Cases": ["病例","Casos","Cas","Fälle","Kes"],
+    "AI Studio": ["AI 工作室","Estudio de IA","Studio IA","KI-Studio","Studio AI"],
     "Method": ["方法","Método","Méthode","Methode","Kaedah"],
     "Clinical brief": ["临床摘要","Resumen clínico","Synthèse clinique","Klinische Kurzfassung","Ringkasan klinikal"],
     "Cases to review": ["待复核病例","Casos por revisar","Cas à revoir","Zu prüfende Fälle","Kes untuk disemak"],

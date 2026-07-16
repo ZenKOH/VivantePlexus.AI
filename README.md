@@ -16,7 +16,7 @@ https://zenkoh.github.io/VivantePlexus.AI/
 
 ## Core capabilities
 
-- Start from a streamlined single-screen Plexus AI command centre, then open Signals, Dose, Device IQ, Outcomes, Cases or Method as focused on-demand layers.
+- Start from a streamlined single-screen Plexus AI command centre, then open Signals, Dose, Device IQ, Outcomes, Cases, AI Studio or Method as focused on-demand layers.
 - Work in a unified responsive interface with a compact Robotimize header, multilingual platform principles grouped with the product identity, clear active navigation, readable clinical typography, keyboard skip navigation, touch-friendly controls and table-contained horizontal scrolling.
 - Load 72 synthetic rehabilitation cases spanning stroke, spinal cord injury, traumatic and acquired brain injury, cerebral palsy across the lifespan, Parkinson's disease, multiple sclerosis, progressive and rare neurological pathways, vestibular and sensory disorders, complex trauma, limb loss, hip fracture, critical illness and cancer rehabilitation.
 - Explore a second cohort of 36 alternative, evidence-informed cases with structured referral profile, presentation, participation priority, environment, complexity, multidisciplinary review focus and pathway-specific clinical boundaries.
@@ -32,6 +32,8 @@ https://zenkoh.github.io/VivantePlexus.AI/
 - Generate a ranked top-five review queue with one primary signal per case, grouped secondary signals and visible calculations.
 - Ask structured natural-language-style questions through Plexus Query without sending records to an external service.
 - Review a source-grounded Plexus Brief and accept, dismiss or defer signals with a local audit trail.
+- Use Plexus AI Studio for short-window trajectory review with visible uncertainty, explainable comparable-case retrieval, bounded therapy-exposure scenarios, measurable workflow-value hypotheses and a built-in assurance/system card.
+- Export a synthetic AI evaluation packet and record separate local usefulness feedback without changing the clinical source record.
 - Open every one of the 72 cases in a dedicated comprehensive report layer covering clinical scenario, programme context, ICF-aligned goals, dose, tolerance, equipment response, outcomes, explainable signals, session chronology, provenance and limitations.
 - Search reports by case, pathway or domain, filter by documentation status, print or export an individual report, and save a clinician-authored addendum separately from read-only computed evidence.
 - Export CSV datasets, progress notes, FHIR-shaped JSON and complete JSON backups.
@@ -44,9 +46,11 @@ https://zenkoh.github.io/VivantePlexus.AI/
 
 ## Product architecture
 
-VivantePlexus™ is a static HTML, CSS and JavaScript application with no backend dependency. Plexus Query is a deterministic intent-and-calculation layer over local structured records; Plexus Brief is a templated structured summary; Plexus Signals combines transparent rules with simple within-case trend comparisons. Plexus RCM deterministically derives synthetic financial episodes from those local case and session records and stores only its own local action log. There is no trained prediction model, generative-model endpoint, autonomous treatment recommendation, clearinghouse connection or live payer integration in this release.
+VivantePlexus™ is a static HTML, CSS and JavaScript application with no backend dependency. Plexus Query is a deterministic intent-and-calculation layer over local structured records; Plexus Brief is a templated structured summary; Plexus Signals combines transparent rules with simple within-case trend comparisons. Plexus AI Studio adds local short-window regression, weighted mixed-data similarity and deterministic exposure scenarios. Plexus RCM deterministically derives synthetic financial episodes from those local case and session records and stores only its own local action log. There is no externally trained prediction model, generative-model endpoint, autonomous treatment recommendation, clearinghouse connection or live payer integration in this release.
 
 Every signal is labelled by method, exposes its inputs and calculation, reports data completeness, and remains subject to clinician review. The local-storage namespace is isolated from the original NeuroRehab Dose Tracker deployment so both applications can run on the same GitHub Pages domain without overwriting one another's browser data.
+
+Plexus AI Studio is documented in [Plexus AI architecture, safeguards and research basis](docs/PLEXUS-AI-ARCHITECTURE.md). Its next-record estimates are descriptive local fits over synthetic records—not recovery predictions or calibrated clinical intervals. Comparable-case results are retrieval aids, not evidence that an intervention caused an outcome.
 
 The FHIR-shaped export demonstrates relationships between pseudonymous `Patient`, `CarePlan`, `Device`, `Procedure`, `Goal` and `Observation` resources. It is an interoperability planning artefact, not a validated clinical integration.
 
@@ -81,7 +85,7 @@ npm run check
 npm test
 ```
 
-The automated suite verifies JavaScript syntax, all six language options, top-level and intelligence-layer navigation, additive 36-to-72 case migration, the capped and deduplicated AI queue, compact dose prioritisation, structured queries, clinician signal actions, all 72 comprehensive case-report routes, all 216 session-to-report links, all 72 heatmap case workflows, rich scenario fields for Cases 37–72, clinician-addendum persistence, device telemetry, equipment-to-session linkage, FHIR-shaped export relationships, RCM episode coverage, metric calculations, progressive layers, safeguards, local follow-up persistence and data/export actions.
+The automated suite verifies JavaScript syntax, all six language options, top-level and intelligence-layer navigation, additive 36-to-72 case migration, the capped and deduplicated AI queue, compact dose prioritisation, structured queries, clinician signal actions, AI Studio trajectory bounds and fit, comparable-case ordering and evidence, scenario arithmetic, value metrics, assurance gates, isolated feedback, all 72 comprehensive case-report routes, all 216 session-to-report links, all 72 heatmap case workflows, rich scenario fields for Cases 37–72, clinician-addendum persistence, device telemetry, equipment-to-session linkage, FHIR-shaped export relationships, RCM episode coverage, metric calculations, progressive layers, safeguards, local follow-up persistence and data/export actions.
 
 The UI regression checks also validate the final CSS cascade, responsive reflow rules, 44px primary navigation targets, reduced-motion support, semantic header/navigation wrappers and the multilingual keyboard skip link.
 
@@ -101,6 +105,8 @@ The included `.nojekyll` file tells GitHub Pages to serve the static assets dire
 This public prototype stores records in the user's browser. Do not enter directly identifiable patient, subscriber, financial or claim information. Use only the bundled synthetic data or locally approved non-identifying test records.
 
 VivantePlexus™ is currently intended for tracking, education, workflow exploration, documentation support and pilot evidence generation. It is not medical advice, a diagnostic system, an autonomous treatment recommender, a regulated medical device or a substitute for licensed clinical judgement.
+
+Plexus AI Studio is not clinically validated. It does not diagnose, predict recovery, recommend treatment or dose, make medical-necessity or coverage decisions, or monitor emergencies. Production use requires a defined intended use, representative data, independent and subgroup validation, human-factors testing, prospective evaluation, privacy and security controls, regulatory assessment and lifecycle monitoring.
 
 Plexus RCM is a workflow demonstration, not a billing system, clearinghouse, practice-management system, accounting record, fee schedule, coverage determination, legal or coding service. It does not submit claims or appeals, check live eligibility, post remittances, issue statements or perform collection activity. Production use requires configured jurisdiction and payer rules, licensed billing and coding review, privacy and security controls, contractual and accounting governance, testing, auditability and human approval.
 

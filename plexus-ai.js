@@ -1,7 +1,7 @@
 (function () {
   "use strict";
 
-  const METHOD_VERSION = "Plexus Signals ruleset 1.0 · 13 July 2026";
+  const METHOD_VERSION = "Plexus Intelligence methods 2.0 · 16 July 2026";
   const DAY_INDEX = { mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6, sun: 7 };
   const severityRank = { risk: 3, warning: 2, info: 1, good: 0 };
 
@@ -519,7 +519,7 @@
   }
 
   function showLayer(name, focusHeading = false) {
-    const allowed = new Set(["command", "signals", "dose", "device", "outcomes", "cases", "transparency"]);
+    const allowed = new Set(["command", "signals", "dose", "device", "outcomes", "cases", "studio", "transparency"]);
     const layerName = allowed.has(name) ? name : "command";
     document.querySelectorAll("[data-workspace-layer]").forEach((layer) => {
       const active = layer.dataset.workspaceLayer === layerName;
@@ -646,7 +646,7 @@
     bindEvents();
     renderAll();
     const deepLink = location.hash.replace("#", "");
-    showLayer(deepLink === "ai-review" ? "signals" : deepLink === "ai-transparency" ? "transparency" : "command");
+    showLayer(deepLink === "ai-review" ? "signals" : deepLink === "ai-studio" ? "studio" : deepLink === "ai-transparency" ? "transparency" : "command");
     globalThis.i18n?.translatePage();
   });
 })();

@@ -236,7 +236,7 @@
 /* Load the dedicated welcome layer without coupling it to the clinical data modules. */
 (function loadPlexusWelcomeLayer() {
   "use strict";
-  const version = "20260716-1";
+  const version = "20260716-2";
   const hash = location.hash || "#overview";
   if (hash === "#overview") {
     document.documentElement.classList.add("plexus-welcome-pending");

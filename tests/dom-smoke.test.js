@@ -28,6 +28,7 @@ function launch(existingState) {
       fs.readFileSync(path.join(root, "case-expansion.js"), "utf8"),
       fs.readFileSync(path.join(root, "diverse-cases.js"), "utf8"),
       fs.readFileSync(path.join(root, "plexus-ai.js"), "utf8"),
+      fs.readFileSync(path.join(root, "plexus-ai-lab.js"), "utf8"),
       fs.readFileSync(path.join(root, "reports.js"), "utf8"),
       fs.readFileSync(path.join(root, "rcm.js"), "utf8"),
     ].join("\n"),
@@ -59,8 +60,9 @@ test("renders the VivantePlexus and Robotimize brand identity", () => {
   assert.equal(document.querySelector(".header-controls .header-assurance"), null);
   assert.equal(document.querySelector(".header-trust"), null);
   assert.equal(document.querySelectorAll(".tab-nav > .tab-nav-inner > .tab-button").length, 7);
-  assert.match(document.querySelector('link[href*="ui-polish.css"]').href, /ui-polish\.css\?v=20260716-1$/);
-  assert.match(document.querySelector('link[href*="rcm.css"]').href, /rcm\.css\?v=20260716-1$/);
+  assert.match(document.querySelector('link[href*="ui-polish.css"]').href, /ui-polish\.css\?v=20260716-2$/);
+  assert.match(document.querySelector('link[href*="plexus-ai-lab.css"]').href, /plexus-ai-lab\.css\?v=20260716-2$/);
+  assert.match(document.querySelector('link[href*="rcm.css"]').href, /rcm\.css\?v=20260716-2$/);
   assert.ok(dom.window.localStorage.getItem("vivantePlexus.v1"));
   assert.equal(dom.window.localStorage.getItem("neurorehabDoseTracker.v5"), null);
   dom.window.close();
@@ -210,8 +212,8 @@ test("progressively discloses one professional intelligence layer at a time", ()
   const tabs = [...document.querySelectorAll('.workspace-layer-nav [role="tab"]')];
   const layers = [...document.querySelectorAll("[data-workspace-layer]")];
 
-  assert.equal(tabs.length, 7);
-  assert.equal(layers.length, 7);
+  assert.equal(tabs.length, 8);
+  assert.equal(layers.length, 8);
   assert.equal(layers.filter((layer) => !layer.hidden).length, 1);
   assert.equal(layers.find((layer) => !layer.hidden).dataset.workspaceLayer, "command");
   assert.equal(document.querySelectorAll("#doseChart .chart-row").length, 8);
@@ -257,7 +259,7 @@ test("renders a grounded top-five Plexus AI queue with case context and calculat
   assert.ok(cards.every((card) => card.querySelector(".signal-type")));
   assert.ok(cards.every((card) => card.querySelector(".calculation")));
   assert.match(document.getElementById("aiClinicalBrief").textContent, /Data completeness/);
-  assert.match(document.getElementById("aiMethodVersion").textContent, /ruleset 1\.0/);
+  assert.match(document.getElementById("aiMethodVersion").textContent, /methods 2\.0/);
   assert.equal(document.getElementById("casesNeedingReview").textContent, String(cards.length));
   dom.window.close();
 });
