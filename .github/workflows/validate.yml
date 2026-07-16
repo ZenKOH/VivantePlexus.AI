@@ -24,5 +24,5 @@ jobs:
         run: npm test
       - name: Check application JavaScript
         run: npm run check
-      - name: Check welcome JavaScript
-        run: node --check welcome-landing.js
+      - name: Check dynamically loaded workspaces
+        run: node --check welcome-landing.js && node --check rcm.js

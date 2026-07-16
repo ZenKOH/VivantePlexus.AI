@@ -281,7 +281,7 @@ button:hover,
 
 .tab-nav-inner {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 5px;
   width: min(var(--ui-max), calc(100% - 48px));
   margin: 0 auto;

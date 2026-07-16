@@ -27,7 +27,7 @@ test('welcome layer supports all interface languages', () => {
 });
 
 test('loader references the current versioned welcome assets and has a visibility failsafe', () => {
-  assert.match(loader, /const version = "20260714-3"/);
+  assert.match(loader, /const version = "20260716-1"/);
   assert.match(loader, /welcome-landing\.css\?v=\$\{version\}/);
   assert.match(loader, /welcome-landing\.js\?v=\$\{version\}/);
   assert.match(loader, /setTimeout\(\(\) => document\.documentElement\.classList\.remove\("plexus-welcome-pending"\), 5000\)/);

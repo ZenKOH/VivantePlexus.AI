@@ -2,10 +2,10 @@
   "name": "vivanteplexus-ai",
   "version": "1.0.0",
   "private": true,
-  "description": "Robotimize's offline-first multilingual rehabilitation dose, equipment and outcome intelligence prototype",
+  "description": "Robotimize's offline-first multilingual rehabilitation intelligence and synthetic RCM prototype",
   "scripts": {
     "test": "node --test tests/*.test.js",
-    "check": "node --check i18n.js && node --check app-v4.js && node --check case-expansion.js && node --check diverse-cases.js && node --check equipment-upgrade.js && node --check plexus-ai.js && node --check reports.js"
+    "check": "node --check i18n.js && node --check app-v4.js && node --check case-expansion.js && node --check diverse-cases.js && node --check equipment-upgrade.js && node --check plexus-ai.js && node --check reports.js && node --check welcome-landing.js && node --check rcm.js"
   },
   "devDependencies": {
     "jsdom": "^27.0.0"

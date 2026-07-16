@@ -146,6 +146,7 @@
     "Current prototype:": ["当前原型：","Prototipo actual:","Prototype actuel :","Aktueller Prototyp:","Prototaip semasa:"],
     "Data & exports": ["数据与导出","Datos y exportaciones","Données et exportations","Daten und Exporte","Data & eksport"],
     "Plexus AI": ["Plexus AI","Plexus AI","Plexus AI","Plexus AI","Plexus AI"],
+    "Plexus RCM": ["Plexus RCM","Plexus RCM","Plexus RCM","Plexus RCM","Plexus RCM"],
     "Ask the rehabilitation dataset": ["询问康复数据集","Consultar el conjunto de datos de rehabilitación","Interroger les données de réadaptation","Rehabilitationsdaten befragen","Tanya set data rehabilitasi"],
     "Queries are calculated locally from structured records. No data leaves this browser.": ["查询根据结构化记录在本地计算，数据不会离开此浏览器。","Las consultas se calculan localmente a partir de registros estructurados. Ningún dato sale del navegador.","Les requêtes sont calculées localement à partir de données structurées. Aucune donnée ne quitte ce navigateur.","Abfragen werden lokal aus strukturierten Einträgen berechnet. Keine Daten verlassen den Browser.","Pertanyaan dikira secara setempat daripada rekod berstruktur. Tiada data meninggalkan pelayar ini."],
     "Analyse records": ["分析记录","Analizar registros","Analyser les dossiers","Einträge analysieren","Analisis rekod"],

@@ -2,7 +2,7 @@
 
 **Rehabilitation intelligence by [Robotimize](https://www.robotimize.tech).**
 
-VivantePlexus™ with Plexus AI is a browser-based, clinician-led rehabilitation intelligence prototype. It connects programme context, multidimensional therapy dose, functional outcomes and device-supported practice through transparent signals, structured summaries and local analytics.
+VivantePlexus™ combines a browser-based, clinician-led rehabilitation intelligence prototype with Plexus RCM, a technology-enabled revenue-cycle provider-service demonstration. Clinical and synthetic financial workflows remain visibly separated while sharing case and session context for explainable, human-reviewed operations.
 
 The interface uses Robotimize's white, signature red and charcoal visual identity and the official Robotimize logo. It is responsive across desktop, tablet and mobile browsers.
 
@@ -37,14 +37,31 @@ https://zenkoh.github.io/VivantePlexus.AI/
 - Export CSV datasets, progress notes, FHIR-shaped JSON and complete JSON backups.
 - Switch the complete workflow between English, Simplified Chinese, Spanish, French, German and Malay.
 - Store data locally in the browser for an offline-first workflow.
+- Open Plexus RCM as a focused provider-service workspace spanning coverage and authorisation, claim readiness, claim lifecycle visibility, denial prevention and recovery, payment and A/R review, patient-account context and organisation-level performance.
+- Review one synthetic financial episode for every case, drill into an explainable six-point readiness checklist, and save a local follow-up owner, date, note and review state without contacting a payer or patient.
+- Compare transparent first-pass acceptance, denial rate, outstanding balance and weighted A/R age measures by payer, site and rehabilitation discipline.
+- Export a synthetic RCM snapshot with an explicit X12 transaction map and separate FHIR planning-resource list.
 
 ## Product architecture
 
-VivantePlexus™ is a static HTML, CSS and JavaScript application with no backend dependency. Plexus Query is a deterministic intent-and-calculation layer over local structured records; Plexus Brief is a templated structured summary; Plexus Signals combines transparent rules with simple within-case trend comparisons. There is no trained prediction model, generative-model endpoint or autonomous treatment recommendation in this release.
+VivantePlexus™ is a static HTML, CSS and JavaScript application with no backend dependency. Plexus Query is a deterministic intent-and-calculation layer over local structured records; Plexus Brief is a templated structured summary; Plexus Signals combines transparent rules with simple within-case trend comparisons. Plexus RCM deterministically derives synthetic financial episodes from those local case and session records and stores only its own local action log. There is no trained prediction model, generative-model endpoint, autonomous treatment recommendation, clearinghouse connection or live payer integration in this release.
 
 Every signal is labelled by method, exposes its inputs and calculation, reports data completeness, and remains subject to clinician review. The local-storage namespace is isolated from the original NeuroRehab Dose Tracker deployment so both applications can run on the same GitHub Pages domain without overwriting one another's browser data.
 
 The FHIR-shaped export demonstrates relationships between pseudonymous `Patient`, `CarePlan`, `Device`, `Procedure`, `Goal` and `Observation` resources. It is an interoperability planning artefact, not a validated clinical integration.
+
+### Plexus RCM provider-service prototype
+
+Plexus RCM is organised as an end-to-end service layer instead of a billing-only feature:
+
+1. **Access and authorisation:** eligibility, benefits, visit limits and authorisation exceptions.
+2. **Revenue integrity:** rehabilitation documentation context, supporting information and human coding/claim-edit review.
+3. **Claim operations:** readiness, submission-state and claim-status work queues.
+4. **Denial prevention and recovery:** root-cause grouping, recoverable-balance priority and local follow-up.
+5. **Payments and A/R:** synthetic remittance, patient responsibility, balance and ageing views.
+6. **Performance intelligence:** common metric definitions across payers, sites and PT/OT/SLP service lines.
+
+The US demonstration maps workflows to X12 270/271, 278, 837P, 276/277 and 835 transaction families. FHIR `CoverageEligibilityRequest`, `Claim`, `ClaimResponse`, `ExplanationOfBenefit` and `Task` are listed separately for API architecture planning; they are not represented as substitutes for required transactions, payer companion guides or certification. See [RCM architecture and evidence](docs/RCM-ARCHITECTURE.md).
 
 ## Run locally
 
@@ -64,7 +81,7 @@ npm run check
 npm test
 ```
 
-The automated suite verifies JavaScript syntax, all six language options, top-level and intelligence-layer navigation, additive 36-to-72 case migration, the capped and deduplicated AI queue, compact dose prioritisation, structured queries, clinician signal actions, all 72 comprehensive case-report routes, all 216 session-to-report links, all 72 heatmap case workflows, rich scenario fields for Cases 37–72, clinician-addendum persistence, device telemetry, equipment-to-session linkage, FHIR-shaped export relationships and data/export actions.
+The automated suite verifies JavaScript syntax, all six language options, top-level and intelligence-layer navigation, additive 36-to-72 case migration, the capped and deduplicated AI queue, compact dose prioritisation, structured queries, clinician signal actions, all 72 comprehensive case-report routes, all 216 session-to-report links, all 72 heatmap case workflows, rich scenario fields for Cases 37–72, clinician-addendum persistence, device telemetry, equipment-to-session linkage, FHIR-shaped export relationships, RCM episode coverage, metric calculations, progressive layers, safeguards, local follow-up persistence and data/export actions.
 
 The UI regression checks also validate the final CSS cascade, responsive reflow rules, 44px primary navigation targets, reduced-motion support, semantic header/navigation wrappers and the multilingual keyboard skip link.
 
@@ -81,9 +98,11 @@ The included `.nojekyll` file tells GitHub Pages to serve the static assets dire
 
 ## Privacy and clinical scope
 
-This public prototype stores records in the user's browser. Do not enter directly identifiable patient information. Use synthetic or locally approved pseudonymous case labels.
+This public prototype stores records in the user's browser. Do not enter directly identifiable patient, subscriber, financial or claim information. Use only the bundled synthetic data or locally approved non-identifying test records.
 
 VivantePlexus™ is currently intended for tracking, education, workflow exploration, documentation support and pilot evidence generation. It is not medical advice, a diagnostic system, an autonomous treatment recommender, a regulated medical device or a substitute for licensed clinical judgement.
+
+Plexus RCM is a workflow demonstration, not a billing system, clearinghouse, practice-management system, accounting record, fee schedule, coverage determination, legal or coding service. It does not submit claims or appeals, check live eligibility, post remittances, issue statements or perform collection activity. Production use requires configured jurisdiction and payer rules, licensed billing and coding review, privacy and security controls, contractual and accounting governance, testing, auditability and human approval.
 
 The design follows the principle that healthcare AI should augment professionals and allow independent review of each output's basis. Future predictive or generative capabilities require an intended-use decision, representative data, validation, human-factors testing, lifecycle monitoring and regulatory assessment before clinical claims are made.
 

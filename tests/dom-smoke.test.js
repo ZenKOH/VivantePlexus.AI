@@ -29,6 +29,7 @@ function launch(existingState) {
       fs.readFileSync(path.join(root, "diverse-cases.js"), "utf8"),
       fs.readFileSync(path.join(root, "plexus-ai.js"), "utf8"),
       fs.readFileSync(path.join(root, "reports.js"), "utf8"),
+      fs.readFileSync(path.join(root, "rcm.js"), "utf8"),
     ].join("\n"),
   );
   dom.window.document.dispatchEvent(
@@ -57,8 +58,9 @@ test("renders the VivantePlexus and Robotimize brand identity", () => {
   );
   assert.equal(document.querySelector(".header-controls .header-assurance"), null);
   assert.equal(document.querySelector(".header-trust"), null);
-  assert.equal(document.querySelectorAll(".tab-nav > .tab-nav-inner > .tab-button").length, 6);
-  assert.match(document.querySelector('link[href*="ui-polish.css"]').href, /ui-polish\.css\?v=20260714-2$/);
+  assert.equal(document.querySelectorAll(".tab-nav > .tab-nav-inner > .tab-button").length, 7);
+  assert.match(document.querySelector('link[href*="ui-polish.css"]').href, /ui-polish\.css\?v=20260716-1$/);
+  assert.match(document.querySelector('link[href*="rcm.css"]').href, /rcm\.css\?v=20260716-1$/);
   assert.ok(dom.window.localStorage.getItem("vivantePlexus.v1"));
   assert.equal(dom.window.localStorage.getItem("neurorehabDoseTracker.v5"), null);
   dom.window.close();
@@ -150,6 +152,7 @@ test("every workflow destination is a real link and opens the matching section",
       "#equipment",
       "#outcomes",
       "#reports",
+      "#rcm",
     ],
   );
 
