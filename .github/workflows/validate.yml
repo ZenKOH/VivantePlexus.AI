@@ -11,6 +11,7 @@ permissions:
 jobs:
   test-and-check:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -18,11 +19,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Install dependencies
-        run: npm install
-      - name: Run tests
-        run: npm test
+          cache: npm
+      - name: Install dependencies reproducibly
+        run: npm ci
       - name: Check application JavaScript
         run: npm run check
-      - name: Check dynamically loaded workspaces
-        run: node --check welcome-landing.js && node --check plexus-ai-lab.js && node --check rcm.js
+      - name: Run tests
+        run: npm test
